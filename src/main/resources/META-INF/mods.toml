@@ -1,0 +1,28 @@
+modLoader="javafml"
+loaderVersion="[31,)"
+
+[[mods]]
+modId="vipium"
+version="1.0.1"
+displayName="Vipium"
+# updateJSONURL="http://myurl.me/"
+displayURL="https://github.com/FlowArg/"
+# logoFile="vipium.png"
+credits="Thanks Proflapoule for making all textures in this mod !"
+authors="Flow Arg (FlowArg)"
+description='''
+This is the official mod for the VIP Server !
+'''
+
+[[dependencies.vipium]]
+    modId="forge"
+    mandatory=true
+    versionRange="[31,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.vipium]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2]"
+    ordering="NONE"
+    side="BOTH"

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "vipium:vipium_pure_fragment"
+    }
+  },
+  "result": {
+    "item": "vipium:vipium_pure_ingot"
+  }
+}

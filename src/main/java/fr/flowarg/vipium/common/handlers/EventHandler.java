@@ -1,0 +1,31 @@
+package fr.flowarg.vipium.common.handlers;
+
+import fr.flowarg.vipium.Main;
+import fr.flowarg.vipium.client.screens.CustomInGameMenuScreen;
+import fr.flowarg.vipium.client.screens.CustomMainMenuScreen;
+import fr.flowarg.vipium.common.utils.VipiumConfig;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.IngameMenuScreen;
+import net.minecraft.client.gui.screen.MainMenuScreen;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+
+@Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+public class EventHandler
+{
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public static void onGuiOpenedEvent(final GuiOpenEvent event)
+    {
+        if (event.getGui() != null && !VipiumConfig.CLIENT.canShowRealms().get())
+        {
+            if (event.getGui().getClass() == MainMenuScreen.class)
+                event.setGui(new CustomMainMenuScreen(true));
+            else if (event.getGui().getClass() == IngameMenuScreen.class)
+                event.setGui(new CustomInGameMenuScreen(!Minecraft.getInstance().isIntegratedServerRunning()));
+        }
+    }
+}

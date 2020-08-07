@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "vipium:vipium_block"
+    }
+  ],
+  "result": {
+    "item": "vipium:vipium_ingot",
+    "count": 9
+  }
+}

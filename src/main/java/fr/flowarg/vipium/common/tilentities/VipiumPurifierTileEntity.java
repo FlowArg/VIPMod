@@ -9,7 +9,6 @@ import fr.flowarg.vipium.common.utils.PurifierElementStorage;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -43,8 +42,8 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
 {
     private NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);
     private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
-    private final int maxTimeTick = 40;
-    private int timer = this.maxTimeTick;
+    private static final int MAX_TIME_TICK = 40;
+    private int timer = MAX_TIME_TICK;
     private final List<Block> xSide = Arrays.asList(Blocks.QUARTZ_PILLAR, RegistryHandler.VIPIUM_BLOCK.get(), RegistryHandler.VIPIUM_BLOCK.get(), Blocks.QUARTZ_PILLAR, RegistryHandler.VIPIUM_BLOCK.get(), RegistryHandler.VIPIUM_BLOCK.get(), Blocks.QUARTZ_PILLAR);
     private final List<Block> zSide = Arrays.asList(RegistryHandler.VIPIUM_BLOCK.get(), RegistryHandler.VIPIUM_BLOCK.get(), Blocks.QUARTZ_PILLAR, RegistryHandler.VIPIUM_BLOCK.get(), RegistryHandler.VIPIUM_BLOCK.get());
     private final List<Integer> five = Arrays.asList(0, 1, 2, 3, 4);
@@ -271,7 +270,7 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
                 player.inventory.addItemStackToInventory(new ItemStack(RegistryHandler.VIPIUM_PURE_FRAGMENT.get(), 3));
             }
             else this.world.createExplosion(this.purifierStorage.getPlayer(), DamageSource.causeExplosionDamage((Explosion)null), this.pos.getX(), this.pos.getY(), this.pos.getZ(), 6f, true, Explosion.Mode.DESTROY);
-            this.timer = this.maxTimeTick;
+            this.timer = this.MAX_TIME_TICK;
         }
         else if(this.timer > 0)
             this.timer--;
@@ -288,6 +287,7 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
     {
         super.read(compound);
         this.items = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        this.timer = compound.getInt("timer");
         ItemStackHelper.loadAllItems(compound, this.items);
     }
 
@@ -297,6 +297,7 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
     {
         super.write(compound);
         ItemStackHelper.saveAllItems(compound, this.items);
+        compound.putInt("timer", this.timer);
         return compound;
     }
 

@@ -28,7 +28,7 @@ public class ModelGeneratorImpl implements IModelGenerator
     public ModelGeneratorImpl()
     {
         this.workDir = new File("/home/flow/Documents/Developpement/Java/VIPMod/src/main/resources/assets/vipium/");
-        Main.getInstance().getLogger().info(String.format("Initializing a new ModelGeneratorImpl at %s working dir...", this.workDir.getPath()));
+        Main.getInstance().getLogger().info(Main.getInstance().getMarker(), String.format("Initializing a new ModelGeneratorImpl at %s working dir...", this.workDir.getPath()));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ModelGeneratorImpl implements IModelGenerator
     @Override
     public void ignore(String text)
     {
-        Main.getInstance().getLogger().info(text);
+        Main.getInstance().getLogger().info(Main.getInstance().getMarker(), text);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ModelGeneratorImpl implements IModelGenerator
             final File modelBlockFile = new File(this.blocksModels, block.getRegistryName().getPath() + ".json");
             if (!modelBlockFile.exists())
             {
-                String toWrite = null;
+                String toWrite;
 
                 if (block instanceof IBlockColumn)
                 {

@@ -1,7 +1,7 @@
 package fr.flowarg.vipium.common.containers;
 
 import fr.flowarg.vipium.common.handlers.RegistryHandler;
-import fr.flowarg.vipium.common.tilentities.VipiumPurifierTileEntity;
+import fr.flowarg.vipium.common.tileentities.VipiumPurifierTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -31,7 +31,7 @@ public class VipiumPurifierContainer extends Container
         assertInventorySize(purifierInventory, 1);
         this.purifierInventory = purifierInventory;
 
-        this.addSlot(new Slot(purifierInventory, 0, 79, 36));
+        this.addSlot(new Slot(purifierInventory, 0, 80, 37));
 
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 9; j++)

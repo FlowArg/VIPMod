@@ -3,7 +3,6 @@ package fr.flowarg.vipium.client.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.flowarg.vipium.Main;
 import fr.flowarg.vipium.common.containers.VipiumPurifierContainer;
-import fr.flowarg.vipium.common.tilentities.VipiumPurifierTileEntity;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;

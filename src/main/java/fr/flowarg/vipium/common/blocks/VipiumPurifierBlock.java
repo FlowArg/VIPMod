@@ -1,13 +1,15 @@
 package fr.flowarg.vipium.common.blocks;
 
 import fr.flowarg.datagenerators.api.markers.IBlockOrientable;
-import fr.flowarg.vipium.common.tilentities.VipiumPurifierTileEntity;
-import net.minecraft.block.*;
+import fr.flowarg.vipium.common.tileentities.VipiumPurifierTileEntity;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -27,9 +29,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
+@SuppressWarnings("deprecation")
 public class VipiumPurifierBlock extends Block implements IBlockOrientable
 {
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
@@ -47,8 +51,9 @@ public class VipiumPurifierBlock extends Block implements IBlockOrientable
         return state.get(LIT) ? super.getLightValue(state, world, pos) : 0;
     }
 
+    @Nonnull
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public ActionResultType onBlockActivated(@Nonnull BlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand handIn, @Nonnull BlockRayTraceResult hit)
     {
         if (!worldIn.isRemote)
             this.interactWith(worldIn, pos, player);
@@ -70,7 +75,7 @@ public class VipiumPurifierBlock extends Block implements IBlockOrientable
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public void onBlockPlacedBy(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull BlockState state, LivingEntity placer, ItemStack stack)
     {
         if (stack.hasDisplayName())
         {
@@ -81,7 +86,7 @@ public class VipiumPurifierBlock extends Block implements IBlockOrientable
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
+    public void onReplaced(BlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, BlockState newState, boolean isMoving)
     {
         if (state.getBlock() != newState.getBlock())
         {
@@ -95,8 +100,9 @@ public class VipiumPurifierBlock extends Block implements IBlockOrientable
         }
     }
 
+    @Nonnull
     @Override
-    public BlockRenderType getRenderType(BlockState state)
+    public BlockRenderType getRenderType(@Nonnull BlockState state)
     {
         return BlockRenderType.MODEL;
     }
@@ -107,6 +113,7 @@ public class VipiumPurifierBlock extends Block implements IBlockOrientable
         return state.with(FACING, rot.rotate(state.get(FACING)));
     }
 
+    @Nonnull
     @Override
     public BlockState mirror(BlockState state, Mirror mirrorIn)
     {
@@ -134,7 +141,7 @@ public class VipiumPurifierBlock extends Block implements IBlockOrientable
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void animateTick(BlockState stateIn, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull Random rand)
     {
         if (stateIn.get(LIT))
         {

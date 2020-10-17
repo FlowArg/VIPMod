@@ -1,7 +1,6 @@
 package fr.flowarg.vipium.common.world;
 
 import fr.flowarg.vipium.common.handlers.RegistryHandler;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage.Decoration;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
@@ -15,20 +14,9 @@ public class OreGeneration
 {
     public static void setupGeneration()
     {
-        for (Biome biome : ForgeRegistries.BIOMES)
-        {
-            final ConfiguredPlacement<CountRangeConfig> placement = Placement.COUNT_RANGE
-                    .configure(
-                            new CountRangeConfig(
-                                    4,
-                                    3, 3,
-                                    19));
-
-            biome.addFeature(Decoration.UNDERGROUND_ORES,
-                             Feature.ORE
-                                     .withConfiguration(new OreFeatureConfig(FillerBlockType.NATURAL_STONE,
-                                                                             RegistryHandler.VIPIUM_ORE.get().getDefaultState(), 7))
-                                     .withPlacement(placement));
-        }
+        ForgeRegistries.BIOMES.forEach(biome -> {
+            final ConfiguredPlacement<CountRangeConfig> placement = Placement.COUNT_RANGE.configure(new CountRangeConfig(4, 3, 3, 19));
+            biome.addFeature(Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(FillerBlockType.NATURAL_STONE, RegistryHandler.VIPIUM_ORE.get().getDefaultState(), 7)).withPlacement(placement));
+        });
     }
 }

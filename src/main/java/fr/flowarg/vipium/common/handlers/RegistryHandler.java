@@ -10,7 +10,7 @@ import fr.flowarg.vipium.common.items.materials.VipiumPureArmorMaterial;
 import fr.flowarg.vipium.common.items.materials.VipiumPureToolMaterial;
 import fr.flowarg.vipium.common.items.materials.VipiumToolMaterial;
 import fr.flowarg.vipium.common.items.tools.*;
-import fr.flowarg.vipium.common.tilentities.VipiumPurifierTileEntity;
+import fr.flowarg.vipium.common.tileentities.VipiumPurifierTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.inventory.container.ContainerType;
@@ -33,14 +33,18 @@ public class RegistryHandler
     public static final IArmorMaterial VIPIUM_PURE_ARMOR_MATERIAL = new VipiumPureArmorMaterial();
     public static final IItemTier VIPIUM_TOOL_MATERIAL = new VipiumToolMaterial();
     public static final IItemTier VIPIUM_PURE_TOOL_MATERIAL = new VipiumPureToolMaterial();
+
+    public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, MODID);
+    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, MODID);
+    public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, MODID);
+    public static final DeferredRegister<ContainerType<?>> CONTAINERS = new DeferredRegister<>(ForgeRegistries.CONTAINERS, MODID);
+
     public static final Food VIPIUM_APPLE_FOOD = new Food.Builder().hunger(10).saturation(1.5f).effect(() -> new EffectInstance(Effects.REGENERATION, 120, 2), 1.0f).effect(() -> new EffectInstance(Effects.RESISTANCE, 6100, 1), 1.0f).effect(() -> new EffectInstance(Effects.FIRE_RESISTANCE, 6100, 0), 1.0f).effect(() -> new EffectInstance(Effects.ABSORPTION, 2500, 2), 1.0f).effect(() -> new EffectInstance(Effects.HEALTH_BOOST, 4000, 3), 0.4f).setAlwaysEdible().build();
     public static final Food VIPIUM_PURE_APPLE_FOOD = new Food.Builder().hunger(12).saturation(1.8f).effect(() -> new EffectInstance(Effects.REGENERATION, 160, 2), 1.0f).effect(() -> new EffectInstance(Effects.RESISTANCE, 6300, 2), 1.0f).effect(() -> new EffectInstance(Effects.FIRE_RESISTANCE, 6300, 1), 1.0f).effect(() -> new EffectInstance(Effects.ABSORPTION, 2800, 2), 1.0f).effect(() -> new EffectInstance(Effects.HEALTH_BOOST, 4300, 3), 0.8f).setAlwaysEdible().build();
-    private static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, MODID);
     public static final RegistryObject<Block> VIPIUM_BLOCK = BLOCKS.register("vipium_block", () -> new Block(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).hardnessAndResistance(30f, 20f)));
     public static final RegistryObject<VipiumOre> VIPIUM_ORE = BLOCKS.register("vipium_ore", VipiumOre::new);
     public static final RegistryObject<Block> VIPIUM_PURE_BLOCK = BLOCKS.register("vipium_pure_block", () -> new Block(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).hardnessAndResistance(60f, 90f)));
     public static final RegistryObject<VipiumPurifierBlock> VIPIUM_PURIFIER = BLOCKS.register("vipium_purifier", VipiumPurifierBlock::new);
-    private static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, MODID);
     public static final RegistryObject<Item> VIPIUM_BLOCK_ITEM = ITEMS.register("vipium_block", () -> new BlockItem(VIPIUM_BLOCK.get(), new Item.Properties().group(BLOCK_GROUP).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> VIPIUM_PURE_BLOCK_ITEM = ITEMS.register("vipium_pure_block", () -> new BlockItem(VIPIUM_PURE_BLOCK.get(), new Item.Properties().group(BLOCK_GROUP).rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> VIPIUM_ORE_ITEM = ITEMS.register("vipium_ore", () -> new BlockItem(VIPIUM_ORE.get(), new Item.Properties().group(BLOCK_GROUP).rarity(Rarity.RARE)));
@@ -73,12 +77,9 @@ public class RegistryHandler
     public static final RegistryObject<Item> VIPIUM_PURE_APPLE = ITEMS.register("vipium_pure_apple", () -> new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC).food(VIPIUM_PURE_APPLE_FOOD)));
     public static final RegistryObject<Item> VIPIUM_COMPASS = ITEMS.register("vipium_compass", VipiumCompassItem::new);
     public static final RegistryObject<Item> VIPIUM_COAL = ITEMS.register("vipium_coal", () -> new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> VIPIUM_FUEL_DEP = ITEMS.register("vipium_fuel_dep", () -> new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> LETTER = ITEMS.register("letter", () -> new Item(new Item.Properties().group(ITEM_GROUP).rarity(Rarity.COMMON).setNoRepair()));
 
-    private static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, MODID);
     public static final RegistryObject<TileEntityType<VipiumPurifierTileEntity>> VIPIUM_PURIFIER_TILE_ENTITY = TILE_ENTITIES.register("vipium_purifier", () -> TileEntityType.Builder.create(VipiumPurifierTileEntity::new, VIPIUM_PURIFIER.get()).build(null));
-    private static final DeferredRegister<ContainerType<?>> CONTAINERS = new DeferredRegister<>(ForgeRegistries.CONTAINERS, MODID);
     public static final RegistryObject<ContainerType<VipiumPurifierContainer>> VIPIUM_PURIFIER_CONTAINER = CONTAINERS.register("vipium_purifier", () -> IForgeContainerType.create(VipiumPurifierContainer::new));
 
     public static void init(IEventBus bus)
@@ -87,25 +88,5 @@ public class RegistryHandler
         ITEMS.register(bus);
         TILE_ENTITIES.register(bus);
         CONTAINERS.register(bus);
-    }
-
-    public static DeferredRegister<Block> getBlocks()
-    {
-        return BLOCKS;
-    }
-
-    public static DeferredRegister<ContainerType<?>> getContainers()
-    {
-        return CONTAINERS;
-    }
-
-    public static DeferredRegister<Item> getItems()
-    {
-        return ITEMS;
-    }
-
-    public static DeferredRegister<TileEntityType<?>> getTileEntities()
-    {
-        return TILE_ENTITIES;
     }
 }

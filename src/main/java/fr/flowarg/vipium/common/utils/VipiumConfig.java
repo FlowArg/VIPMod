@@ -26,7 +26,6 @@ public class VipiumConfig
 
     public static class Client
     {
-        private final BooleanValue showForceOnOverlay;
         private final BooleanValue showRealms;
 
         public Client(@Nonnull Builder builder)
@@ -34,17 +33,10 @@ public class VipiumConfig
             builder.comment(" Welcome to the Vipium Configuration !")
                    .push("client");
 
-            this.showForceOnOverlay = builder.comment(" Define if the Pollution is displayed on the in-game overlay.")
-                                             .define("showPollutionOnOverlay", true);
             this.showRealms = builder.comment(" Define if the Realms button is showed or not in the main menu.")
                                      .define("showRealms", false);
 
             builder.pop();
-        }
-
-        public BooleanValue canShowForceOnOverlay()
-        {
-            return this.showForceOnOverlay;
         }
 
         public BooleanValue canShowRealms()

@@ -57,7 +57,7 @@ public class VipiumCompassItem extends Item
                 double rotation = entity.rotationYaw;
                 rotation %= 360.0D;
 
-                final double adjusted = this.wobble(world, Math.PI - ((rotation - 90.0D) * 0.01745329238474369D - this.getAngle(entity)));
+                final double adjusted = this.wobble(world, Math.PI - ((this.rotation - 90.0D) * 0.01745329238474369D - this.getAngle(entity)));
                 final float result = (float) (adjusted / (Math.PI * 2D));
 
                 VipiumCompassItem.this.damageItem(VipiumCompassItem.this.getDefaultInstance(), 1, entity, null);
@@ -104,11 +104,10 @@ public class VipiumCompassItem extends Item
                 {
                     this.lastUpdateTick = world.getGameTime();
                     double tmp = amount - this.rotation;
-                    tmp %= Math.PI * 2D;
-                    tmp = MathHelper.clamp(tmp, -1.0D, 1.0D);
+                    tmp = MathHelper.positiveModulo(tmp + 0.5D, 1.0D) - 0.5D;
                     this.rota += tmp * 0.1D;
                     this.rota *= 0.8D;
-                    this.rotation += rota;
+                    this.rotation = MathHelper.positiveModulo(this.rotation + this.rota, 1.0D);
                 }
                 return this.rotation;
             }

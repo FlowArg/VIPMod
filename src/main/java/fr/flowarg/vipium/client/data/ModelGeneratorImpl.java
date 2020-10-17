@@ -52,7 +52,7 @@ public class ModelGeneratorImpl implements IModelGenerator
     @Override
     public void generate(File workingDir) throws IOException
     {
-        for (RegistryObject<Block> blockObj : RegistryHandler.getBlocks().getEntries())
+        for (RegistryObject<Block> blockObj : RegistryHandler.BLOCKS.getEntries())
         {
             final Block block = blockObj.get();
             final File blockStatesBlockFile = new File(this.blockStates, block.getRegistryName().getPath() + ".json");
@@ -106,7 +106,7 @@ public class ModelGeneratorImpl implements IModelGenerator
             }
         }
 
-        for(RegistryObject<Item> itemObject : RegistryHandler.getItems().getEntries())
+        for(RegistryObject<Item> itemObject : RegistryHandler.ITEMS.getEntries())
         {
             final Item item = itemObject.get();
             if (!(item instanceof BlockItem))

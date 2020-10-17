@@ -9,6 +9,8 @@ import net.minecraft.util.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nonnull;
+
 public class VipiumPureArmorMaterial implements IArmorMaterial
 {
     @Override
@@ -29,23 +31,26 @@ public class VipiumPureArmorMaterial implements IArmorMaterial
         return 40;
     }
 
+    @Nonnull
     @Override
     public SoundEvent getSoundEvent()
     {
         return SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND;
     }
 
+    @Nonnull
     @Override
     public Ingredient getRepairMaterial()
     {
         return Ingredient.fromItems(RegistryHandler.VIPIUM_PURE_INGOT.get());
     }
 
+    @Nonnull
     @OnlyIn(Dist.CLIENT)
     @Override
     public String getName()
     {
-        return "vipium_pure";
+        return "vipium:vipium_pure";
     }
 
     @Override

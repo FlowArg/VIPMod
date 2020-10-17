@@ -7,18 +7,14 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
 public class VipiumPurifierScreen extends ContainerScreen<VipiumPurifierContainer>
 {
     private boolean widthTooNarrow;
     private static final ResourceLocation VIPIUM_PURIFIER_GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/container/vipium_purifier.png");
-    private static final ITextComponent STRUCTURE_NOT_VALID = new TranslationTextComponent("container.vipium_purifier.structure_not_valid");
 
     public VipiumPurifierScreen(VipiumPurifierContainer container, PlayerInventory inventory, ITextComponent titleIn)
     {
@@ -50,8 +46,6 @@ public class VipiumPurifierScreen extends ContainerScreen<VipiumPurifierContaine
         final String title = this.title.getFormattedText();
         this.font.drawString(title, (float)(this.xSize / 2 - this.font.getStringWidth(title) / 2), 6.0F, 4210752);
         this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 50.0F, this.ySize - 96 + 2, 4210752);
-        if(this.container.getPurifierInventory() != null && !this.container.getPurifierInventory().isStructureValid())
-            this.font.drawString(STRUCTURE_NOT_VALID.getFormattedText(), 20, this.ySize - 96 + 2, Color.RED.getRGB());
     }
 
     @Override

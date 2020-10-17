@@ -1,7 +1,6 @@
 package fr.flowarg.vipium.common.containers;
 
 import fr.flowarg.vipium.common.handlers.RegistryHandler;
-import fr.flowarg.vipium.common.tileentities.VipiumPurifierTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -10,6 +9,8 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+
+import javax.annotation.Nonnull;
 
 public class VipiumPurifierContainer extends Container
 {
@@ -42,13 +43,14 @@ public class VipiumPurifierContainer extends Container
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn)
+    public boolean canInteractWith(@Nonnull PlayerEntity playerIn)
     {
         return this.purifierInventory.isUsableByPlayer(playerIn);
     }
 
+    @Nonnull
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index)
+    public ItemStack transferStackInSlot(@Nonnull PlayerEntity playerIn, int index)
     {
         ItemStack itemStack = ItemStack.EMPTY;
         final Slot slot = this.inventorySlots.get(index);
@@ -57,7 +59,7 @@ public class VipiumPurifierContainer extends Container
             final ItemStack itemStack1 = slot.getStack();
             itemStack = itemStack1.copy();
 
-            if (!this.mergeItemStack(itemStack1, 3, 39, true)) {
+            if (!this.mergeItemStack(itemStack1, 3, 37, true)) {
                 return ItemStack.EMPTY;
             }
 
@@ -72,12 +74,5 @@ public class VipiumPurifierContainer extends Container
         }
 
         return itemStack;
-    }
-
-    public VipiumPurifierTileEntity getPurifierInventory()
-    {
-        if(this.purifierInventory instanceof VipiumPurifierTileEntity)
-            return (VipiumPurifierTileEntity)this.purifierInventory;
-        else return null;    
     }
 }

@@ -13,7 +13,7 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -145,21 +145,18 @@ public class VipiumPurifierBlock extends Block implements IBlockOrientable
     {
         if (stateIn.get(LIT))
         {
-            final double d0 = (double) pos.getX() + 0.5D;
-            final double d1 = pos.getY();
-            final double d2 = (double) pos.getZ() + 0.5D;
-            if (rand.nextDouble() < 0.1D)
-                worldIn.playSound(d0, d1, d2, SoundEvents.MUSIC_DISC_WAIT, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+            final double baseX = pos.getX() + 0.5D;
+            final double baseY = pos.getY();
+            final double baseZ = pos.getZ() + 0.5D;
 
+            final double randomNumber = rand.nextDouble() * 0.6D - 0.3D;
             final Direction direction = stateIn.get(FACING);
-            Direction.Axis direction$axis = direction.getAxis();
-            final double d3 = 0.52D;
-            final double d4 = rand.nextDouble() * 0.6D - 0.3D;
-            final double d5 = direction$axis == Direction.Axis.X ? (double) direction.getXOffset() * d3 : d4;
-            final double d6 = rand.nextDouble() * 6.0D / 16.0D;
-            final double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getZOffset() * 0.52D : d4;
-            worldIn.addParticle(ParticleTypes.ENCHANT, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
-            worldIn.addParticle(ParticleTypes.FLAME, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
+            final Direction.Axis axis = direction.getAxis();
+
+            final double xAdded = axis == Direction.Axis.X ? direction.getXOffset() * 0.5D : randomNumber;
+            final double yAdded = rand.nextDouble() * 6.0D / 16.0D;
+            final double zAdded = axis == Direction.Axis.Z ? direction.getZOffset() * 0.52D : randomNumber;
+            worldIn.addParticle(new RedstoneParticleData(0.0f, 1.0f, 0.0f, 1.0f), baseX + xAdded, baseY + yAdded, baseZ + zAdded, 1.0D, 1.0D, 1.0D);
         }
     }
 }

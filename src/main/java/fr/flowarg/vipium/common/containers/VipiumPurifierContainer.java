@@ -59,7 +59,7 @@ public class VipiumPurifierContainer extends Container
             final ItemStack itemStack1 = slot.getStack();
             itemStack = itemStack1.copy();
 
-            if (!this.mergeItemStack(itemStack1, 3, 37, true)) {
+            if (!this.mergeItemStack(itemStack1, 1, 37, true)) {
                 return ItemStack.EMPTY;
             }
 

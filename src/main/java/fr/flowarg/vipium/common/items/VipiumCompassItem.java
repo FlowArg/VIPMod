@@ -2,11 +2,9 @@ package fr.flowarg.vipium.common.items;
 
 import fr.flowarg.vipium.Main;
 import fr.flowarg.vipium.common.handlers.RegistryHandler;
-import fr.flowarg.vipium.common.utils.XZStorage;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -47,38 +45,33 @@ public class VipiumCompassItem extends Item
 
             @OnlyIn(Dist.CLIENT)
             @Override
-            public float call(ItemStack stack, @Nullable World world, @Nullable LivingEntity entityLiving)
+            public float call(@Nonnull ItemStack stack, @Nullable World world, @Nullable LivingEntity entity)
             {
-                if (entityLiving == null && !stack.isOnItemFrame()) return 0.0F;
-                final boolean entityExists = entityLiving != null;
-                final Entity  entity       = entityExists ? entityLiving : stack.getItemFrame();
-                if (world == null && entity != null) world = entity.world;
+                if (entity == null || stack.isOnItemFrame()) return 0.0F;
+                if (world == null) world = entity.world;
 
-                assert entity != null;
-                final XZStorage vipiumPos = this.foundNearbyVipiumOre(entity.getBoundingBox(), world);
-                this.blockX = vipiumPos.getX();
-                this.blockZ = vipiumPos.getZ();
+                final double[] vipiumPos = this.foundNearbyVipiumOre(entity.getBoundingBox(), world);
+                this.blockX = vipiumPos[0];
+                this.blockZ = vipiumPos[1];
 
-                double rotation = entityExists ? (double) entity.rotationYaw : this.getFrameRotation((ItemFrameEntity) entity);
+                double rotation = entity.rotationYaw;
                 rotation %= 360.0D;
-                double adjusted = Math.PI - ((rotation - 90.0D) * 0.01745329238474369D - this.getAngle(entity));
-                if (entityExists) adjusted = this.wobble(world, adjusted);
 
-                final float f = (float) (adjusted / (Math.PI * 2D));
+                final double adjusted = this.wobble(world, Math.PI - ((rotation - 90.0D) * 0.01745329238474369D - this.getAngle(entity)));
+                final float result = (float) (adjusted / (Math.PI * 2D));
 
-                VipiumCompassItem.this.damageItem(VipiumCompassItem.this.getDefaultInstance(), 1, entityLiving, null);
-
-                return MathHelper.positiveModulo(f, 1.0F);
+                VipiumCompassItem.this.damageItem(VipiumCompassItem.this.getDefaultInstance(), 1, entity, null);
+                return MathHelper.positiveModulo(result, 1.0F);
             }
 
-            private XZStorage foundNearbyVipiumOre(@Nonnull AxisAlignedBB aabb, World world)
+            private double[] foundNearbyVipiumOre(@Nonnull AxisAlignedBB aabb, World world)
             {
-                final double minX = aabb.minX - 150;
-                final double minY = aabb.minY - 150;
-                final double minZ = aabb.minZ - 150;
-                final double maxX = aabb.maxX + 150;
-                final double maxY = aabb.maxY + 150;
-                final double maxZ = aabb.maxZ + 150;
+                final double minX = aabb.minX - 100;
+                final double minY = aabb.minY - 100;
+                final double minZ = aabb.minZ - 100;
+                final double maxX = aabb.maxX + 100;
+                final double maxY = aabb.maxY + 100;
+                final double maxZ = aabb.maxZ + 100;
 
                 for (double x = minX; x < maxX; x++)
                 {
@@ -89,19 +82,13 @@ public class VipiumCompassItem extends Item
                             final Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
                             if(block == RegistryHandler.VIPIUM_ORE.get())
                             {
-                                return new XZStorage(x, z);
+                                return new double[]{x, z};
                             }
                         }
                     }
                 }
 
-                return new XZStorage(0, 0);
-            }
-
-            @OnlyIn(Dist.CLIENT)
-            private double getFrameRotation(ItemFrameEntity itemFrame)
-            {
-                return MathHelper.wrapDegrees(180 + itemFrame.getHorizontalFacing().getHorizontalIndex() * 90);
+                return new double[]{0, 0};
             }
 
             @OnlyIn(Dist.CLIENT)
@@ -116,10 +103,10 @@ public class VipiumCompassItem extends Item
                 if (world.getGameTime() != this.lastUpdateTick)
                 {
                     this.lastUpdateTick = world.getGameTime();
-                    double d = amount - this.rotation;
-                    d %= Math.PI * 2D;
-                    d = MathHelper.clamp(d, -1.0D, 1.0D);
-                    this.rota += d * 0.1D;
+                    double tmp = amount - this.rotation;
+                    tmp %= Math.PI * 2D;
+                    tmp = MathHelper.clamp(tmp, -1.0D, 1.0D);
+                    this.rota += tmp * 0.1D;
                     this.rota *= 0.8D;
                     this.rotation += rota;
                 }

@@ -15,6 +15,7 @@ import javax.annotation.Nonnull;
 public class VipiumPurifierContainer extends Container
 {
     private final IInventory purifierInventory;
+    public static final String VIPIUM_INGOT_TRANSLATION_KEY = RegistryHandler.VIPIUM_INGOT.get().getTranslationKey();
 
     public VipiumPurifierContainer(int id, PlayerInventory playerInventory, PacketBuffer buffer)
     {
@@ -59,9 +60,19 @@ public class VipiumPurifierContainer extends Container
             final ItemStack itemStack1 = slot.getStack();
             itemStack = itemStack1.copy();
 
-            if (!this.mergeItemStack(itemStack1, 1, 37, true)) {
-                return ItemStack.EMPTY;
+            if(index == 0)
+            {
+                if (!this.mergeItemStack(itemStack1, 1, 37, true))
+                    return ItemStack.EMPTY;
+                slot.onSlotChange(itemStack1, itemStack);
             }
+            else if(itemStack.getItem().getTranslationKey().equals(VIPIUM_INGOT_TRANSLATION_KEY))
+            {
+                if (!this.mergeItemStack(itemStack1, 0, 1, false))
+                    return ItemStack.EMPTY;
+            }
+            else if (!this.mergeItemStack(itemStack1, 1, 37, false))
+                return ItemStack.EMPTY;
 
             if (itemStack1.isEmpty())
                 slot.putStack(ItemStack.EMPTY);

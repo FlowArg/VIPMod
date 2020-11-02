@@ -1,9 +1,7 @@
 package fr.flowarg.vipium;
 
-import fr.flowarg.datagenerators.DataGenerators;
 import fr.flowarg.vipium.client.creativetabs.BlocksGroup;
 import fr.flowarg.vipium.client.creativetabs.ItemsGroup;
-import fr.flowarg.vipium.client.data.ModelGeneratorImpl;
 import fr.flowarg.vipium.client.screens.VipiumPurifierScreen;
 import fr.flowarg.vipium.common.handlers.RegistryHandler;
 import fr.flowarg.vipium.common.utils.VipiumConfig;
@@ -54,8 +52,8 @@ public class Main
     private void setupClient(final FMLClientSetupEvent event)
     {
         this.logger.info(this.marker, "FMLSetup is loading Vipium Mod (Client Side)...");
-        DataGenerators.registerDomain(MODID);
-        DataGenerators.addModelGenerator(new ModelGeneratorImpl());
+        //DataGenerators.registerDomain(MODID);
+        //DataGenerators.addModelGenerator(new ModelGeneratorImpl());
         this.logger.info(this.marker, "Registering a new screen factory : Vipium Purifier Screen.");
         ScreenManager.registerFactory(RegistryHandler.VIPIUM_PURIFIER_CONTAINER.get(), VipiumPurifierScreen::new);
     }

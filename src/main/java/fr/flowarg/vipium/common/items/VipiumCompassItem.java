@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -50,21 +51,21 @@ public class VipiumCompassItem extends Item
                 if (entity == null || stack.isOnItemFrame()) return 0.0F;
                 if (world == null) world = entity.world;
 
-                final double[] vipiumPos = this.foundNearbyVipiumOre(entity.getBoundingBox(), world);
-                this.blockX = vipiumPos[0];
-                this.blockZ = vipiumPos[1];
+                final Vec3i vipiumPos = this.foundNearbyVipiumOre(entity.getBoundingBox(), world);
+                this.blockX = vipiumPos.getX();
+                this.blockZ = vipiumPos.getZ();
 
                 double rotation = entity.rotationYaw;
                 rotation %= 360.0D;
 
-                final double adjusted = this.wobble(world, Math.PI - ((this.rotation - 90.0D) * 0.01745329238474369D - this.getAngle(entity)));
+                final double adjusted = this.wobble(world, Math.PI - ((rotation - 90.0D) * 0.01745329238474369D - this.getAngle(entity)));
                 final float result = (float) (adjusted / (Math.PI * 2D));
 
                 VipiumCompassItem.this.damageItem(VipiumCompassItem.this.getDefaultInstance(), 1, entity, null);
                 return MathHelper.positiveModulo(result, 1.0F);
             }
 
-            private double[] foundNearbyVipiumOre(@Nonnull AxisAlignedBB aabb, World world)
+            private Vec3i foundNearbyVipiumOre(@Nonnull AxisAlignedBB aabb, World world)
             {
                 final double minX = aabb.minX - 100;
                 final double minY = aabb.minY - 100;
@@ -73,22 +74,24 @@ public class VipiumCompassItem extends Item
                 final double maxY = aabb.maxY + 100;
                 final double maxZ = aabb.maxZ + 100;
 
+                final BlockPos.Mutable mutable = new BlockPos.Mutable();
                 for (double x = minX; x < maxX; x++)
                 {
                     for (double y = minY; y < maxY; y++)
                     {
                         for (double z = minZ; z < maxZ; z++)
                         {
-                            final Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
+                            mutable.setPos(x, y, z);
+                            final Block block = world.getBlockState(mutable).getBlock();
                             if(block == RegistryHandler.VIPIUM_ORE.get())
                             {
-                                return new double[]{x, z};
+                                return new Vec3i(x, y, z);
                             }
                         }
                     }
                 }
 
-                return new double[]{0, 0};
+                return new Vec3i(0, 0, 0);
             }
 
             @OnlyIn(Dist.CLIENT)

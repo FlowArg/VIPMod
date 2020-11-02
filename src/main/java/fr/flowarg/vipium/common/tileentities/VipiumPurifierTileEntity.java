@@ -173,7 +173,7 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
     {
         if(this.timer == 0)
         {
-            if(new Random().nextInt(30) != 0)
+            if(new Random().nextInt(48) != 0)
             {
                 this.player.setHealth(this.player.getHealth() - 0.5F);
                 this.items.get(0).shrink(2);
@@ -182,7 +182,11 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
             else
             {
                 if(this.world != null)
+                {
                     this.world.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 20f, Explosion.Mode.BREAK);
+                    if(new Random().nextInt(2) == 1)
+                        this.player.addItemStackToInventory(new ItemStack(RegistryHandler.VIPIUM_PURIFIER_ITEM.get()));
+                }
             }
             this.timer = MAX_TIME_TICK;
         }

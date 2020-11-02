@@ -147,8 +147,7 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
                 this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(VipiumPurifierBlock.LIT, true));
                 this.purify();
             }
-            else
-                this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(VipiumPurifierBlock.LIT, false));
+            else this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(VipiumPurifierBlock.LIT, false));
         }
         this.markDirty();
     }
@@ -173,18 +172,22 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
     {
         if(this.timer == 0)
         {
-            if(new Random().nextInt(48) != 0)
+            if(new Random().nextInt(55) != 0)
             {
                 this.player.setHealth(this.player.getHealth() - 0.5F);
-                this.items.get(0).shrink(2);
-                this.player.inventory.addItemStackToInventory(new ItemStack(RegistryHandler.VIPIUM_PURE_FRAGMENT.get(), 3));
+                if(this.items.get(0).getCount() == 2)
+                {
+                    this.items.get(0).shrink(2);
+                    this.player.inventory.addItemStackToInventory(new ItemStack(RegistryHandler.VIPIUM_PURE_FRAGMENT.get(), 3));
+                }
+                else this.player.sendMessage(new TranslationTextComponent("purifier.err.notenoughitems"));
             }
             else
             {
                 if(this.world != null)
                 {
                     this.world.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 20f, Explosion.Mode.BREAK);
-                    if(new Random().nextInt(2) == 1)
+                    if(new Random().nextInt(3) == 2)
                         this.player.addItemStackToInventory(new ItemStack(RegistryHandler.VIPIUM_PURIFIER_ITEM.get()));
                 }
             }

@@ -1,0 +1,41 @@
+{
+  "container.vipium_purifier": "Vipium Purifier",
+  "purifier.err.notenoughitems": "Il n'y a pas assez de lingot de Vipium dans le Purifier (Besoin d'au moins 2) !",
+  "itemGroup.vipium.items": "Vipium : Items",
+  "itemGroup.vipium.blocks": "Vipium : Blocs",
+
+
+  "block.vipium.vipium_block": "Bloc de Vipium",
+  "block.vipium.vipium_ore": "Minerai de Vipium",
+  "block.vipium.vipium_purifier": "Purifier de Vipium",
+  "block.vipium.vipium_pure_block": "Bloc de Vipium Pure",
+
+
+  "item.vipium.vipium_fragment": "Fragment de Vipium",
+  "item.vipium.vipium_ingot": "Lingot de Vipium",
+  "item.vipium.vipium_helmet": "Casque en Vipium",
+  "item.vipium.vipium_chestplate": "Plastron en Vipium",
+  "item.vipium.vipium_leggings": "Pantalon en Vipium",
+  "item.vipium.vipium_boots": "Bottes en Vipium",
+  "item.vipium.vipium_axe": "Hache en Vipium",
+  "item.vipium.vipium_pickaxe": "Pioche en Vipium",
+  "item.vipium.vipium_hoe": "Houe en Vipium",
+  "item.vipium.vipium_shovel": "Pelle en Vipium",
+  "item.vipium.vipium_multi_tool": "Multi-Outils en Vipium",
+  "item.vipium.vipium_apple": "Pomme de Vipium",
+  "item.vipium.vipium_sword": "Épée en Vipium",
+
+  "item.vipium.vipium_pure_fragment": "Fragment de Vipium Pure",
+  "item.vipium.vipium_pure_ingot": "Lingot de Vipium Pure",
+  "item.vipium.vipium_pure_helmet": "Casque en Vipium Pure",
+  "item.vipium.vipium_pure_chestplate": "Plastron en Vipium Pure",
+  "item.vipium.vipium_pure_leggings": "Pantalon en Vipium Pure",
+  "item.vipium.vipium_pure_boots": "Bottes en Vipium Pure",
+  "item.vipium.vipium_pure_apple": "Pomme de Vipium Pure",
+  "item.vipium.vipium_pure_axe": "Hache en Vipium Pure",
+  "item.vipium.vipium_pure_pickaxe": "Pioche en Vipium Pure",
+  "item.vipium.vipium_pure_hoe": "Houe en Vipium Pure",
+  "item.vipium.vipium_pure_shovel": "Pelle en Vipium Pure",
+  "item.vipium.vipium_pure_multi_tool": "Multi-Outils en Vipium Pure",
+  "item.vipium.vipium_sword": "Épée en Vipium Pure"
+}

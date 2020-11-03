@@ -1,5 +1,6 @@
 package fr.flowarg.vipium.common.containers;
 
+import fr.flowarg.vipium.common.containers.slots.IngotSlot;
 import fr.flowarg.vipium.common.handlers.RegistryHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,7 +16,6 @@ import javax.annotation.Nonnull;
 public class VipiumPurifierContainer extends Container
 {
     private final IInventory purifierInventory;
-    public static final String VIPIUM_INGOT_TRANSLATION_KEY = RegistryHandler.VIPIUM_INGOT.get().getTranslationKey();
 
     public VipiumPurifierContainer(int id, PlayerInventory playerInventory, PacketBuffer buffer)
     {
@@ -33,7 +33,7 @@ public class VipiumPurifierContainer extends Container
         assertInventorySize(purifierInventory, 1);
         this.purifierInventory = purifierInventory;
 
-        this.addSlot(new Slot(purifierInventory, 0, 80, 37));
+        this.addSlot(new IngotSlot(purifierInventory, 0, 80, 37));
 
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 9; j++)
@@ -66,7 +66,7 @@ public class VipiumPurifierContainer extends Container
                     return ItemStack.EMPTY;
                 slot.onSlotChange(itemStack1, itemStack);
             }
-            else if(itemStack.getItem().getTranslationKey().equals(VIPIUM_INGOT_TRANSLATION_KEY))
+            else if(itemStack.getItem() == RegistryHandler.VIPIUM_INGOT.get())
             {
                 if (!this.mergeItemStack(itemStack1, 0, 1, false))
                     return ItemStack.EMPTY;

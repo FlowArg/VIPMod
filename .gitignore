@@ -4,7 +4,7 @@ out
 *.iws
 *.iml
 .idea
-
+mail_box.obj
 # gradle
 build
 .gradle

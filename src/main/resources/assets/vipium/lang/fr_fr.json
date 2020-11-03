@@ -4,12 +4,10 @@
   "itemGroup.vipium.items": "Vipium : Items",
   "itemGroup.vipium.blocks": "Vipium : Blocs",
 
-
   "block.vipium.vipium_block": "Bloc de Vipium",
   "block.vipium.vipium_ore": "Minerai de Vipium",
   "block.vipium.vipium_purifier": "Purifier de Vipium",
   "block.vipium.vipium_pure_block": "Bloc de Vipium Pure",
-
 
   "item.vipium.vipium_fragment": "Fragment de Vipium",
   "item.vipium.vipium_ingot": "Lingot de Vipium",
@@ -37,5 +35,11 @@
   "item.vipium.vipium_pure_hoe": "Houe en Vipium Pure",
   "item.vipium.vipium_pure_shovel": "Pelle en Vipium Pure",
   "item.vipium.vipium_pure_multi_tool": "Multi-Outils en Vipium Pure",
-  "item.vipium.vipium_sword": "Épée en Vipium Pure"
+  "item.vipium.vipium_pure_sword": "Épée en Vipium Pure",
+
+  "item.vipium.vipium_compass": "Boussole de Vipium",
+  "item.vipium.vipium_coal": "Charbon de Vipium",
+  "item.vipium.envelope_open": "Enveloppe ouverte",
+  "item.vipium.letter": "Lettre",
+  "item.vipium.envelope_close": "Enveloppe fermée"
 }

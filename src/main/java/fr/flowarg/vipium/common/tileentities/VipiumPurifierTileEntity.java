@@ -154,7 +154,7 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
 
     private boolean canPurify()
     {
-        if(!this.items.get(0).isEmpty())
+        if(!this.items.get(0).isEmpty() && this.items.get(0).getItem() == RegistryHandler.VIPIUM_INGOT.get())
         {
             if(this.world != null)
             {

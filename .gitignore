@@ -8,6 +8,7 @@ mail_box.obj
 # gradle
 build
 .gradle
+logs
 
 # other
 run

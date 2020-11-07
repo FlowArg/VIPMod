@@ -3,12 +3,12 @@ loaderVersion="[31,)"
 
 [[mods]]
 modId="vipium"
-version="1.0.1"
+version="1.2.0"
 displayName="Vipium"
 # updateJSONURL="http://myurl.me/"
 displayURL="https://github.com/FlowArg/"
 # logoFile="vipium.png"
-credits="Thanks Proflapoule for making all textures in this mod !"
+credits="Thanks Proflapoule & EngineTH3F for making all textures in this mod !"
 authors="Flow Arg (FlowArg)"
 description='''
 This is the official mod for the VIP Server !

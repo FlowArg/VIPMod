@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/rail_curved",
+  "textures": {
+    "rail": "vipium:block/vipium_rail_corner"
+  }
+}

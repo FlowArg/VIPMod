@@ -8,6 +8,7 @@
   "block.vipium.vipium_ore": "Minerai de Vipium",
   "block.vipium.vipium_purifier": "Purifier de Vipium",
   "block.vipium.vipium_pure_block": "Bloc de Vipium Pure",
+  "block.vipium.vipium_rail": "Rail de Vipium",
 
   "item.vipium.vipium_fragment": "Fragment de Vipium",
   "item.vipium.vipium_ingot": "Lingot de Vipium",
@@ -41,5 +42,6 @@
   "item.vipium.vipium_coal": "Charbon de Vipium",
   "item.vipium.envelope_open": "Enveloppe ouverte",
   "item.vipium.letter": "Lettre",
-  "item.vipium.envelope_close": "Enveloppe fermée"
+  "item.vipium.envelope_close": "Enveloppe fermée",
+  "item.vipium.vipium_minecart": "Wagon en Vipium"
 }

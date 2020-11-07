@@ -11,9 +11,9 @@ import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.Set;
 
-public class VipiumMultiTool extends ToolItem
+public class VipiumMultiToolItem extends ToolItem
 {
-    public VipiumMultiTool(float attackDamageIn, float attackSpeedIn, IItemTier tier, Properties builder)
+    public VipiumMultiToolItem(float attackDamageIn, float attackSpeedIn, IItemTier tier, Properties builder)
     {
         super(attackDamageIn, attackSpeedIn, tier, Collections.emptySet(), builder);
     }

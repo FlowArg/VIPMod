@@ -8,6 +8,7 @@
   "block.vipium.vipium_ore": "Vipium Ore",
   "block.vipium.vipium_purifier": "Vipium Purifier",
   "block.vipium.vipium_pure_block": "Pure Vipium Block",
+  "block.vipium.vipium_rail": "Vipium Rail",
 
   "item.vipium.vipium_fragment": "Vipium Fragment",
   "item.vipium.vipium_ingot": "Vipium Ingot",
@@ -41,5 +42,6 @@
   "item.vipium.vipium_coal": "Vipium Coal",
   "item.vipium.envelope_open": "Opened envelope",
   "item.vipium.letter": "Letter",
-  "item.vipium.envelope_close": "Closed envelope"
+  "item.vipium.envelope_close": "Closed envelope",
+  "item.vipium.vipium_minecart": "Vipium Minecart"
 }

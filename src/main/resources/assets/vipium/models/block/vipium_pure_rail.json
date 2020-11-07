@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/rail_flat",
+  "textures": {
+    "rail": "vipium:block/vipium_pure_rail"
+  }
+}

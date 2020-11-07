@@ -21,7 +21,7 @@ compileJava {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200612-1.15.1'
+    mappings channel: 'snapshot', version: '20201105-1.15.1'
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -73,7 +73,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.2.9'
+    minecraft 'net.minecraftforge:forge:1.15.2-31.2.45'
 }
 
 jar {

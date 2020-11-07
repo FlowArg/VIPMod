@@ -3,7 +3,6 @@ package fr.flowarg.vipium.common.handlers;
 import fr.flowarg.vipium.common.blocks.VipiumPurifierBlock;
 import fr.flowarg.vipium.common.blocks.ores.VipiumOre;
 import fr.flowarg.vipium.common.containers.VipiumPurifierContainer;
-import fr.flowarg.vipium.common.items.VipiumCompassItem;
 import fr.flowarg.vipium.common.items.VipiumMultiTool;
 import fr.flowarg.vipium.common.items.materials.VipiumArmorMaterial;
 import fr.flowarg.vipium.common.items.materials.VipiumPureArmorMaterial;
@@ -85,7 +84,7 @@ public class RegistryHandler
     public static final RegistryObject<Item> VIPIUM_PURE_INGOT = ITEMS.register("vipium_pure_ingot", () -> new Item(newItemVipiumPureProperties()));
     public static final RegistryObject<Item> VIPIUM_PURE_APPLE = ITEMS.register("vipium_pure_apple", () -> new Item(newItemVipiumPureProperties().food(VIPIUM_PURE_APPLE_FOOD)));
 
-    public static final RegistryObject<Item> VIPIUM_COMPASS = ITEMS.register("vipium_compass", VipiumCompassItem::new);
+    //public static final RegistryObject<Item> VIPIUM_COMPASS = ITEMS.register("vipium_compass", VipiumCompassItem::new);
     public static final RegistryObject<Item> VIPIUM_COAL = ITEMS.register("vipium_coal", () -> new Item(new Item.Properties().group(ITEM_GROUP).rarity(UNCOMMON)));
     public static final RegistryObject<Item> LETTER = ITEMS.register("letter", () -> new Item(new Item.Properties().group(ITEM_GROUP).rarity(COMMON).setNoRepair()));
     public static final RegistryObject<Item> ENVELOPE_OPEN = ITEMS.register("envelope_open", () -> new Item(new Item.Properties().group(ITEM_GROUP).rarity(COMMON).setNoRepair()));

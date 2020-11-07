@@ -1,6 +1,5 @@
 package fr.flowarg.vipium.common.blocks.ores;
 
-import fr.flowarg.datagenerators.api.markers.IBlockCubeAll;
 import net.minecraft.block.Block;
 import net.minecraft.block.OreBlock;
 import net.minecraft.block.material.Material;
@@ -9,7 +8,7 @@ import net.minecraftforge.common.ToolType;
 
 import java.util.Random;
 
-public class VipiumOre extends OreBlock implements IBlockCubeAll
+public class VipiumOre extends OreBlock
 {
     public VipiumOre()
     {

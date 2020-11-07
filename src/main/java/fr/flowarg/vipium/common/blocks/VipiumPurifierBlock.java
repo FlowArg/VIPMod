@@ -1,6 +1,5 @@
 package fr.flowarg.vipium.common.blocks;
 
-import fr.flowarg.datagenerators.api.markers.IBlockOrientable;
 import fr.flowarg.vipium.common.tileentities.VipiumPurifierTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -34,7 +33,7 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 @SuppressWarnings("deprecation")
-public class VipiumPurifierBlock extends Block implements IBlockOrientable
+public class VipiumPurifierBlock extends Block
 {
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;

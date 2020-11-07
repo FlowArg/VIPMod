@@ -172,7 +172,7 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
     {
         if(this.timer == 0)
         {
-            if(new Random().nextInt(55) != 0)
+            if(new Random().nextInt(70) != 0)
             {
                 this.player.setHealth(this.player.getHealth() - 0.5F);
                 if(this.items.get(0).getCount() >= 2)

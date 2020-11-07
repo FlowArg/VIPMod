@@ -20,11 +20,11 @@ public class EventHandler
     @OnlyIn(Dist.CLIENT)
     public static void onGuiOpenedEvent(final GuiOpenEvent event)
     {
-        if (event.getGui() != null && !VipiumConfig.CLIENT.canShowRealms().get())
+        if (event.getGui() != null)
         {
-            if (event.getGui().getClass() == MainMenuScreen.class)
+            if(!VipiumConfig.CLIENT.canShowRealms().get() && event.getGui().getClass() == MainMenuScreen.class)
                 event.setGui(new CustomMainMenuScreen(true));
-            else if (event.getGui().getClass() == IngameMenuScreen.class)
+            else if(!VipiumConfig.CLIENT.canShowUselessOptions().get() && event.getGui().getClass() == IngameMenuScreen.class)
                 event.setGui(new CustomInGameMenuScreen(!Minecraft.getInstance().isIntegratedServerRunning()));
         }
     }

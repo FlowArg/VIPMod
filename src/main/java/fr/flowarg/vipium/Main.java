@@ -1,5 +1,6 @@
 package fr.flowarg.vipium;
 
+import fr.flowarg.vipium.client.renderer.VipiumMinecartRenderer;
 import fr.flowarg.vipium.client.creativetabs.BlocksGroup;
 import fr.flowarg.vipium.client.creativetabs.ItemsGroup;
 import fr.flowarg.vipium.client.screens.VipiumPurifierScreen;
@@ -7,7 +8,6 @@ import fr.flowarg.vipium.common.handlers.RegistryHandler;
 import fr.flowarg.vipium.common.utils.VipiumConfig;
 import fr.flowarg.vipium.common.world.OreGeneration;
 import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -41,7 +41,6 @@ public class Main
         eventBus.addListener(this::setupClient);
         RegistryHandler.init(eventBus);
         ModLoadingContext.get().registerConfig(Type.CLIENT, VipiumConfig.CLIENT_SPECS);
-        ModLoadingContext.get().registerConfig(Type.SERVER, VipiumConfig.SERVER_SPECS);
     }
 
     private void setupCommon(final FMLCommonSetupEvent event)
@@ -57,7 +56,7 @@ public class Main
         this.logger.info(this.marker, "Registering a new screen factory : Vipium Purifier Screen.");
         ScreenManager.registerFactory(RegistryHandler.VIPIUM_PURIFIER_CONTAINER.get(), VipiumPurifierScreen::new);
         this.logger.info(this.marker, "Registering a new entity renderer : Vipium Minecart.");
-        RenderingRegistry.registerEntityRenderingHandler(RegistryHandler.VIPIUM_MINECART_ENTITY.get(), MinecartRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(RegistryHandler.VIPIUM_MINECART_ENTITY.get(), VipiumMinecartRenderer::new);
     }
 
     public Logger getLogger() { return this.logger; }

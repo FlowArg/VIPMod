@@ -1,8 +1,8 @@
 package fr.flowarg.vipium.common.items;
 
-import fr.flowarg.vipium.common.blocks.VipiumRailBlock;
 import fr.flowarg.vipium.common.entities.VipiumMinecartEntity;
 import fr.flowarg.vipium.common.handlers.RegistryHandler;
+import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,16 +25,12 @@ public class VipiumMinecartItem extends Item
         World world = context.getWorld();
         BlockPos blockpos = context.getPos();
         BlockState blockstate = world.getBlockState(blockpos);
-        if (blockstate.getBlock() != RegistryHandler.VIPIUM_RAIL_BLOCK.get())
-        {
-            return ActionResultType.FAIL;
-        }
-        else
+        if (blockstate.getBlock() instanceof AbstractRailBlock)
         {
             ItemStack itemstack = context.getItem();
             if (!world.isRemote)
             {
-                RailShape railshape = blockstate.getBlock() instanceof VipiumRailBlock ? ((VipiumRailBlock)blockstate.getBlock()).getRailDirection(blockstate, world, blockpos, null) : RailShape.NORTH_SOUTH;
+                RailShape railshape = blockstate.getBlock() instanceof AbstractRailBlock ? ((AbstractRailBlock)blockstate.getBlock()).getRailDirection(blockstate, world, blockpos, null) : RailShape.NORTH_SOUTH;
                 double d0 = 0.0D;
                 if (railshape.isAscending())
                 {
@@ -51,5 +47,6 @@ public class VipiumMinecartItem extends Item
             itemstack.shrink(1);
             return ActionResultType.SUCCESS;
         }
+        else return ActionResultType.FAIL;
     }
 }

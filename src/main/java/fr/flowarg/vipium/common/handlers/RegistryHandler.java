@@ -54,12 +54,14 @@ public class RegistryHandler
     public static final RegistryObject<Block> VIPIUM_PURE_BLOCK = BLOCKS.register("vipium_pure_block", () -> new Block(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).hardnessAndResistance(60f, 90f)));
     public static final RegistryObject<VipiumPurifierBlock> VIPIUM_PURIFIER = BLOCKS.register("vipium_purifier", VipiumPurifierBlock::new);
     public static final RegistryObject<RailBlock> VIPIUM_RAIL_BLOCK = BLOCKS.register("vipium_rail", VipiumRailBlock::new);
+    public static final RegistryObject<RailBlock> VIPIUM_PURE_RAIL_BLOCK = BLOCKS.register("vipium_pure_rail", VipiumRailBlock::new);
 
     public static final RegistryObject<Item> VIPIUM_BLOCK_ITEM = ITEMS.register("vipium_block", () -> new BlockItem(VIPIUM_BLOCK.get(), newItemBlockVipiumProperties()));
     public static final RegistryObject<Item> VIPIUM_PURE_BLOCK_ITEM = ITEMS.register("vipium_pure_block", () -> new BlockItem(VIPIUM_PURE_BLOCK.get(), newItemBlockVipiumPureProperties()));
     public static final RegistryObject<Item> VIPIUM_ORE_ITEM = ITEMS.register("vipium_ore", () -> new BlockItem(VIPIUM_ORE.get(), newItemBlockVipiumProperties()));
     public static final RegistryObject<Item> VIPIUM_PURIFIER_ITEM = ITEMS.register("vipium_purifier", () -> new BlockItem(VIPIUM_PURIFIER.get(), newItemBlockVipiumProperties()));
     public static final RegistryObject<Item> VIPIUM_RAIL_ITEM = ITEMS.register("vipium_rail", () -> new BlockItem(VIPIUM_RAIL_BLOCK.get(), newItemBlockVipiumProperties()));
+    public static final RegistryObject<Item> VIPIUM_PURE_RAIL_ITEM = ITEMS.register("vipium_pure_rail", () -> new BlockItem(VIPIUM_PURE_RAIL_BLOCK.get(), newItemBlockVipiumPureProperties()));
 
     public static final RegistryObject<ArmorItem> VIPIUM_HELMET = ITEMS.register("vipium_helmet", () -> new ArmorItem(RegistryHandler.VIPIUM_ARMOR_MATERIAL, EquipmentSlotType.HEAD, newItemVipiumProperties()));
     public static final RegistryObject<ArmorItem> VIPIUM_CHESTPLATE = ITEMS.register("vipium_chestplate", () -> new ArmorItem(RegistryHandler.VIPIUM_ARMOR_MATERIAL, EquipmentSlotType.CHEST, newItemVipiumProperties()));

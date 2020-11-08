@@ -9,6 +9,7 @@
   "block.vipium.vipium_purifier": "Purifier de Vipium",
   "block.vipium.vipium_pure_block": "Bloc de Vipium Pure",
   "block.vipium.vipium_rail": "Rail de Vipium",
+  "block.vipium.vipium_pure_rail": "Rail de Vipium Pure",
 
   "item.vipium.vipium_fragment": "Fragment de Vipium",
   "item.vipium.vipium_ingot": "Lingot de Vipium",
@@ -44,5 +45,7 @@
   "item.vipium.letter": "Lettre",
   "item.vipium.french_baguette": "Baguette Française",
   "item.vipium.envelope_close": "Enveloppe fermée",
-  "item.vipium.vipium_minecart": "Wagon en Vipium"
+  "item.vipium.vipium_minecart": "Wagon en Vipium",
+
+  "entity.vipium.vipium_minecart": "Wagon en Vipium"
 }

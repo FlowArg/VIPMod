@@ -1,8 +1,9 @@
 package fr.flowarg.vipium;
 
-import fr.flowarg.vipium.client.renderer.VipiumMinecartRenderer;
 import fr.flowarg.vipium.client.creativetabs.BlocksGroup;
 import fr.flowarg.vipium.client.creativetabs.ItemsGroup;
+import fr.flowarg.vipium.client.renderer.VipiumChestRenderer;
+import fr.flowarg.vipium.client.renderer.VipiumMinecartRenderer;
 import fr.flowarg.vipium.client.screens.VipiumChestScreen;
 import fr.flowarg.vipium.client.screens.VipiumPurifierScreen;
 import fr.flowarg.vipium.common.handlers.RegistryHandler;
@@ -12,6 +13,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
@@ -60,6 +62,7 @@ public class Main
         ScreenManager.registerFactory(RegistryHandler.VIPIUM_CHEST_CONTAINER.get(), VipiumChestScreen::new);
         this.logger.info(this.marker, "Registering a new entity renderer : Vipium Minecart.");
         RenderingRegistry.registerEntityRenderingHandler(RegistryHandler.VIPIUM_MINECART_ENTITY.get(), VipiumMinecartRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(RegistryHandler.VIPIUM_CHEST_TILE_ENTITY.get(), VipiumChestRenderer::new);
     }
 
     public Logger getLogger() { return this.logger; }

@@ -1,6 +1,7 @@
 package fr.flowarg.vipium.common.blocks;
 
 import fr.flowarg.vipium.common.tileentities.VipiumChestTileEntity;
+import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +14,9 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.IChestLid;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -22,6 +25,8 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nonnull;
@@ -37,6 +42,31 @@ public class VipiumChestBlock extends Block implements IWaterLoggable
     {
         super(Properties.create(Material.IRON).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE).hardnessAndResistance(19f, 45f));
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(WATERLOGGED, Boolean.FALSE));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static TileEntityMerger.ICallback<VipiumChestTileEntity, Float2FloatFunction> func_226917_a_(final IChestLid p_226917_0_)
+    {
+        return new TileEntityMerger.ICallback<VipiumChestTileEntity, Float2FloatFunction>()
+        {
+            @Override
+            public Float2FloatFunction func_225539_a_(VipiumChestTileEntity p_225539_1_, VipiumChestTileEntity p_225539_2_)
+            {
+                return (p_226921_2_) -> Math.max(p_225539_1_.getLidAngle(p_226921_2_), p_225539_2_.getLidAngle(p_226921_2_));
+            }
+
+            @Override
+            public Float2FloatFunction func_225538_a_(VipiumChestTileEntity p_225538_1_)
+            {
+                return p_225538_1_::getLidAngle;
+            }
+
+            @Override
+            public Float2FloatFunction func_225537_b_()
+            {
+                return p_226917_0_::getLidAngle;
+            }
+        };
     }
 
     @Nonnull
@@ -56,11 +86,10 @@ public class VipiumChestBlock extends Block implements IWaterLoggable
     @Nonnull
     public ActionResultType onBlockActivated(@Nonnull BlockState state, World worldIn, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand handIn, @Nonnull BlockRayTraceResult hit)
     {
-        if(!worldIn.isRemote)
+        if (!worldIn.isRemote)
         {
             final TileEntity tileentity = worldIn.getTileEntity(pos);
-            if (tileentity instanceof VipiumChestTileEntity)
-                player.openContainer((INamedContainerProvider)tileentity);
+            if (tileentity instanceof VipiumChestTileEntity) player.openContainer((INamedContainerProvider)tileentity);
         }
         return ActionResultType.SUCCESS;
     }

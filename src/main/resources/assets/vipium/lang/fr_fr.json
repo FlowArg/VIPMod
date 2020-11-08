@@ -1,5 +1,6 @@
 {
-  "container.vipium_purifier": "Vipium Purifier",
+  "container.vipium_purifier": "Purifier de Vipium",
+  "container.vipium_chest": "Coffre en Vipium",
   "purifier.err.notenoughitems": "Il n'y a pas assez de lingot de Vipium dans le Purifier (Besoin d'au moins 2) !",
   "itemGroup.vipium.items": "Vipium : Items",
   "itemGroup.vipium.blocks": "Vipium : Blocs",
@@ -10,6 +11,7 @@
   "block.vipium.vipium_pure_block": "Bloc de Vipium Pure",
   "block.vipium.vipium_rail": "Rail de Vipium",
   "block.vipium.vipium_pure_rail": "Rail de Vipium Pure",
+  "block.vipium.vipium_chest": "Coffre en Vipium",
 
   "item.vipium.vipium_fragment": "Fragment de Vipium",
   "item.vipium.vipium_ingot": "Lingot de Vipium",

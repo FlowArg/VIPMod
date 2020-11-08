@@ -3,6 +3,7 @@ package fr.flowarg.vipium;
 import fr.flowarg.vipium.client.renderer.VipiumMinecartRenderer;
 import fr.flowarg.vipium.client.creativetabs.BlocksGroup;
 import fr.flowarg.vipium.client.creativetabs.ItemsGroup;
+import fr.flowarg.vipium.client.screens.VipiumChestScreen;
 import fr.flowarg.vipium.client.screens.VipiumPurifierScreen;
 import fr.flowarg.vipium.common.handlers.RegistryHandler;
 import fr.flowarg.vipium.common.utils.VipiumConfig;
@@ -55,6 +56,8 @@ public class Main
         this.logger.info(this.marker, "FMLSetup is loading Vipium Mod (Client Side)...");
         this.logger.info(this.marker, "Registering a new screen factory : Vipium Purifier Screen.");
         ScreenManager.registerFactory(RegistryHandler.VIPIUM_PURIFIER_CONTAINER.get(), VipiumPurifierScreen::new);
+        this.logger.info(this.marker, "Registering a new screen factory : Vipium Chest Screen.");
+        ScreenManager.registerFactory(RegistryHandler.VIPIUM_CHEST_CONTAINER.get(), VipiumChestScreen::new);
         this.logger.info(this.marker, "Registering a new entity renderer : Vipium Minecart.");
         RenderingRegistry.registerEntityRenderingHandler(RegistryHandler.VIPIUM_MINECART_ENTITY.get(), VipiumMinecartRenderer::new);
     }

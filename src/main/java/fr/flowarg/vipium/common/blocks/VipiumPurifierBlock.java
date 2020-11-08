@@ -40,7 +40,7 @@ public class VipiumPurifierBlock extends Block
 
     public VipiumPurifierBlock()
     {
-        super(Properties.create(Material.IRON).hardnessAndResistance(32f, 22f).harvestTool(ToolType.PICKAXE));
+        super(Properties.create(Material.IRON).hardnessAndResistance(32f, 29f).harvestTool(ToolType.PICKAXE));
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LIT, false));
     }
 

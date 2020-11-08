@@ -14,7 +14,7 @@ public class VipiumOre extends OreBlock
     {
         super(Block.Properties.create(Material.ROCK)
                 .harvestTool(ToolType.PICKAXE)
-                .hardnessAndResistance(30f, 20f));
+                .hardnessAndResistance(25f, 20f));
     }
 
     @Override

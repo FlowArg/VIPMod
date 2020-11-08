@@ -1,5 +1,6 @@
 {
   "container.vipium_purifier": "Vipium Purifier",
+  "container.vipium_chest": "Vipium Chest",
   "purifier.err.notenoughitems": "There are not enough Vipium ingots in the purifier (Needing at least 2) !",
   "itemGroup.vipium.items": "Vipium : Items",
   "itemGroup.vipium.blocks": "Vipium : Blocks",
@@ -10,6 +11,7 @@
   "block.vipium.vipium_pure_block": "Pure Vipium Block",
   "block.vipium.vipium_rail": "Vipium Rail",
   "block.vipium.vipium_pure_rail": "Pure Vipium Rail",
+  "block.vipium.vipium_chest": "Vipium Chest",
 
   "item.vipium.vipium_fragment": "Vipium Fragment",
   "item.vipium.vipium_ingot": "Vipium Ingot",

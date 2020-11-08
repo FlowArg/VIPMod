@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "Y Y",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "vipium:vipium_block"
+    },
+    "Y": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "result": {
+    "item": "vipium:vipium_chest"
+  }
+}

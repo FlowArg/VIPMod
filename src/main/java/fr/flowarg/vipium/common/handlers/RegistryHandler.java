@@ -1,5 +1,6 @@
 package fr.flowarg.vipium.common.handlers;
 
+import fr.flowarg.vipium.client.renderer.VipiumChestItemStackRenderer;
 import fr.flowarg.vipium.common.blocks.VipiumChestBlock;
 import fr.flowarg.vipium.common.blocks.VipiumPurifierBlock;
 import fr.flowarg.vipium.common.blocks.VipiumRailBlock;
@@ -66,7 +67,7 @@ public class RegistryHandler
     public static final RegistryObject<BlockItem> VIPIUM_PURIFIER_ITEM = ITEMS.register("vipium_purifier", () -> new BlockItem(VIPIUM_PURIFIER_BLOCK.get(), newItemBlockVipiumProperties()));
     public static final RegistryObject<BlockItem> VIPIUM_RAIL_ITEM = ITEMS.register("vipium_rail", () -> new BlockItem(VIPIUM_RAIL_BLOCK.get(), newItemBlockVipiumProperties()));
     public static final RegistryObject<BlockItem> VIPIUM_PURE_RAIL_ITEM = ITEMS.register("vipium_pure_rail", () -> new BlockItem(VIPIUM_PURE_RAIL_BLOCK.get(), newItemBlockVipiumPureProperties()));
-    public static final RegistryObject<BlockItem> VIPIUM_CHEST_ITEM = ITEMS.register("vipium_chest", () -> new BlockItem(VIPIUM_CHEST_BLOCK.get(), newItemBlockVipiumProperties()));
+    public static final RegistryObject<BlockItem> VIPIUM_CHEST_ITEM = ITEMS.register("vipium_chest", () -> new BlockItem(VIPIUM_CHEST_BLOCK.get(), newItemBlockVipiumProperties().setISTER(() -> () -> new VipiumChestItemStackRenderer(VipiumChestTileEntity::new))));
 
     public static final RegistryObject<ArmorItem> VIPIUM_HELMET = ITEMS.register("vipium_helmet", () -> new ArmorItem(RegistryHandler.VIPIUM_ARMOR_MATERIAL, EquipmentSlotType.HEAD, newItemVipiumProperties()));
     public static final RegistryObject<ArmorItem> VIPIUM_CHESTPLATE = ITEMS.register("vipium_chestplate", () -> new ArmorItem(RegistryHandler.VIPIUM_ARMOR_MATERIAL, EquipmentSlotType.CHEST, newItemVipiumProperties()));

@@ -11,7 +11,9 @@ import fr.flowarg.vipium.common.utils.VipiumConfig;
 import fr.flowarg.vipium.common.world.OreGeneration;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.item.ItemGroup;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -41,7 +43,7 @@ public class Main
         instance = this;
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         eventBus.addListener(this::setupCommon);
-        eventBus.addListener(this::setupClient);
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> eventBus.addListener(this::setupClient));
         RegistryHandler.init(eventBus);
         ModLoadingContext.get().registerConfig(Type.CLIENT, VipiumConfig.CLIENT_SPECS);
     }
@@ -56,11 +58,10 @@ public class Main
     private void setupClient(final FMLClientSetupEvent event)
     {
         this.logger.info(this.marker, "FMLSetup is loading Vipium Mod (Client Side)...");
-        this.logger.info(this.marker, "Registering a new screen factory : Vipium Purifier Screen.");
+
         ScreenManager.registerFactory(RegistryHandler.VIPIUM_PURIFIER_CONTAINER.get(), VipiumPurifierScreen::new);
-        this.logger.info(this.marker, "Registering a new screen factory : Vipium Chest Screen.");
         ScreenManager.registerFactory(RegistryHandler.VIPIUM_CHEST_CONTAINER.get(), VipiumChestScreen::new);
-        this.logger.info(this.marker, "Registering a new entity renderer : Vipium Minecart.");
+
         RenderingRegistry.registerEntityRenderingHandler(RegistryHandler.VIPIUM_MINECART_ENTITY.get(), VipiumMinecartRenderer::new);
         ClientRegistry.bindTileEntityRenderer(RegistryHandler.VIPIUM_CHEST_TILE_ENTITY.get(), VipiumChestRenderer::new);
     }

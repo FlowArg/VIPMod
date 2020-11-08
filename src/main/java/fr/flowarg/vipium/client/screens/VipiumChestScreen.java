@@ -11,14 +11,16 @@ import net.minecraft.util.text.ITextComponent;
 public class VipiumChestScreen extends ContainerScreen<VipiumChestContainer>
 {
     private static final ResourceLocation VIPIUM_CHEST_GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/container/vipium_chest.png");
-    private final int inventoryRows;
+    //private final int inventoryRows;
 
     public VipiumChestScreen(VipiumChestContainer chest, PlayerInventory inv, ITextComponent titleIn)
     {
         super(chest, inv, titleIn);
         this.passEvents = false;
-        this.inventoryRows = chest.getNumRows();
-        this.ySize = 114 + this.inventoryRows * 18;
+        this.xSize = 254;
+        this.ySize = 222;
+        //this.inventoryRows = chest.getNumRows();
+        //this.ySize = 114 + this.inventoryRows * 18;
     }
 
     @Override
@@ -41,9 +43,10 @@ public class VipiumChestScreen extends ContainerScreen<VipiumChestContainer>
     {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(VIPIUM_CHEST_GUI_TEXTURE);
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
-        this.blit(i, j, 0, 0, this.xSize, this.inventoryRows * 18 + 17);
-        this.blit(i, j + this.inventoryRows * 18 + 17, 0, 126, this.xSize, 96);
+        int x = (this.width - this.xSize) / 2;
+        int y = (this.height - this.ySize) / 2;
+        blit(x, y, 0, 0, this.xSize, this.ySize, 256, 256);
+        //this.blit(x, y, 0, 0, this.xSize, this.inventoryRows * 18 + 17);
+        //this.blit(x, y + this.inventoryRows * 18 + 17, 0, 126, this.xSize, 96);
     }
 }

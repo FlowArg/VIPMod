@@ -32,7 +32,7 @@ public class VipiumChestContainer extends Container
         assertInventorySize(inv, rows * 14);
         this.chestInventory = inv;
         this.numRows = rows;
-        //this.chestInventory.openInventory(playerInventoryIn.player);
+        this.chestInventory.openInventory(playerInventoryIn.player);
         int i = (this.numRows - 4) * 18;
         int index = 0;
 
@@ -96,10 +96,10 @@ public class VipiumChestContainer extends Container
         return this.numRows;
     }
 
-    /*@Override
+    @Override
     public void onContainerClosed(PlayerEntity playerIn)
     {
         super.onContainerClosed(playerIn);
         this.chestInventory.closeInventory(playerIn);
-    }*/
+    }
 }

@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "minecraft:block/chest" }
+    "": { "model": "vipium:block/vipium_chest" }
   }
 }

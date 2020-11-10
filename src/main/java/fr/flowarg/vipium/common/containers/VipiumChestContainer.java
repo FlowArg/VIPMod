@@ -40,8 +40,8 @@ public class VipiumChestContainer extends Container
         {
             for (int k = 0; k < 13; ++k)
             {
-                index = Math.max(index, k + j * 9);
-                this.addSlot(new Slot(inv, k + j * 9, 8 + k * 18, 18 + j * 18));
+                index = Math.max(index, k + j * 13);
+                this.addSlot(new Slot(inv, k + j * 13, 8 + k * 18, 18 + j * 18));
             }
         }
 
@@ -57,8 +57,8 @@ public class VipiumChestContainer extends Container
         for (int i1 = 0; i1 < 9; ++i1)
             this.addSlot(new Slot(playerInventoryIn, i1, 8 + i1 * 18, 161 + i));
 
-        this.addSlot(new UpgradeSlot(playerInventoryIn, ++index, 187, 157));
-        this.addSlot(new UpgradeSlot(playerInventoryIn, ++index, 224, 157));
+        this.addSlot(new UpgradeSlot(playerInventoryIn, ++index, 188, 158));
+        this.addSlot(new UpgradeSlot(playerInventoryIn, ++index, 225, 158));
     }
 
     @Override

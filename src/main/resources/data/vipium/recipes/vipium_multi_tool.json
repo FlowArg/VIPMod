@@ -1,8 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "XXX",
-    " YX",
+    "ZXZ",
+    " YZ",
     " Y "
   ],
   "key": {
@@ -11,6 +11,9 @@
     },
     "Y": {
       "item": "minecraft:stick"
+    },
+    "Z": {
+      "item": "vipium:vipium_ingot"
     }
   },
   "result": {

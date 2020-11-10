@@ -29,7 +29,7 @@ public class VipiumChestContainer extends Container
     public VipiumChestContainer(int id, PlayerInventory playerInventoryIn, IInventory inv, int rows)
     {
         super(RegistryHandler.VIPIUM_CHEST_CONTAINER.get(), id);
-        assertInventorySize(inv, rows * 14);
+        assertInventorySize(inv, rows * 13);
         this.chestInventory = inv;
         this.numRows = rows;
         this.chestInventory.openInventory(playerInventoryIn.player);
@@ -38,7 +38,7 @@ public class VipiumChestContainer extends Container
 
         for (int j = 0; j < this.numRows; ++j)
         {
-            for (int k = 0; k < 14; ++k)
+            for (int k = 0; k < 13; ++k)
             {
                 index = Math.max(index, k + j * 9);
                 this.addSlot(new Slot(inv, k + j * 9, 8 + k * 18, 18 + j * 18));
@@ -70,12 +70,12 @@ public class VipiumChestContainer extends Container
         {
             final ItemStack itemStack1 = slot.getStack();
             itemStack = itemStack1.copy();
-            if (index < this.numRows * 14)
+            if (index < this.numRows * 13)
             {
-                if (!this.mergeItemStack(itemStack1, this.numRows * 14, this.inventorySlots.size(), true))
+                if (!this.mergeItemStack(itemStack1, this.numRows * 13, this.inventorySlots.size(), true))
                     return ItemStack.EMPTY;
             }
-            else if (!this.mergeItemStack(itemStack1, 0, this.numRows * 14, false))
+            else if (!this.mergeItemStack(itemStack1, 0, this.numRows * 13, false))
                 return ItemStack.EMPTY;
 
             if (itemStack1.isEmpty()) slot.putStack(ItemStack.EMPTY);

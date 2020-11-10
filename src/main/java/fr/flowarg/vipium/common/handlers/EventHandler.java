@@ -39,6 +39,7 @@ public class EventHandler
         if (!event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS))
             return;
 
+        Main.getInstance().getLogger().info(Main.getInstance().getMarker(), "Adding VipiumChest Texture in Chest Atlas");   
         event.addSprite(VipiumChestRenderer.CHEST_TEXTURE_LOCATION);
     }
 }

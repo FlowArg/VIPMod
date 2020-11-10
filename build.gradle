@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'idea'
 
-version '1.2.1'
+version '1.2.2'
 group 'fr.flowarg'
 archivesBaseName = 'vipium'
 

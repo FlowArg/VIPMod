@@ -256,6 +256,12 @@ public class VipiumChestBlock extends Block implements IWaterLoggable
     {
         return false;
     }
+    
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
+    {
+        return new VipiumChestTileEntity();
+    }
 
     public TileEntityMerger.ICallbackWrapper<? extends VipiumChestTileEntity> getWrapper(BlockState blockState, World world, BlockPos blockPos, boolean p_225536_4_)
     {

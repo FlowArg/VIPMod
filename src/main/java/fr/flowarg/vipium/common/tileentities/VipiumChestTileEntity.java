@@ -21,11 +21,12 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.capabilities.Capability;
+/*import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.InvWrapper;
+*/
 
 import javax.annotation.Nonnull;
 
@@ -37,7 +38,7 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
     private float prevLidAngle;
     private int numPlayersUsing;
     private int ticksSinceSync;
-    private LazyOptional<IItemHandlerModifiable> chestHandler;
+    //private LazyOptional<IItemHandlerModifiable> chestHandler;
 
     public VipiumChestTileEntity()
     {
@@ -204,7 +205,7 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
         return new VipiumChestContainer(id, player);
     }
 
-    @Override
+    /*@Override
     public void updateContainingBlockInfo()
     {
         super.updateContainingBlockInfo();
@@ -231,5 +232,5 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
     {
         super.remove();
         if (this.chestHandler != null) this.chestHandler.invalidate();
-    }
+    }*/
 }

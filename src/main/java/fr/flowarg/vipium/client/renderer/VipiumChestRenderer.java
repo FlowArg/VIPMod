@@ -27,7 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class VipiumChestRenderer extends TileEntityRenderer<VipiumChestTileEntity>
 {
-    public static final ResourceLocation CHEST_TEXTURE_LOCATION = new ResourceLocation(Main.MODID, "entity/ipium_chest");
+    public static final ResourceLocation CHEST_TEXTURE_LOCATION = new ResourceLocation(Main.MODID, "entity/vipium_chest");
     private final ModelRenderer chestLid;
     private final ModelRenderer chestBottom;
     private final ModelRenderer chestLock;

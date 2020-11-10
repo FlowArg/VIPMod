@@ -179,9 +179,17 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
     }
 
     @Override
-    protected void setItems(NonNullList<ItemStack> itemsIn)
+    public void setItems(NonNullList<ItemStack> itemsIn)
     {
-        this.chestContents = itemsIn;
+        this.chestContents = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+
+        for (int i = 0; i < itemsIn.size(); i++)
+        {
+            if (i < this.chestContents.size())
+            {
+                this.getItems().set(i, itemsIn.get(i));
+            }
+        }
     }
 
     @Override

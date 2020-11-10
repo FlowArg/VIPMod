@@ -35,6 +35,7 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
     private PlayerEntity player;
     private static final int MAX_TIME_TICK = 40;
     private int timer = MAX_TIME_TICK;
+    private final Random rand = new Random();
 
     public VipiumPurifierTileEntity()
     {
@@ -172,13 +173,15 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
     {
         if(this.timer == 0)
         {
-            if(new Random().nextInt(70) != 0)
+            if(this.rand.nextInt(100) != 0)
             {
                 this.player.setHealth(this.player.getHealth() - 0.5F);
                 if(this.items.get(0).getCount() >= 2)
                 {
                     this.items.get(0).shrink(2);
-                    this.player.inventory.addItemStackToInventory(new ItemStack(RegistryHandler.VIPIUM_PURE_FRAGMENT.get(), 3));
+                    if(this.rand.nextInt(180) == 0)
+                        this.player.inventory.addItemStackToInventory(new ItemStack(RegistryHandler.VIPIUM_PURE_INGOT.get(), 1));
+                    else this.player.inventory.addItemStackToInventory(new ItemStack(RegistryHandler.VIPIUM_PURE_FRAGMENT.get(), 3));
                 }
                 else this.player.sendMessage(new TranslationTextComponent("purifier.err.notenoughitems"));
             }
@@ -187,7 +190,7 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
                 if(this.world != null)
                 {
                     this.world.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 20f, Explosion.Mode.BREAK);
-                    if(new Random().nextInt(3) == 2)
+                    if(this.rand.nextInt(3) == 2)
                         this.player.addItemStackToInventory(new ItemStack(RegistryHandler.VIPIUM_PURIFIER_ITEM.get()));
                 }
             }

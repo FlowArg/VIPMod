@@ -79,7 +79,7 @@ public class RegistryHandler
     
     private static RegistryObject<BlockItem> registerVipiumChestBlockItem()
     {
-        ITEMS.register("vipium_chest", () -> new BlockItem(VIPIUM_CHEST_BLOCK.get(), newItemBlockVipiumProperties().setISTER(() -> createVipiumChestRenderer())));
+        return ITEMS.register("vipium_chest", () -> new BlockItem(VIPIUM_CHEST_BLOCK.get(), newItemBlockVipiumProperties().setISTER(() -> createVipiumChestRenderer())));
     }
 
     public static final RegistryObject<ArmorItem> VIPIUM_HELMET = ITEMS.register("vipium_helmet", () -> new ArmorItem(RegistryHandler.VIPIUM_ARMOR_MATERIAL, EquipmentSlotType.HEAD, newItemVipiumProperties()));

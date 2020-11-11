@@ -49,5 +49,8 @@
   "item.vipium.envelope_close": "Closed envelope",
   "item.vipium.vipium_minecart": "Vipium Minecart",
 
+  "item.vipium.chest_extension_upgrade": "Chest Extension Upgrade",
+  "item.vipium.chest_purifier_upgrade": "Chest Purifier Upgrade",
+
   "entity.vipium.vipium_minecart": "Vipium Minecart"
 }

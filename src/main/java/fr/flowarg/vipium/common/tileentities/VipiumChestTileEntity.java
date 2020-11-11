@@ -1,5 +1,6 @@
 package fr.flowarg.vipium.common.tileentities;
 
+import fr.flowarg.vipium.common.blocks.VipiumChestBlock;
 import fr.flowarg.vipium.common.containers.VipiumChestContainer;
 import fr.flowarg.vipium.common.handlers.RegistryHandler;
 import net.minecraft.block.Block;
@@ -21,19 +22,13 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-/*import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.wrapper.InvWrapper;
-*/
 
 import javax.annotation.Nonnull;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IChestLid.class)
 public class VipiumChestTileEntity extends LockableLootTileEntity implements IChestLid, ITickableTileEntity
 {
-    private NonNullList<ItemStack> chestContents = NonNullList.withSize(78, ItemStack.EMPTY);
+    private NonNullList<ItemStack> chestContents = NonNullList.withSize(80, ItemStack.EMPTY);
     private float lidAngle;
     private float prevLidAngle;
     private int numPlayersUsing;
@@ -95,7 +90,7 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
     @Override
     public int getSizeInventory()
     {
-        return 78;
+        return 80;
     }
 
     @Nonnull
@@ -166,7 +161,7 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
     private void onOpenOrClose()
     {
         final Block block = this.getBlockState().getBlock();
-        if (block instanceof ChestBlock)
+        if (block instanceof VipiumChestBlock)
         {
             this.world.addBlockEvent(this.pos, block, 1, this.numPlayersUsing);
             this.world.notifyNeighborsOfStateChange(this.pos, block);

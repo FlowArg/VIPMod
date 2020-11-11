@@ -76,9 +76,7 @@ public class CustomInGameMenuScreen extends Screen
             else this.minecraft.displayGuiScreen(new MultiplayerScreen(new CustomMainMenuScreen(true)));
         }));
         if (!this.minecraft.isIntegratedServerRunning())
-        {
             button1.setMessage(I18n.format("menu.disconnect"));
-        }
     }
 
     @Override
@@ -89,10 +87,7 @@ public class CustomInGameMenuScreen extends Screen
             this.renderBackground();
             this.drawCenteredString(this.font, this.title.getFormattedText(), this.width / 2, 40, 16777215);
         }
-        else
-        {
-            this.drawCenteredString(this.font, this.title.getFormattedText(), this.width / 2, 10, 16777215);
-        }
+        else this.drawCenteredString(this.font, this.title.getFormattedText(), this.width / 2, 10, 16777215);
 
         super.render(p_render_1_, p_render_2_, p_render_3_);
     }

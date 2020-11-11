@@ -8,11 +8,13 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class VipiumChestScreen extends ContainerScreen<VipiumChestContainer> implements IHasContainer<VipiumChestContainer>
 {
     private static final ResourceLocation VIPIUM_CHEST_GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/container/vipium_chest.png");
-    //private final int inventoryRows;
 
     public VipiumChestScreen(VipiumChestContainer chest, PlayerInventory inv, ITextComponent titleIn)
     {
@@ -20,8 +22,6 @@ public class VipiumChestScreen extends ContainerScreen<VipiumChestContainer> imp
         this.passEvents = false;
         this.xSize = 254;
         this.ySize = 222;
-        //this.inventoryRows = chest.getNumRows();
-        //this.ySize = 114 + this.inventoryRows * 18;
     }
 
     @Override
@@ -47,7 +47,5 @@ public class VipiumChestScreen extends ContainerScreen<VipiumChestContainer> imp
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;
         blit(x, y, 0, 0, this.xSize, this.ySize, 256, 256);
-        //this.blit(x, y, 0, 0, this.xSize, this.inventoryRows * 18 + 17);
-        //this.blit(x, y + this.inventoryRows * 18 + 17, 0, 126, this.xSize, 96);
     }
 }

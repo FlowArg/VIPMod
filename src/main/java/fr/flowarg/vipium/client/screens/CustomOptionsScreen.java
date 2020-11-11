@@ -18,18 +18,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class CustomOptionsScreen extends Screen
 {
     private static final AbstractOption[] SCREEN_OPTIONS = new AbstractOption[]{AbstractOption.FOV};
-    private final        Screen           lastScreen;
-    private final        GameSettings     settings;
+    private final Screen lastScreen;
+    private final GameSettings settings;
 
-    private Button         difficultyButton;
+    private Button difficultyButton;
     private LockIconButton lockButton;
-    private Difficulty     field_213062_f;
+    private Difficulty field_213062_f;
 
     public CustomOptionsScreen(Screen lastScreenIn, GameSettings settingsIn)
     {
         super(new TranslationTextComponent("options.title"));
         this.lastScreen = lastScreenIn;
-        this.settings   = settingsIn;
+        this.settings = settingsIn;
     }
 
     protected void init()
@@ -47,9 +47,8 @@ public class CustomOptionsScreen extends Screen
 
         if (this.minecraft.world != null)
         {
-            this.field_213062_f   = this.minecraft.world.getDifficulty();
-            this.difficultyButton = this.addButton(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 - 12 + 24 * (i >> 1), 150, 20, this.getDifficultyText(this.field_213062_f), (p_213051_1_) ->
-            {
+            this.field_213062_f = this.minecraft.world.getDifficulty();
+            this.difficultyButton = this.addButton(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 - 12 + 24 * (i >> 1), 150, 20, this.getDifficultyText(this.field_213062_f), (p_213051_1_) -> {
                 this.field_213062_f = Difficulty.byId(this.field_213062_f.getId() + 1);
                 this.minecraft.getConnection().sendPacket(new CSetDifficultyPacket(this.field_213062_f));
                 this.difficultyButton.setMessage(this.getDifficultyText(this.field_213062_f));
@@ -59,7 +58,7 @@ public class CustomOptionsScreen extends Screen
                 this.difficultyButton.setWidth(this.difficultyButton.getWidth() - 20);
                 this.lockButton = this.addButton(new LockIconButton(this.difficultyButton.x + this.difficultyButton.getWidth(), this.difficultyButton.y, (p_213054_1_) -> this.minecraft.displayGuiScreen(new ConfirmScreen(this::func_213050_a, new TranslationTextComponent("difficulty.lock.title"), new TranslationTextComponent("difficulty.lock.question", new TranslationTextComponent("options.difficulty." + this.minecraft.world.getWorldInfo().getDifficulty().getTranslationKey()))))));
                 this.lockButton.setLocked(this.minecraft.world.getWorldInfo().isDifficultyLocked());
-                this.lockButton.active       = !this.lockButton.isLocked();
+                this.lockButton.active = !this.lockButton.isLocked();
                 this.difficultyButton.active = !this.lockButton.isLocked();
             }
             else this.difficultyButton.active = false;
@@ -89,17 +88,14 @@ public class CustomOptionsScreen extends Screen
     private void func_213050_a(boolean p_213050_1_)
     {
         if (this.minecraft != null)
-        {
             this.minecraft.displayGuiScreen(this);
-        }
         if (p_213050_1_ && this.minecraft.world != null)
         {
             this.minecraft.getConnection().sendPacket(new CLockDifficultyPacket(true));
             this.lockButton.setLocked(true);
-            this.lockButton.active       = false;
+            this.lockButton.active = false;
             this.difficultyButton.active = false;
         }
-
     }
 
     public void removed()

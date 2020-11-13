@@ -1,7 +1,7 @@
 package fr.flowarg.vipium.server.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
-import fr.flowarg.vipium.Main;
+import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.server.Home;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -15,7 +15,7 @@ public class HomesCommand
     public static void register(CommandDispatcher<CommandSource> dispatcher)
     {
         dispatcher.register(Commands.literal("homes").executes(context -> {
-            final List<Home> homes = Main.serverManager.getHomeCore().listHomes(context.getSource().getName());
+            final List<Home> homes = VIPMod.serverManager.getHomeCore().listHomes(context.getSource().getName());
             if(homes.isEmpty())
             {
                 context.getSource().sendErrorMessage(new TranslationTextComponent("commands.home.nohomeavailable"));

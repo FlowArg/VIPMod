@@ -1,7 +1,7 @@
 package fr.flowarg.vipium.client.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import fr.flowarg.vipium.Main;
+import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.common.containers.VipiumPurifierContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class VipiumPurifierScreen extends ContainerScreen<VipiumPurifierContainer>
 {
     private boolean widthTooNarrow;
-    private static final ResourceLocation VIPIUM_PURIFIER_GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/container/vipium_purifier.png");
+    private static final ResourceLocation VIPIUM_PURIFIER_GUI_TEXTURE = new ResourceLocation(VIPMod.MODID, "textures/gui/container/vipium_purifier.png");
 
     public VipiumPurifierScreen(VipiumPurifierContainer container, PlayerInventory inventory, ITextComponent titleIn)
     {

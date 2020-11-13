@@ -1,7 +1,7 @@
 package fr.flowarg.vipium.client.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import fr.flowarg.vipium.Main;
+import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.common.containers.VipiumChestContainer;
 import net.minecraft.client.gui.IHasContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class VipiumChestScreen extends ContainerScreen<VipiumChestContainer> implements IHasContainer<VipiumChestContainer>
 {
-    private static final ResourceLocation VIPIUM_CHEST_GUI_TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/container/vipium_chest.png");
+    private static final ResourceLocation VIPIUM_CHEST_GUI_TEXTURE = new ResourceLocation(VIPMod.MODID, "textures/gui/container/vipium_chest.png");
 
     public VipiumChestScreen(VipiumChestContainer chest, PlayerInventory inv, ITextComponent titleIn)
     {

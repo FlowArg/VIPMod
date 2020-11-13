@@ -2,7 +2,7 @@ package fr.flowarg.vipium.client.renderer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import fr.flowarg.vipium.Main;
+import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.common.blocks.VipiumChestBlock;
 import fr.flowarg.vipium.common.handlers.RegistryHandler;
 import fr.flowarg.vipium.common.tileentities.VipiumChestTileEntity;
@@ -27,7 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class VipiumChestRenderer extends TileEntityRenderer<VipiumChestTileEntity>
 {
-    public static final ResourceLocation CHEST_TEXTURE_LOCATION = new ResourceLocation(Main.MODID, "entity/vipium_chest");
+    public static final ResourceLocation CHEST_TEXTURE_LOCATION = new ResourceLocation(VIPMod.MODID, "entity/vipium_chest");
     private final ModelRenderer chestLid;
     private final ModelRenderer chestBottom;
     private final ModelRenderer chestLock;

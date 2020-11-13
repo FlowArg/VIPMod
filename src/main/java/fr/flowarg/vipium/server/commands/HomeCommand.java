@@ -1,7 +1,7 @@
 package fr.flowarg.vipium.server.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
-import fr.flowarg.vipium.Main;
+import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.server.Home;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -14,7 +14,7 @@ public class HomeCommand
     public static void register(CommandDispatcher<CommandSource> dispatcher)
     {
         dispatcher.register(Commands.literal("home").then(Commands.argument("homeName", MessageArgument.message()).executes(context -> {
-            final Home selected = Main.serverManager.getHomeCore().getHome(context.getSource().getName(), MessageArgument.getMessage(context, "homeName").getFormattedText());
+            final Home selected = VIPMod.serverManager.getHomeCore().getHome(context.getSource().getName(), MessageArgument.getMessage(context, "homeName").getFormattedText());
             if(selected == null)
             {
                 context.getSource().sendErrorMessage(new TranslationTextComponent("commands.home.nohomeavailable"));

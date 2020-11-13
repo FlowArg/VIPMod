@@ -41,7 +41,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.concurrent.Callable;
 
-import static fr.flowarg.vipium.Main.*;
+import static fr.flowarg.vipium.VIPMod.*;
 import static net.minecraft.item.Rarity.*;
 
 public class RegistryHandler

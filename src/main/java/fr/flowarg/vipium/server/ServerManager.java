@@ -1,5 +1,6 @@
 package fr.flowarg.vipium.server;
 
+import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.server.commands.DelHomeCommand;
 import fr.flowarg.vipium.server.commands.HomeCommand;
 import fr.flowarg.vipium.server.commands.HomesCommand;
@@ -20,6 +21,7 @@ public class ServerManager
     {
         try
         {
+            VIPMod.LOGGER.info(VIPMod.MARKER, "Loading ServerManager...");
             this.homeCore = new HomeCore();
         }
         catch (IOException e)

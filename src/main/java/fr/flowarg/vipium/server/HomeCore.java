@@ -2,6 +2,7 @@ package fr.flowarg.vipium.server;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import fr.flowarg.vipium.VIPMod;
 import com.google.gson.JsonParser;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -35,7 +36,7 @@ public class HomeCore
             final JsonArray parsedHomes = homes.getAsJsonArray(playerName);
             parsedHomes.forEach(homeElement -> {
                 final JsonObject homeObj = homeElement.getAsJsonObject();
-                final Home home = new Home(homeObj.get("name").getAsString(), homeObj.get("dimension").getAsInt(), homeObj.get("x").getAsLong(), homeObj.get("y").getAsLong(), homeObj.get("z").getAsLong(), homeObj.get("yaw").getAsFloat(), homeObj.get("pitch").getAsFloat());
+                final Home home = new Home(homeObj.get("name").getAsString(), homeObj.get("dimension").getAsInt(), homeObj.get("x").getAsDouble(), homeObj.get("y").getAsDouble(), homeObj.get("z").getAsDouble(), homeObj.get("yaw").getAsFloat(), homeObj.get("pitch").getAsFloat());
                 result.add(home);
             });
             return result;
@@ -105,10 +106,16 @@ public class HomeCore
         {
             final Home home = this.getHome(playerName, homeName);
             if(home == null)
+            {
+                VIPMod.LOGGER.info(VIPMod.MARKER, "Home null");
                 return 1;
+            }
             final JsonObject json = new JsonParser().parse(FileUtils.readFileToString(this.homeFiles, StandardCharsets.UTF_8)).getAsJsonObject();
             if(!json.has(playerName))
+            {
+                VIPMod.LOGGER.info(VIPMod.MARKER, "pas de player name");
                 return 1;
+            }
             final JsonArray playerHomes = json.getAsJsonArray(playerName);
             final JsonObject toRemove = this.transformHomeToJson(home);
             playerHomes.remove(toRemove);

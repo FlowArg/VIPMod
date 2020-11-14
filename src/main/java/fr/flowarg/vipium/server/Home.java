@@ -4,13 +4,13 @@ public class Home
 {
     private final String name;
     private final int dimension;
-    private final long x;
-    private final long y;
-    private final long z;
+    private final double x;
+    private final double y;
+    private final double z;
     private final float yaw;
     private final float pitch;
 
-    public Home(String name, int dimension, long x, long y, long z, float yaw, float pitch)
+    public Home(String name, int dimension, double x, double y, double z, float yaw, float pitch)
     {
         this.name = name;
         this.dimension = dimension;
@@ -31,17 +31,17 @@ public class Home
         return this.dimension;
     }
 
-    public long getX()
+    public double getX()
     {
         return this.x;
     }
 
-    public long getY()
+    public double getY()
     {
         return this.y;
     }
 
-    public long getZ()
+    public double getZ()
     {
         return this.z;
     }

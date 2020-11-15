@@ -6,6 +6,7 @@
   "commands.home.baddimension": "This home isn't in your current dimension !",
   "commands.home.successset": "Successfully setted home !",
   "commands.home.error": "An error as occurred.",
+  "commands.home.toomanyhomes": "You have already 3 homes !",
 
   "itemGroup.vipium.items": "Vipium : Items",
   "itemGroup.vipium.blocks": "Vipium : Blocks",

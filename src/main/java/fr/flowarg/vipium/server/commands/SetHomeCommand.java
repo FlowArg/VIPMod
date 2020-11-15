@@ -15,7 +15,12 @@ public class SetHomeCommand
     {
         dispatcher.register(Commands.literal("sethome").then(Commands.argument("homeName", MessageArgument.message()).executes(context -> {
             final ServerPlayerEntity player = context.getSource().asPlayer();
-            if(VIPMod.serverManager.getHomeCore().addHome(player.getName().getFormattedText(), new Home(MessageArgument.getMessage(context, "homeName").getFormattedText(), player.dimension.getId(), player.getPosX(), player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch)) != 0)
+            if(VIPMod.serverManager.getHomeCore().listHomes(context.getSource().getName()).size() + 1 > 3)
+            {
+                context.getSource().sendErrorMessage(new TranslationTextComponent("commands.home.toomanyhomes"));
+                return 1;
+            }
+            if(VIPMod.serverManager.getHomeCore().addHome(context.getSource().getName(), new Home(MessageArgument.getMessage(context, "homeName").getFormattedText(), player.dimension.getId(), player.getPosX(), player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch)) != 0)
             {
                 context.getSource().sendErrorMessage(new TranslationTextComponent("commands.home.error"));
                 return 1;

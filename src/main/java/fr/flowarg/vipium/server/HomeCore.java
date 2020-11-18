@@ -109,20 +109,22 @@ public class HomeCore
         {
             final Home home = this.getHome(playerName, homeName);
             if(home == null)
-            {
-                VIPMod.LOGGER.info(VIPMod.MARKER, "Home null");
                 return 1;
-            }
             final JsonObject json = new JsonParser().parse(FileUtils.readFileToString(this.homeFiles, StandardCharsets.UTF_8)).getAsJsonObject();
             final JsonObject homes = json.getAsJsonObject("homes");
             if(!homes.has(playerName))
-            {
-                VIPMod.LOGGER.info(VIPMod.MARKER, "pas de player name");
                 return 1;
-            }
             final JsonArray playerHomes = homes.getAsJsonArray(playerName);
-            final JsonObject toRemove = this.transformHomeToJson(home);
-            playerHomes.remove(toRemove);
+            final JsonObject[] toRemove = new JsonObject[1];
+            playerHomes.forEach(jsonElement -> {
+                if(toRemove[0] == null)
+                {
+                    final JsonObject iterated = jsonElement.getAsJsonObject();
+                    if(iterated.get("name").getAsString().equalsIgnoreCase(homeName))
+                        toRemove[0] = iterated;
+                }
+            });
+            playerHomes.remove(toRemove[0]);
             FileUtils.write(this.homeFiles, json.toString(), StandardCharsets.UTF_8);
             return 0;
         }

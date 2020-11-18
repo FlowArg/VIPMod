@@ -17,6 +17,7 @@ public class DelHomeCommand
                 context.getSource().sendErrorMessage(new TranslationTextComponent("commands.home.error"));
                 return 1;
             }
+            context.getSource().sendFeedback(new TranslationTextComponent("commands.home.successdel"), true);
             return 0;
         })));
     }

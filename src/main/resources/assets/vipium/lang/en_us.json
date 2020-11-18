@@ -4,7 +4,8 @@
   "purifier.err.notenoughitems": "There are not enough Vipium ingots in the purifier (Needing at least 2) !",
   "commands.home.nohomeavailable": "No homes are available for you.",
   "commands.home.baddimension": "This home isn't in your current dimension !",
-  "commands.home.successset": "Successfully setted home !",
+  "commands.home.successset": "Successfully defined home !",
+  "commands.home.successdel": "Successfully deleted home !",
   "commands.home.error": "An error as occurred.",
   "commands.home.toomanyhomes": "You have already 3 homes !",
 

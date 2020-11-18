@@ -5,6 +5,7 @@
   "commands.home.nohomeavailable": "Aucun Home disponible pour vous.",
   "commands.home.baddimension": "Ce home n'est pas dans la même dimension que vous.",
   "commands.home.successset": "Le home a été défini avec succès !",
+  "commands.home.successdel": "Le home a été défini avec succès !",
   "commands.home.error": "Une erreur est apparue.",
   "commands.home.toomanyhomes": "Vous avez déjà 3 homes !",
 

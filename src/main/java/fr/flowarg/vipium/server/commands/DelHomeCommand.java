@@ -6,7 +6,10 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.MessageArgument;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.DEDICATED_SERVER)
 public class DelHomeCommand
 {
     public static void register(CommandDispatcher<CommandSource> dispatcher)

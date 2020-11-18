@@ -67,7 +67,8 @@ public class VIPMod
     {
         LOGGER.info(MARKER, "FMLSetup is loading Vipium Mod...");
         LOGGER.info(MARKER, "Adding new ores to world generation...");
-        OreGeneration.setupGeneration();
+        final OreGeneration oreGeneration = new OreGeneration();
+        oreGeneration.setupVipiumGeneration();
     }
 
     private void setupClient(final FMLClientSetupEvent event)

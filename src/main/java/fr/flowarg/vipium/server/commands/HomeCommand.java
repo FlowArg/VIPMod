@@ -8,7 +8,10 @@ import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.MessageArgument;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.DEDICATED_SERVER)
 public class HomeCommand
 {
     public static void register(CommandDispatcher<CommandSource> dispatcher)

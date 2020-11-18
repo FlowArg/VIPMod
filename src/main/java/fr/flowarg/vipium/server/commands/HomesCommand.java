@@ -7,9 +7,12 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
+@OnlyIn(Dist.DEDICATED_SERVER)
 public class HomesCommand
 {
     public static void register(CommandDispatcher<CommandSource> dispatcher)
@@ -48,7 +51,7 @@ public class HomesCommand
                 context.getSource().sendFeedback(new StringTextComponent(pitchMsg), true);
 
                 final StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < length; i++)
+                for (int i = 0; i < Math.floor(length / 1.5); i++)
                     builder.append('-');
                 context.getSource().sendFeedback(new StringTextComponent(builder.toString()), true);
             });

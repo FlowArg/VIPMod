@@ -12,7 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class OreGeneration
 {
-    public static void setupGeneration()
+    public void setupVipiumGeneration()
     {
         ForgeRegistries.BIOMES.forEach(biome -> {
             final ConfiguredPlacement<CountRangeConfig> placement = Placement.COUNT_RANGE.configure(new CountRangeConfig(4, 3, 3, 19));

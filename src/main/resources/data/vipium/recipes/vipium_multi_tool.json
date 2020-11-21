@@ -1,14 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "ZXZ",
-    " YZ",
+    "ZZZ",
+    "ZYZ",
     " Y "
   ],
   "key": {
-    "X": {
-      "item": "vipium:vipium_block"
-    },
     "Y": {
       "item": "minecraft:stick"
     },

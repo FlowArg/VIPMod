@@ -17,7 +17,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'idea'
 
-version '1.3.0'
+version '1.3.1'
 group 'fr.flowarg'
 archivesBaseName = 'vipium'
 
@@ -92,7 +92,6 @@ shadowJar {
     configurations = [project.configurations.shadow]
     classifier 'server'
 }
-
 
 jar {
     manifest {

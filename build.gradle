@@ -86,6 +86,7 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.15.2-31.2.45'
     shadow 'com.github.FlowArg:PluginLoaderAPI:416450c'
+    runtimeOnly 'com.github.FlowArg:PluginLoaderAPI:416450c'
 }
 
 shadowJar {

@@ -6,6 +6,7 @@ out
 .idea
 mail_box.obj
 # gradle
+src/test/**
 build
 .gradle
 logs

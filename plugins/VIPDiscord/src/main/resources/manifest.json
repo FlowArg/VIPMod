@@ -1,5 +1,0 @@
-{
-  "name": "VIPDiscord",
-  "pluginClass": "fr.flowarg.vipplugins.vipdiscord.VIPDiscordPlugin",
-  "version": "1.0.0"
-}

@@ -11,108 +11,100 @@ buildscript {
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '4.0.4'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
-allprojects {
-    apply plugin: 'net.minecraftforge.gradle'
-    apply plugin: 'idea'
-    apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'idea'
+apply plugin: 'com.github.johnrengelman.shadow'
 
-    group 'fr.flowarg'
-
-    compileJava {
-        sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
-        options.encoding 'UTF-8'
-    }
-
-    minecraft {
-        mappings channel: 'snapshot', version: '20201105-1.15.1'
-
-        // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-        runs {
-            client {
-                workingDirectory project.file('run/client')
-
-                property 'forge.logging.markers', 'REGISTRIES'
-
-                property 'forge.logging.console.level', 'debug'
-
-                mods {
-                    vipium {
-                        source sourceSets.main
-                    }
-                }
-            }
-
-            server {
-                workingDirectory project.file('run/server')
-
-                property 'forge.logging.markers', 'REGISTRIES'
-
-                property 'forge.logging.console.level', 'debug'
-
-                mods {
-                    viupium {
-                        source sourceSets.main
-                    }
-                }
-            }
-
-            data {
-                workingDirectory project.file('run/data')
-
-                property 'forge.logging.markers', 'REGISTRIES'
-
-                property 'forge.logging.console.level', 'debug'
-
-                args '--mod', 'vipium', '--all', '--output', file('src/generated/resources/')
-
-                mods {
-                    vipium {
-                        source sourceSets.main
-                    }
-                }
-            }
-        }
-    }
-
-    repositories {
-        jcenter()
-        maven { url 'https://jitpack.io/'}
-    }
-
-    dependencies {
-        minecraft 'net.minecraftforge:forge:1.15.2-31.2.45'
-        shadow 'com.github.FlowArg:PluginLoaderAPI:416450c'
-        runtimeOnly 'com.github.FlowArg:PluginLoaderAPI:416450c'
-    }
-
-    shadowJar {
-        configurations = [project.configurations.shadow]
-    }
-
-    jar {
-        manifest {
-            attributes([
-                    "Specification-Title": project.name,
-                    "Specification-Vendor": "FlowArg",
-                    "Specification-Version": project.version,
-                    "Implementation-Title": project.name,
-                    "Implementation-Version": project.version,
-                    "Implementation-Vendor" :"FlowArg",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-            ])
-        }
-    }
-
-    jar.finalizedBy('reobfJar')
-}
-
+group 'fr.flowarg'
 archivesBaseName = 'vipium'
 version '1.3.1'
 
-shadowJar {
-    classifier 'server'
+compileJava {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+    options.encoding 'UTF-8'
 }
+
+minecraft {
+    mappings channel: 'snapshot', version: '20201105-1.15.1'
+
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        client {
+            workingDirectory project.file('run/client')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                vipium {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run/server')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                viupium {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run/data')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', 'vipium', '--all', '--output', file('src/generated/resources/')
+
+            mods {
+                vipium {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    jcenter()
+    maven { url 'https://jitpack.io/'}
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.15.2-31.2.45'
+    shadow ('net.dv8tion:JDA:4.2.0_214') {
+        exclude module: 'opus-java'
+    }
+    shadow 'com.jagrosh:jda-utilities:3.0.5'
+    shadow 'org.slf4j:slf4j-simple:1.7.25'
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": project.name,
+                "Specification-Vendor": "FlowArg",
+                "Specification-Version": project.version,
+                "Implementation-Title": project.name,
+                "Implementation-Version": project.version,
+                "Implementation-Vendor" :"FlowArg",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+jar.finalizedBy('reobfJar')

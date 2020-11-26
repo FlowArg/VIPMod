@@ -1,7 +1,11 @@
 dependencies {
-    implementation ('net.dv8tion:JDA:4.2.0_214') {
+    shadow ('net.dv8tion:JDA:4.2.0_214') {
         exclude module: 'opus-java'
     }
-    implementation 'com.jagrosh:jda-utilities:3.0.5'
-    implementation 'org.slf4j:slf4j-simple:1.7.25'
+    shadow 'com.jagrosh:jda-utilities:3.0.5'
+    shadow 'org.slf4j:slf4j-simple:1.7.25'
+}
+
+shadowJar {
+    classifier ''
 }

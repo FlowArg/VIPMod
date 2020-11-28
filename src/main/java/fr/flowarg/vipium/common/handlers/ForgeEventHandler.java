@@ -28,9 +28,6 @@ public class ForgeEventHandler
     public static final Random RANDOM = new Random();
 
     // debug
-    private static boolean print2 = false;
-    private static boolean print3 = false;
-    private static boolean print4 = false;
     private static boolean print5 = false;
 
     @SubscribeEvent
@@ -51,25 +48,10 @@ public class ForgeEventHandler
     {
         if(event.getState().getBlock() instanceof AbstractPressurePlateBlock)
         {
-            if(!print2)
-            {
-                System.out.println("block is a pressure plate");
-                print2 = true;
-            }
             if(event.getPos().equals(PRESSURE_PLATE_EMPLACEMENT))
             {
-                if(!print3)
-                {
-                    System.out.println("block is at the good pos");
-                    print3 = true;
-                }
                 if(event.getWorld().getBlockState(OAK_PLANKS_EMPLACEMENT).getBlock() == Blocks.OAK_PLANKS)
                 {
-                    if(!print4)
-                    {
-                        System.out.println("there is oak wood");
-                        print4 = true;
-                    }
                     if(RANDOM.nextInt(150) == 26)
                     {
                         if(!print5)

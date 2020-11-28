@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.github.johnrengelman.shadow' version '4.0.2'
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -89,7 +89,6 @@ dependencies {
     shadow ('net.dv8tion:JDA:4.2.0_214') {
         exclude module: 'opus-java'
     }
-    shadow 'com.jagrosh:jda-utilities:3.0.5'
     shadow 'org.slf4j:slf4j-simple:1.7.25'
 }
 
@@ -105,6 +104,13 @@ jar {
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+    classifier 'server'
+    relocate 'gnu.trove', 'libraries.gnu.trove'
+    relocate 'org.apache.commons.collections4', 'libraries.org.apache.commons.collections4'
 }
 
 jar.finalizedBy('reobfJar')

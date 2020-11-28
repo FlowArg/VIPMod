@@ -23,12 +23,11 @@ import java.util.Random;
 public class ForgeEventHandler
 {
     public static final BlockPos PRESSURE_PLATE_EMPLACEMENT = new BlockPos(-179, 79, 137);
-    public static final BlockPos OAK_WOOD_EMPLACEMENT = new BlockPos(-179, 78, 137);
+    public static final BlockPos OAK_PLANKS_EMPLACEMENT = new BlockPos(-179, 78, 137);
     public static final BlockPos TNT_EMPLACEMENT = new BlockPos(-179, 77, 137);
     public static final Random RANDOM = new Random();
 
     // debug
-    private static boolean print1 = false;
     private static boolean print2 = false;
     private static boolean print3 = false;
     private static boolean print4 = false;
@@ -50,11 +49,6 @@ public class ForgeEventHandler
     @SubscribeEvent
     public static void onPressurePlateActivation(final BlockEvent.NeighborNotifyEvent event)
     {
-        if(!print1)
-        {
-            System.out.println("NeighborNotifyEvent called.");
-            print1 = true;
-        }
         if(event.getState().getBlock() instanceof AbstractPressurePlateBlock)
         {
             if(!print2)
@@ -69,7 +63,7 @@ public class ForgeEventHandler
                     System.out.println("block is at the good pos");
                     print3 = true;
                 }
-                if(event.getWorld().getBlockState(OAK_WOOD_EMPLACEMENT).getBlock() == Blocks.OAK_WOOD)
+                if(event.getWorld().getBlockState(OAK_PLANKS_EMPLACEMENT).getBlock() == Blocks.OAK_PLANKS)
                 {
                     if(!print4)
                     {

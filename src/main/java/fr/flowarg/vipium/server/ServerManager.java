@@ -1,7 +1,5 @@
 package fr.flowarg.vipium.server;
 
-import com.jagrosh.jdautilities.command.CommandClientBuilder;
-import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.server.commands.DelHomeCommand;
 import fr.flowarg.vipium.server.commands.HomeCommand;
@@ -26,14 +24,14 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 @OnlyIn(Dist.DEDICATED_SERVER)
 public class ServerManager implements EventListener
 {
     private final HomeCore homeCore;
     private VoiceChannel channelStateDiscord;
+    private JDA jda;
 
     public ServerManager() throws ServerException
     {
@@ -57,28 +55,44 @@ public class ServerManager implements EventListener
         DelHomeCommand.register(event.getCommandDispatcher());
         try
         {
-            final String token = FileUtils.loadFile(new File(this.getDataPluginFolder(), "token"));
+            final File fileToken = new File("token");
+            if(!fileToken.exists())
+                return;
+            
+            final String token = loadFile(fileToken);
             final JDABuilder jdaBuilder = JDABuilder.createDefault(token);
-            final CommandClientBuilder clientBuilder = new CommandClientBuilder();
 
-            clientBuilder.setPrefix("!");
-            clientBuilder.setOwnerId("406148304448126976");
-            clientBuilder.setStatus(OnlineStatus.ONLINE);
-            clientBuilder.setActivity(Activity.playing("VIP Server"));
+            jdaBuilder.setStatus(OnlineStatus.ONLINE);
+            jdaBuilder.setActivity(Activity.playing("VIP Server"));
 
             jdaBuilder.disableCache(CacheFlag.EMOTE);
             jdaBuilder.disableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.DIRECT_MESSAGE_REACTIONS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.GUILD_BANS, GatewayIntent.GUILD_EMOJIS, GatewayIntent.GUILD_INVITES);
-            jdaBuilder.addEventListeners(clientBuilder.build(), new EventWaiter());
             this.getLogger().info(VIPMod.MARKER, "Connecting to Discord API...");
-            final JDA jda = jdaBuilder.build();
+            this.jda = jdaBuilder.build();
+            this.jda.addEventListener(this);
             this.getLogger().info(VIPMod.MARKER, "Connected !");
-            jda.awaitReady();
-            this.channelStateDiscord = jda.getGuildById(657473306072580096L).getVoiceChannelById(667009869840252929L);
-            this.getLogger().info(VIPMod.MARKER, "Finished loading !");
-        } catch (IOException | InterruptedException | LoginException e)
+        } catch (IOException | LoginException e)
         {
-            this.getLogger().printStackTrace("Cannot start bot.", e);
+            e.printStackTrace();
         }
+    }
+    
+    public static String loadFile(final File file) throws IOException
+    {
+        if (file.exists())
+        {
+            final BufferedReader reader = new BufferedReader(new FileReader(file));
+            final StringBuilder text = new StringBuilder();
+
+            String line;
+
+            while ((line = reader.readLine()) != null)
+                text.append(line);
+            
+            reader.close();
+            return text.toString();
+        }
+        return "";
     }
     
     @Override
@@ -86,22 +100,21 @@ public class ServerManager implements EventListener
     {
         if(event instanceof GuildReadyEvent)
         {
-            if(this.channelStateDiscord != null)
-            {
-                this.channelStateDiscord.getManager().queue();
-                this.channelStateDiscord.getManager().setName("SERVEUR - OUVERT").queue();
-            }
+            if(this.channelStateDiscord == null)
+                this.channelStateDiscord = this.jda.getGuildById(657473306072580096L).getVoiceChannelById(667009869840252929L);
+            this.channelStateDiscord.getManager().queue();
+            this.channelStateDiscord.getManager().setName("SERVEUR - OUVERT").queue();
         }
     }
     
     @SubscribeEvent
     public void onServerStop(FMLServerStoppingEvent event)
     {
-        if(this.channelStateDiscord != null)
-        {
-            this.channelStateDiscord.getManager().queue();
-            this.channelStateDiscord.getManager().setName("SERVEUR - FERMÉ").queue();
-        }
+        if(this.channelStateDiscord == null)
+            this.channelStateDiscord = this.jda.getGuildById(657473306072580096L).getVoiceChannelById(667009869840252929L);
+        this.channelStateDiscord.getManager().queue();
+        this.channelStateDiscord.getManager().setName("SERVEUR - FERMÉ").queue();
+        this.jda.shutdown();
     }
 
     public HomeCore getHomeCore()
@@ -112,11 +125,5 @@ public class ServerManager implements EventListener
     public Logger getLogger()
     {
         return VIPMod.LOGGER;
-    }
-
-    @Override
-    public String getAPIName()
-    {
-        return "ServerManager";
     }
 }

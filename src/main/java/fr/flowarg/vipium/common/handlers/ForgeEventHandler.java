@@ -27,9 +27,6 @@ public class ForgeEventHandler
     public static final BlockPos TNT_EMPLACEMENT = new BlockPos(-179, 77, 137);
     public static final Random RANDOM = new Random();
 
-    // debug
-    private static boolean print5 = false;
-
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onGuiOpenedEvent(final GuiOpenEvent event)
@@ -54,11 +51,6 @@ public class ForgeEventHandler
                 {
                     if(RANDOM.nextInt(150) == 26)
                     {
-                        if(!print5)
-                        {
-                            System.out.println("random called !");
-                            print5 = true;
-                        }
                         event.getWorld().setBlockState(TNT_EMPLACEMENT, Blocks.TNT.getDefaultState(), 1);
                     }
                 }

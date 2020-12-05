@@ -9,6 +9,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.IngameMenuScreen;
 import net.minecraft.client.gui.screen.MainMenuScreen;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -47,7 +48,7 @@ public class ForgeEventHandler
         {
             if(event.getPos().equals(PRESSURE_PLATE_EMPLACEMENT))
             {
-                if(event.getWorld().getBlockState(OAK_PLANKS_EMPLACEMENT).getBlock() == Blocks.OAK_PLANKS)
+                if(event.getWorld().getBlockState(OAK_PLANKS_EMPLACEMENT).isIn(BlockTags.PLANKS))
                 {
                     if(RANDOM.nextInt(150) == 26)
                     {

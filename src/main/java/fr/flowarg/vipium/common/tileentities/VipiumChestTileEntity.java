@@ -22,6 +22,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nonnull;
 
@@ -33,7 +38,8 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
     private float prevLidAngle;
     private int numPlayersUsing;
     private int ticksSinceSync;
-    //private LazyOptional<IItemHandlerModifiable> chestHandler;
+    private IItemHandlerModifiable items = new InvWrapper(this);
+    private LazyOptional<IItemHandlerModifiable> chestHandler = LazyOptional.of(() -> items);
 
     public VipiumChestTileEntity()
     {
@@ -177,15 +183,7 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
     @Override
     public void setItems(NonNullList<ItemStack> itemsIn)
     {
-        this.chestContents = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-
-        for (int i = 0; i < itemsIn.size(); i++)
-        {
-            if (i < this.chestContents.size())
-            {
-                this.getItems().set(i, itemsIn.get(i));
-            }
-        }
+        this.chestContents = itemsIn;
     }
 
     @Override
@@ -200,7 +198,7 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
         return new VipiumChestContainer(id, player);
     }
 
-    /*@Override
+    @Override
     public void updateContainingBlockInfo()
     {
         super.updateContainingBlockInfo();
@@ -214,11 +212,8 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
     {
-        if (!this.removed && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-        {
-            if (this.chestHandler == null) this.chestHandler = LazyOptional.of(() -> new InvWrapper(this));
+        if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) 
             return this.chestHandler.cast();
-        }
         return super.getCapability(cap, side);
     }
 
@@ -227,5 +222,5 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
     {
         super.remove();
         if (this.chestHandler != null) this.chestHandler.invalidate();
-    }*/
+    }
 }

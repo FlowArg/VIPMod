@@ -193,18 +193,11 @@ public class VipiumChestBlock extends Block implements IWaterLoggable
     {
         if (!worldIn.isRemote)
         {
-            INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
-            if (inamedcontainerprovider != null)
-                player.openContainer(inamedcontainerprovider);
+            final TileEntity tileentity = worldIn.getTileEntity(pos);
+            if (tileentity instanceof VipiumChestTileEntity)
+                player.openContainer((INamedContainerProvider)tileentity);
         }
         return ActionResultType.SUCCESS;
-    }
-
-    @Override
-    public INamedContainerProvider getContainer(BlockState state, World world, BlockPos pos)
-    {
-        final TileEntity tileentity = world.getTileEntity(pos);
-        return tileentity instanceof INamedContainerProvider ? (INamedContainerProvider)tileentity : null;
     }
 
     @Override
@@ -260,7 +253,7 @@ public class VipiumChestBlock extends Block implements IWaterLoggable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
-        return new VipiumChestTileEntity();
+        return this.tileEntityTypeSupplier.get().create();
     }
 
     public TileEntityMerger.ICallbackWrapper<? extends VipiumChestTileEntity> getWrapper(BlockState blockState, World world, BlockPos blockPos, boolean p_225536_4_)

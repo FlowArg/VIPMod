@@ -24,12 +24,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
@@ -87,10 +89,47 @@ public class RegistryHandler
     public static final RegistryObject<ArmorItem> VIPIUM_LEGGINGS = ITEMS.register("vipium_leggings", () -> new ArmorItem(RegistryHandler.VIPIUM_ARMOR_MATERIAL, EquipmentSlotType.LEGS, newItemVipiumProperties()));
     public static final RegistryObject<ArmorItem> VIPIUM_BOOTS = ITEMS.register("vipium_boots", () -> new ArmorItem(RegistryHandler.VIPIUM_ARMOR_MATERIAL, EquipmentSlotType.FEET, newItemVipiumProperties()));
 
-    public static final RegistryObject<ArmorItem> VIPIUM_PURE_HELMET = ITEMS.register("vipium_pure_helmet", () -> new ArmorItem(RegistryHandler.VIPIUM_PURE_ARMOR_MATERIAL, EquipmentSlotType.HEAD, newItemVipiumPureProperties()));
-    public static final RegistryObject<ArmorItem> VIPIUM_PURE_CHESTPLATE = ITEMS.register("vipium_pure_chestplate", () -> new ArmorItem(RegistryHandler.VIPIUM_PURE_ARMOR_MATERIAL, EquipmentSlotType.CHEST, newItemVipiumPureProperties()));
-    public static final RegistryObject<ArmorItem> VIPIUM_PURE_LEGGINGS = ITEMS.register("vipium_pure_leggings", () -> new ArmorItem(RegistryHandler.VIPIUM_PURE_ARMOR_MATERIAL, EquipmentSlotType.LEGS, newItemVipiumPureProperties()));
-    public static final RegistryObject<ArmorItem> VIPIUM_PURE_BOOTS = ITEMS.register("vipium_pure_boots", () -> new ArmorItem(RegistryHandler.VIPIUM_PURE_ARMOR_MATERIAL, EquipmentSlotType.FEET, newItemVipiumPureProperties()));
+    public static final RegistryObject<ArmorItem> VIPIUM_PURE_HELMET = ITEMS.register("vipium_pure_helmet", () -> new ArmorItem(RegistryHandler.VIPIUM_PURE_ARMOR_MATERIAL, EquipmentSlotType.HEAD, newItemVipiumPureProperties()) {
+        @Override
+        public void onArmorTick(ItemStack stack, World world, PlayerEntity player)
+        {
+            if(!world.isRemote)
+                player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 30, 4, false, false));
+        }
+    });
+    public static final RegistryObject<ArmorItem> VIPIUM_PURE_CHESTPLATE = ITEMS.register("vipium_pure_chestplate", () -> new ArmorItem(RegistryHandler.VIPIUM_PURE_ARMOR_MATERIAL, EquipmentSlotType.CHEST, newItemVipiumPureProperties()) {
+        @Override
+        public void onArmorTick(ItemStack stack, World world, PlayerEntity player)
+        {
+            if(!world.isRemote)
+            {
+                player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 30, 4, false, true));
+                if(player.inventory.armorInventory.get(0).getItem() == VIPIUM_PURE_BOOTS.get()
+                && player.inventory.armorInventory.get(1).getItem() == VIPIUM_PURE_LEGGINGS.get()
+                && player.inventory.armorInventory.get(3).getItem() == VIPIUM_PURE_HELMET.get())
+                {
+                    player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 10, 2, true, false));
+                    player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 10, 2, true, false));
+                }
+            }
+        }
+    });
+    public static final RegistryObject<ArmorItem> VIPIUM_PURE_LEGGINGS = ITEMS.register("vipium_pure_leggings", () -> new ArmorItem(RegistryHandler.VIPIUM_PURE_ARMOR_MATERIAL, EquipmentSlotType.LEGS, newItemVipiumPureProperties()) {
+        @Override
+        public void onArmorTick(ItemStack stack, World world, PlayerEntity player)
+        {
+            if(!world.isRemote)
+                player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, true));
+        }
+    });
+    public static final RegistryObject<ArmorItem> VIPIUM_PURE_BOOTS = ITEMS.register("vipium_pure_boots", () -> new ArmorItem(RegistryHandler.VIPIUM_PURE_ARMOR_MATERIAL, EquipmentSlotType.FEET, newItemVipiumPureProperties()) {
+        @Override
+        public void onArmorTick(ItemStack stack, World world, PlayerEntity player)
+        {
+            if(!world.isRemote)
+                player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
+        }
+    });
 
     public static final RegistryObject<PickaxeItem> VIPIUM_PICKAXE = ITEMS.register("vipium_pickaxe", () -> new PickaxeItem(RegistryHandler.VIPIUM_TOOL_MATERIAL, 1, 2, newItemVipiumProperties()));
     public static final RegistryObject<AxeItem> VIPIUM_AXE = ITEMS.register("vipium_axe", () -> new AxeItem(RegistryHandler.VIPIUM_TOOL_MATERIAL, 1, 2, newItemVipiumProperties()));

@@ -17,14 +17,14 @@ public class HomeCommand
     public static void register(CommandDispatcher<CommandSource> dispatcher)
     {
         dispatcher.register(Commands.literal("home").then(Commands.argument("homeName", MessageArgument.message()).executes(context -> {
-            final Home selected = VIPMod.serverManager.getHomeCore().getHome(context.getSource().getName(), MessageArgument.getMessage(context, "homeName").getFormattedText());
+            final ServerPlayerEntity player = context.getSource().asPlayer();
+            final Home selected = VIPMod.serverManager.getHomeCore().getHome(context.getSource().getName(), MessageArgument.getMessage(context, "homeName").getFormattedText(), player.dimension.getId());
             if(selected == null)
             {
                 context.getSource().sendErrorMessage(new TranslationTextComponent("commands.home.nohomeavailable"));
                 return 0;
             }
 
-            final ServerPlayerEntity player = context.getSource().asPlayer();
             if(player.dimension.getId() == selected.getDimension())
                 player.teleport(player.getServerWorld(), selected.getX(), selected.getY(), selected.getZ(), selected.getYaw(), selected.getPitch());
             else context.getSource().sendErrorMessage(new TranslationTextComponent("commands.home.baddimension"));

@@ -1,8 +1,8 @@
 package fr.flowarg.vipium.server;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import fr.flowarg.vipium.VIPMod;
 import com.google.gson.JsonParser;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -47,25 +47,27 @@ public class HomeCore
         }
     }
 
-    public Home getHome(String playerName, String homeName)
+    public Home getHome(String playerName, String homeName, int dim)
     {
-        final Home[] result = new Home[1];
+        Home result = null;
 
-        this.listHomes(playerName).forEach(home -> {
-            if(result[0] != null)
-                return;
-            if(home.getName().equalsIgnoreCase(homeName))
-                result[0] = home;
-        });
+        for (Home home : listHomes(playerName))
+        {
+            if(home.getName().equalsIgnoreCase(homeName) && home.getDimension() == dim)
+            {
+                result = home;
+                break;
+            }
+        }
 
-        return result[0];
+        return result;
     }
 
     public int addHome(String playerName, Home toAddHome)
     {
         try
         {
-            if(this.getHome(playerName, toAddHome.getName()) != null)
+            if(this.getHome(playerName, toAddHome.getName(), toAddHome.getDimension()) != null)
                 return 1;
 
             final String content = FileUtils.readFileToString(this.homeFiles, StandardCharsets.UTF_8);
@@ -107,7 +109,7 @@ public class HomeCore
     {
         try
         {
-            final Home home = this.getHome(playerName, homeName);
+            final Home home = this.getHome(playerName, homeName, 0) == null ? (this.getHome(playerName, homeName, 1) == null ? this.getHome(playerName, homeName, -1) : this.getHome(playerName, homeName, 1)) : this.getHome(playerName, homeName, 0);
             if(home == null)
                 return 1;
             final JsonObject json = new JsonParser().parse(FileUtils.readFileToString(this.homeFiles, StandardCharsets.UTF_8)).getAsJsonObject();
@@ -115,16 +117,17 @@ public class HomeCore
             if(!homes.has(playerName))
                 return 1;
             final JsonArray playerHomes = homes.getAsJsonArray(playerName);
-            final JsonObject[] toRemove = new JsonObject[1];
-            playerHomes.forEach(jsonElement -> {
-                if(toRemove[0] == null)
+            JsonObject toRemove = null;
+            for(JsonElement jsonElement : playerHomes)
+            {
+                final JsonObject iterated = jsonElement.getAsJsonObject();
+                if(iterated.get("name").getAsString().equalsIgnoreCase(homeName))
                 {
-                    final JsonObject iterated = jsonElement.getAsJsonObject();
-                    if(iterated.get("name").getAsString().equalsIgnoreCase(homeName))
-                        toRemove[0] = iterated;
+                    toRemove = iterated;
+                    break;
                 }
-            });
-            playerHomes.remove(toRemove[0]);
+            }
+            playerHomes.remove(toRemove);
             FileUtils.write(this.homeFiles, json.toString(), StandardCharsets.UTF_8);
             return 0;
         }

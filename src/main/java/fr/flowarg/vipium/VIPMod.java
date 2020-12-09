@@ -1,5 +1,6 @@
 package fr.flowarg.vipium;
 
+import fr.flowarg.vipium.client.ClientManager;
 import fr.flowarg.vipium.client.creativetabs.BlocksGroup;
 import fr.flowarg.vipium.client.creativetabs.ItemsGroup;
 import fr.flowarg.vipium.client.renderer.VipiumChestRenderer;
@@ -41,6 +42,9 @@ public class VIPMod
     public static final ItemGroup BLOCK_GROUP = new BlocksGroup();
     public static final ItemGroup ITEM_GROUP = new ItemsGroup();
 
+    @OnlyIn(Dist.CLIENT)
+    public static ClientManager clientManager;
+
     @OnlyIn(Dist.DEDICATED_SERVER)
     public static ServerManager serverManager;
 
@@ -48,7 +52,10 @@ public class VIPMod
     {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         eventBus.addListener(this::setupCommon);
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> eventBus.addListener(this::setupClient));
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
+            eventBus.addListener(this::setupClient);
+            clientManager = new ClientManager();
+        });
         DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
             try
             {
@@ -56,7 +63,7 @@ public class VIPMod
                 MinecraftForge.EVENT_BUS.register(serverManager);
             } catch (ServerException e)
             {
-                LOGGER.error("The ServerManager initialization encountered a problem.", e);
+                LOGGER.error(MARKER, "The ServerManager initialization encountered a problem.", e);
             }
         });
         RegistryHandler.init(eventBus);
@@ -75,6 +82,7 @@ public class VIPMod
     {
         LOGGER.info(MARKER, "FMLSetup is loading Vipium Mod (Client Side)...");
 
+        clientManager.getStartTask().test(event::getMinecraftSupplier);
         ScreenManager.registerFactory(RegistryHandler.VIPIUM_PURIFIER_CONTAINER.get(), VipiumPurifierScreen::new);
         ScreenManager.registerFactory(RegistryHandler.VIPIUM_CHEST_CONTAINER.get(), VipiumChestScreen::new);
         RenderingRegistry.registerEntityRenderingHandler(RegistryHandler.VIPIUM_MINECART_ENTITY.get(), VipiumMinecartRenderer::new);

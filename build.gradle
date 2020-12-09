@@ -20,7 +20,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'fr.flowarg'
 archivesBaseName = 'vipium'
-version '1.3.1'
+version '1.3.2'
 
 compileJava {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -84,12 +84,23 @@ repositories {
     maven { url 'https://jitpack.io/'}
 }
 
+configurations {
+    clientShade
+    serverShade
+}
+
 dependencies {
     minecraft 'net.minecraftforge:forge:1.15.2-31.2.45'
-    shadow ('net.dv8tion:JDA:4.2.0_214') {
+    serverShade ('net.dv8tion:JDA:4.2.0_214') {
         exclude module: 'opus-java'
     }
-    shadow 'org.slf4j:slf4j-simple:1.7.25'
+    serverShade 'org.slf4j:slf4j-simple:1.7.25'
+    clientShade 'club.minnced:java-discord-rpc:2.0.2'
+    compileOnly ('net.dv8tion:JDA:4.2.0_214') {
+        exclude module: 'opus-java'
+    }
+    compileOnly 'org.slf4j:slf4j-simple:1.7.25'
+    compileOnly 'club.minnced:java-discord-rpc:2.0.2'
 }
 
 jar {
@@ -106,11 +117,19 @@ jar {
     }
 }
 
-shadowJar {
-    configurations = [project.configurations.shadow]
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+task serverJar(type: ShadowJar) {
+    configurations = [project.configurations.serverShade]
     classifier 'server'
     relocate 'gnu.trove', 'libraries.gnu.trove'
     relocate 'org.apache.commons.collections4', 'libraries.org.apache.commons.collections4'
 }
+
+task clientJar(type: ShadowJar) {
+    configurations = [project.configurations.clientShade]
+    classifier 'client'
+}
+
 
 jar.finalizedBy('reobfJar')

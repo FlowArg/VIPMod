@@ -2,6 +2,7 @@ package fr.flowarg.vipium.client.screens;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import fr.flowarg.vipium.VIPMod;
 import net.minecraft.client.gui.AccessibilityScreen;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.widget.Widget;
@@ -54,6 +55,10 @@ public class CustomMainMenuScreen extends Screen
         super(new TranslationTextComponent("narrator.screen.title"));
         this.showFadeInAnimation = fadeIn;
         this.showTitleWronglySpelled = (double)(new Random()).nextFloat() < 1.0E-4D;
+        VIPMod.clientManager.getRpcManager().makeChanges(rpc -> {
+            rpc.details = "In main menu";
+            rpc.state = "Ready to play !";
+        });
     }
 
     @Override

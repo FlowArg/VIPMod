@@ -1,5 +1,6 @@
 package fr.flowarg.vipium.client.screens;
 
+import fr.flowarg.vipium.VIPMod;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.gui.AccessibilityScreen;
 import net.minecraft.client.gui.screen.*;
@@ -30,6 +31,10 @@ public class CustomOptionsScreen extends Screen
         super(new TranslationTextComponent("options.title"));
         this.lastScreen = lastScreenIn;
         this.settings = settingsIn;
+        VIPMod.clientManager.getRpcManager().makeChanges(rpc -> {
+            rpc.details = "In options menu";
+            rpc.state = "Customizing Minecraft";
+        });
     }
 
     protected void init()

@@ -1,5 +1,6 @@
 package fr.flowarg.vipium.server;
 
+import com.mojang.brigadier.CommandDispatcher;
 import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.server.commands.DelHomeCommand;
 import fr.flowarg.vipium.server.commands.HomeCommand;
@@ -7,14 +8,15 @@ import fr.flowarg.vipium.server.commands.HomesCommand;
 import fr.flowarg.vipium.server.commands.SetHomeCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import net.minecraft.command.CommandSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -32,12 +34,13 @@ public class ServerManager implements EventListener
     private final HomeCore homeCore;
     private VoiceChannel channelStateDiscord;
     private JDA jda;
+    private Guild guild;
 
     public ServerManager() throws ServerException
     {
         try
         {
-            VIPMod.LOGGER.info(VIPMod.MARKER, "Loading ServerManager...");
+            this.getLogger().info(VIPMod.MARKER, "Loading ServerManager...");
             this.homeCore = new HomeCore();
         }
         catch (IOException e)
@@ -49,10 +52,11 @@ public class ServerManager implements EventListener
     @SubscribeEvent
     public void onServerStart(FMLServerStartingEvent event)
     {
-        HomeCommand.register(event.getCommandDispatcher());
-        HomesCommand.register(event.getCommandDispatcher());
-        SetHomeCommand.register(event.getCommandDispatcher());
-        DelHomeCommand.register(event.getCommandDispatcher());
+        final CommandDispatcher<CommandSource> dispatcher = event.getCommandDispatcher();
+        HomeCommand.register(dispatcher);
+        HomesCommand.register(dispatcher);
+        SetHomeCommand.register(dispatcher);
+        DelHomeCommand.register(dispatcher);
         try
         {
             final File fileToken = new File("token");
@@ -63,7 +67,7 @@ public class ServerManager implements EventListener
             final JDABuilder jdaBuilder = JDABuilder.createDefault(token);
 
             jdaBuilder.setStatus(OnlineStatus.ONLINE);
-            jdaBuilder.setActivity(Activity.playing("VIP Server"));
+            jdaBuilder.setActivity(Activity.playing("V.I.P Server"));
 
             jdaBuilder.disableCache(CacheFlag.EMOTE);
             jdaBuilder.disableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.DIRECT_MESSAGE_REACTIONS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.GUILD_BANS, GatewayIntent.GUILD_EMOJIS, GatewayIntent.GUILD_INVITES);
@@ -100,20 +104,30 @@ public class ServerManager implements EventListener
     {
         if(event instanceof GuildReadyEvent)
         {
+            if(this.guild == null)
+                this.guild = this.jda.getGuildById(657473306072580096L);
             if(this.channelStateDiscord == null)
-                this.channelStateDiscord = this.jda.getGuildById(657473306072580096L).getVoiceChannelById(667009869840252929L);
+                this.channelStateDiscord = this.guild.getVoiceChannelById(667009869840252929L);
             this.channelStateDiscord.getManager().queue();
             this.channelStateDiscord.getManager().setName("SERVEUR - OUVERT").queue();
+            final TextChannel newsChannel = this.guild.getTextChannelById(657473712005578772L);
+            newsChannel.sendTyping().queue();
+            newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Le serveur est ouvert ! ").append(this.guild.getRoleById(658309459755532289L)).build()).queue();
         }
     }
     
     @SubscribeEvent
     public void onServerStop(FMLServerStoppingEvent event)
     {
+        if(this.guild == null)
+            this.guild = this.jda.getGuildById(657473306072580096L);
         if(this.channelStateDiscord == null)
-            this.channelStateDiscord = this.jda.getGuildById(657473306072580096L).getVoiceChannelById(667009869840252929L);
+            this.channelStateDiscord = this.guild.getVoiceChannelById(667009869840252929L);
         this.channelStateDiscord.getManager().queue();
         this.channelStateDiscord.getManager().setName("SERVEUR - FERMÉ").queue();
+        final TextChannel newsChannel = this.guild.getTextChannelById(657473712005578772L);
+        newsChannel.sendTyping().queue();
+        newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Le serveur est fermé ! ").append(this.guild.getRoleById(658309459755532289L)).build()).queue();
         this.jda.shutdown();
     }
 

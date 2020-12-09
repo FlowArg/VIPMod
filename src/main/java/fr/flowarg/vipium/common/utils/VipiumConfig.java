@@ -23,6 +23,7 @@ public class VipiumConfig
     {
         private final BooleanValue showRealms;
         private final BooleanValue showUselessOptions;
+        private final BooleanValue enableRPC;
 
         public Client(@Nonnull Builder builder)
         {
@@ -33,6 +34,8 @@ public class VipiumConfig
                     .define("showRealms", false);
             this.showUselessOptions = builder.comment(" Define if some useless buttons are showed or not in the echap menu.")
                     .define("showUselessOptions", false);
+            this.enableRPC = builder.comment(" Enable/Disable the Discord Rich Presence for VIP.")
+                    .define("enableRPC", true);
 
             builder.pop();
         }
@@ -45,6 +48,11 @@ public class VipiumConfig
         public BooleanValue canShowUselessOptions()
         {
             return this.showUselessOptions;
+        }
+
+        public BooleanValue getEnableRPC()
+        {
+            return this.enableRPC;
         }
     }
 }

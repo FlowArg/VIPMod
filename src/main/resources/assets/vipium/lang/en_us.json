@@ -48,16 +48,12 @@
   "item.vipium.vipium_pure_apple": "Pure Vipium Apple",
   "item.vipium.vipium_pure_sword": "Pure Vipium Sword",
 
-  "item.vipium.vipium_compass": "Vipium Compass",
   "item.vipium.vipium_coal": "Vipium Coal",
   "item.vipium.envelope_open": "Opened envelope",
   "item.vipium.letter": "Letter",
   "item.vipium.french_baguette": "French Baguette",
   "item.vipium.envelope_close": "Closed envelope",
-  "item.vipium.vipium_minecart": "Vipium Minecart",
 
   "item.vipium.chest_extension_upgrade": "Chest Extension Upgrade",
-  "item.vipium.chest_purifier_upgrade": "Chest Purifier Upgrade",
-
-  "entity.vipium.vipium_minecart": "Vipium Minecart"
+  "item.vipium.chest_purifier_upgrade": "Chest Purifier Upgrade"
 }

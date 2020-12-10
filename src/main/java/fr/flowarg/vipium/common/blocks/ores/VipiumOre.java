@@ -20,6 +20,6 @@ public class VipiumOre extends OreBlock
     @Override
     protected int getExperience(Random random)
     {
-        return MathHelper.nextInt(random, 12, 50);
+        return MathHelper.nextInt(random, 13, 89);
     }
 }

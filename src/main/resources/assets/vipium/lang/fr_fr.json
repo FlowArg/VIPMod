@@ -48,16 +48,12 @@
   "item.vipium.vipium_pure_multi_tool": "Multi-Outils en Vipium Pure",
   "item.vipium.vipium_pure_sword": "Épée en Vipium Pure",
 
-  "item.vipium.vipium_compass": "Boussole de Vipium",
   "item.vipium.vipium_coal": "Charbon de Vipium",
   "item.vipium.envelope_open": "Enveloppe ouverte",
   "item.vipium.letter": "Lettre",
   "item.vipium.french_baguette": "Baguette Française",
   "item.vipium.envelope_close": "Enveloppe fermée",
-  "item.vipium.vipium_minecart": "Wagon en Vipium",
 
   "item.vipium.chest_extension_upgrade": "Amélioration d'extension pour coffre",
-  "item.vipium.chest_purifier_upgrade": "Amélioration de purifier pour coffre",
-
-  "entity.vipium.vipium_minecart": "Wagon en Vipium"
+  "item.vipium.chest_purifier_upgrade": "Amélioration de purifier pour coffre"
 }

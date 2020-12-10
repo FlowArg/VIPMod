@@ -3,27 +3,21 @@ package fr.flowarg.vipium.common.handlers;
 import fr.flowarg.vipium.client.renderer.VipiumChestItemStackRenderer;
 import fr.flowarg.vipium.common.blocks.VipiumChestBlock;
 import fr.flowarg.vipium.common.blocks.VipiumPurifierBlock;
-import fr.flowarg.vipium.common.blocks.VipiumRailBlock;
 import fr.flowarg.vipium.common.blocks.ores.VipiumOre;
 import fr.flowarg.vipium.common.containers.VipiumChestContainer;
 import fr.flowarg.vipium.common.containers.VipiumPurifierContainer;
 import fr.flowarg.vipium.common.containers.slots.upgrades.UpgradeType;
-import fr.flowarg.vipium.common.entities.VipiumMinecartEntity;
-import fr.flowarg.vipium.common.items.VipiumMinecartItem;
+import fr.flowarg.vipium.common.items.UpgradeItem;
 import fr.flowarg.vipium.common.items.VipiumMultiToolItem;
 import fr.flowarg.vipium.common.items.materials.VipiumArmorMaterial;
 import fr.flowarg.vipium.common.items.materials.VipiumPureArmorMaterial;
 import fr.flowarg.vipium.common.items.materials.VipiumPureToolMaterial;
 import fr.flowarg.vipium.common.items.materials.VipiumToolMaterial;
-import fr.flowarg.vipium.common.items.UpgradeItem;
 import fr.flowarg.vipium.common.tileentities.VipiumChestTileEntity;
 import fr.flowarg.vipium.common.tileentities.VipiumPurifierTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.block.RailBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
@@ -57,7 +51,6 @@ public class RegistryHandler
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MODID);
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, MODID);
 
     public static final Food VIPIUM_APPLE_FOOD = new Food.Builder().hunger(10).saturation(1.5f).effect(() -> new EffectInstance(Effects.REGENERATION, 120, 2), 1.0f).effect(() -> new EffectInstance(Effects.RESISTANCE, 6100, 1), 1.0f).effect(() -> new EffectInstance(Effects.FIRE_RESISTANCE, 6100, 0), 1.0f).effect(() -> new EffectInstance(Effects.ABSORPTION, 2500, 2), 1.0f).effect(() -> new EffectInstance(Effects.HEALTH_BOOST, 4000, 3), 0.4f).setAlwaysEdible().build();
     public static final Food VIPIUM_PURE_APPLE_FOOD = new Food.Builder().hunger(12).saturation(1.8f).effect(() -> new EffectInstance(Effects.REGENERATION, 200, 2), 1.0f).effect(() -> new EffectInstance(Effects.RESISTANCE, 6600, 2), 1.0f).effect(() -> new EffectInstance(Effects.FIRE_RESISTANCE, 6600, 1), 1.0f).effect(() -> new EffectInstance(Effects.ABSORPTION, 3000, 2), 1.0f).effect(() -> new EffectInstance(Effects.HEALTH_BOOST, 4600, 3), 0.8f).setAlwaysEdible().build();
@@ -67,16 +60,12 @@ public class RegistryHandler
     public static final RegistryObject<VipiumOre> VIPIUM_ORE = BLOCKS.register("vipium_ore", VipiumOre::new);
     public static final RegistryObject<Block> VIPIUM_PURE_BLOCK = BLOCKS.register("vipium_pure_block", () -> new Block(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).hardnessAndResistance(60f, 90f)));
     public static final RegistryObject<VipiumPurifierBlock> VIPIUM_PURIFIER_BLOCK = BLOCKS.register("vipium_purifier", VipiumPurifierBlock::new);
-    public static final RegistryObject<RailBlock> VIPIUM_RAIL_BLOCK = BLOCKS.register("vipium_rail", VipiumRailBlock::new);
-    public static final RegistryObject<RailBlock> VIPIUM_PURE_RAIL_BLOCK = BLOCKS.register("vipium_pure_rail", VipiumRailBlock::new);
     public static final RegistryObject<VipiumChestBlock> VIPIUM_CHEST_BLOCK = BLOCKS.register("vipium_chest", VipiumChestBlock::new);
 
     public static final RegistryObject<BlockItem> VIPIUM_BLOCK_ITEM = ITEMS.register("vipium_block", () -> new BlockItem(VIPIUM_BLOCK.get(), newItemBlockVipiumProperties()));
     public static final RegistryObject<BlockItem> VIPIUM_PURE_BLOCK_ITEM = ITEMS.register("vipium_pure_block", () -> new BlockItem(VIPIUM_PURE_BLOCK.get(), newItemBlockVipiumPureProperties()));
     public static final RegistryObject<BlockItem> VIPIUM_ORE_ITEM = ITEMS.register("vipium_ore", () -> new BlockItem(VIPIUM_ORE.get(), newItemBlockVipiumProperties()));
     public static final RegistryObject<BlockItem> VIPIUM_PURIFIER_ITEM = ITEMS.register("vipium_purifier", () -> new BlockItem(VIPIUM_PURIFIER_BLOCK.get(), newItemBlockVipiumProperties()));
-    public static final RegistryObject<BlockItem> VIPIUM_RAIL_ITEM = ITEMS.register("vipium_rail", () -> new BlockItem(VIPIUM_RAIL_BLOCK.get(), newItemBlockVipiumProperties()));
-    public static final RegistryObject<BlockItem> VIPIUM_PURE_RAIL_ITEM = ITEMS.register("vipium_pure_rail", () -> new BlockItem(VIPIUM_PURE_RAIL_BLOCK.get(), newItemBlockVipiumPureProperties()));
     public static final RegistryObject<BlockItem> VIPIUM_CHEST_ITEM = registerVipiumChestBlockItem();
     
     private static RegistryObject<BlockItem> registerVipiumChestBlockItem()
@@ -158,7 +147,6 @@ public class RegistryHandler
     public static final RegistryObject<Item> ENVELOPE_OPEN = ITEMS.register("envelope_open", () -> new Item(new Item.Properties().group(ITEM_GROUP).rarity(COMMON).setNoRepair()));
     public static final RegistryObject<Item> ENVELOPE_CLOSE = ITEMS.register("envelope_close", () -> new Item(new Item.Properties().group(ITEM_GROUP).rarity(COMMON).setNoRepair()));
     public static final RegistryObject<Item> FRENCH_BAGUETTE = ITEMS.register("french_baguette", () -> new Item(new Item.Properties().group(ITEM_GROUP).rarity(COMMON).food(FRENCH_BAGUETTE_FOOD).setNoRepair()));
-    public static final RegistryObject<Item> VIPIUM_MINECART = ITEMS.register("vipium_minecart", VipiumMinecartItem::new);
 
     public static final RegistryObject<UpgradeItem> CHEST_EXTENSION_UPGRADE = ITEMS.register("chest_extension_upgrade", () -> new UpgradeItem(UpgradeType.CHEST_EXTENSION, new Item.Properties().group(ITEM_GROUP).rarity(UNCOMMON)));
     public static final RegistryObject<UpgradeItem> CHEST_PURIFIER_UPGRADE = ITEMS.register("chest_purifier_upgrade", () -> new UpgradeItem(UpgradeType.CHEST_PURIFIER, new Item.Properties().group(ITEM_GROUP).rarity(UNCOMMON)));
@@ -168,8 +156,6 @@ public class RegistryHandler
 
     public static final RegistryObject<ContainerType<VipiumPurifierContainer>> VIPIUM_PURIFIER_CONTAINER = CONTAINERS.register("vipium_purifier", () -> IForgeContainerType.create(VipiumPurifierContainer::new));
     public static final RegistryObject<ContainerType<VipiumChestContainer>> VIPIUM_CHEST_CONTAINER = CONTAINERS.register("vipium_chest", () -> IForgeContainerType.create(VipiumChestContainer::new));
-
-    public static final RegistryObject<EntityType<VipiumMinecartEntity>> VIPIUM_MINECART_ENTITY = ENTITIES.register("vipium_minecart", () -> EntityType.Builder.create((EntityType.IFactory<VipiumMinecartEntity>)VipiumMinecartEntity::new, EntityClassification.MISC).size(0.98F, 0.7F).build("vipium_minecart"));
 
     public static Item.Properties newItemVipiumProperties()
     {
@@ -203,6 +189,5 @@ public class RegistryHandler
         ITEMS.register(bus);
         TILE_ENTITIES.register(bus);
         CONTAINERS.register(bus);
-        ENTITIES.register(bus);
     }
 }

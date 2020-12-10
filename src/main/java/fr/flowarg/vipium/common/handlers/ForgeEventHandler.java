@@ -10,7 +10,6 @@ import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -27,23 +26,6 @@ public class ForgeEventHandler
                 event.setGui(new CustomMainMenuScreen(true));
             else if(!VipiumConfig.CLIENT.canShowUselessOptions().get() && event.getGui().getClass() == IngameMenuScreen.class)
                 event.setGui(new CustomInGameMenuScreen(!Minecraft.getInstance().isIntegratedServerRunning()));
-        }
-    }
-
-    @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
-    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event)
-    {
-        if(!event.getPlayer().getServer().isSinglePlayer())
-        {
-            VIPMod.LOGGER.info(VIPMod.MARKER, "Connected to " + event.getPlayer().getServer().getServerHostname());
-            if(event.getPlayer().getServer().getServerHostname().contains("flowargbyfistin"))
-            {
-                VIPMod.clientManager.getRpcManager().makeChanges(rpc -> {
-                    rpc.details = "Playing in V.I.P";
-                    rpc.state = "Connected";
-                });
-            }
         }
     }
 }

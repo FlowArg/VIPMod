@@ -6,12 +6,15 @@ import club.minnced.discord.rpc.DiscordRichPresence;
 import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.common.utils.VipiumConfig;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+@OnlyIn(Dist.CLIENT)
 public class RPCManager
 {
     private final DiscordRPC rpcLib = DiscordRPC.INSTANCE;
@@ -61,7 +64,17 @@ public class RPCManager
                 {
                     try
                     {
-                        this.started = true;
+                        if(mc.get().world != null && mc.get().getConnection() != null)
+                        {
+                            if(mc.get().getCurrentServerData() != null)
+                            {
+                                VIPMod.LOGGER.info(VIPMod.MARKER, "Connected to " + mc.get().getCurrentServerData().serverIP);
+                                VIPMod.clientManager.getRpcManager().makeChanges(rpc -> {
+                                    rpc.details = "Playing in V.I.P";
+                                    rpc.state = "Connected";
+                                });
+                            }
+                        }
                         this.rpcLib.Discord_UpdatePresence(rpc);
                         this.rpcLib.Discord_RunCallbacks();
                         Thread.sleep(200);

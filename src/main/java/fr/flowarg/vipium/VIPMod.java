@@ -4,7 +4,6 @@ import fr.flowarg.vipium.client.ClientManager;
 import fr.flowarg.vipium.client.creativetabs.BlocksGroup;
 import fr.flowarg.vipium.client.creativetabs.ItemsGroup;
 import fr.flowarg.vipium.client.renderer.VipiumChestRenderer;
-import fr.flowarg.vipium.client.renderer.VipiumMinecartRenderer;
 import fr.flowarg.vipium.client.screens.VipiumChestScreen;
 import fr.flowarg.vipium.client.screens.VipiumPurifierScreen;
 import fr.flowarg.vipium.common.handlers.RegistryHandler;
@@ -85,7 +84,6 @@ public class VIPMod
         clientManager.getStartTask().test(event::getMinecraftSupplier);
         ScreenManager.registerFactory(RegistryHandler.VIPIUM_PURIFIER_CONTAINER.get(), VipiumPurifierScreen::new);
         ScreenManager.registerFactory(RegistryHandler.VIPIUM_CHEST_CONTAINER.get(), VipiumChestScreen::new);
-        RenderingRegistry.registerEntityRenderingHandler(RegistryHandler.VIPIUM_MINECART_ENTITY.get(), VipiumMinecartRenderer::new);
         ClientRegistry.bindTileEntityRenderer(RegistryHandler.VIPIUM_CHEST_TILE_ENTITY.get(), VipiumChestRenderer::new);
     }
 }

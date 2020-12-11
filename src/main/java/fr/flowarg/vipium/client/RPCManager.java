@@ -68,11 +68,13 @@ public class RPCManager
                         {
                             if(mc.get().getCurrentServerData() != null)
                             {
-                                VIPMod.LOGGER.info(VIPMod.MARKER, "Connected to " + mc.get().getCurrentServerData().serverIP);
-                                VIPMod.clientManager.getRpcManager().makeChanges(rpc -> {
-                                    rpc.details = "Playing in V.I.P";
-                                    rpc.state = "Connected";
-                                });
+                                if(mc.get().getCurrentServerData().serverIP.equals("flowargbyfistin.francecentral.cloudapp.azure.com:25565"))
+                                {
+                                    VIPMod.clientManager.getRpcManager().makeChanges(rpc -> {
+                                        rpc.details = "Playing in V.I.P";
+                                        rpc.state = "Connected";
+                                    });
+                                }
                             }
                         }
                         this.rpcLib.Discord_UpdatePresence(rpc);

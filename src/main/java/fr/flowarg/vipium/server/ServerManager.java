@@ -17,8 +17,11 @@ import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.minecraft.command.CommandSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
@@ -132,6 +135,25 @@ public class ServerManager implements EventListener
         newsChannel.sendTyping().queue();
         newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Le serveur est fermé ! ").append(this.guild.getRoleById(658309459755532289L)).build()).queue();
         this.jda.shutdown();
+    }
+
+    @SubscribeEvent
+    public void onPlayerJoin(EntityJoinWorldEvent event)
+    {
+        if(event.getEntity() instanceof PlayerEntity)
+        {
+            final TextChannel joinLeaveChannel = this.guild.getTextChannelById(787282709512060939L);
+            joinLeaveChannel.sendTyping().queue();
+            joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getEntity().getName() + " s'est connecté !").build()).queue();
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerLeft(PlayerEvent.PlayerLoggedOutEvent event)
+    {
+        final TextChannel joinLeaveChannel = this.guild.getTextChannelById(787282709512060939L);
+        joinLeaveChannel.sendTyping().queue();
+        joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getPlayer().getName() + " s'est déconnecté !").build()).queue();
     }
 
     public HomeCore getHomeCore()

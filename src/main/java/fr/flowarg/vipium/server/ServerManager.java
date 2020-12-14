@@ -144,7 +144,7 @@ public class ServerManager implements EventListener
         {
             final TextChannel joinLeaveChannel = this.guild.getTextChannelById(787282709512060939L);
             joinLeaveChannel.sendTyping().queue();
-            joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getEntity().getName() + " s'est connecté !").build()).queue();
+            joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getEntity().getName().getFormattedText() + " s'est connecté !").build()).queue();
         }
     }
 
@@ -153,7 +153,7 @@ public class ServerManager implements EventListener
     {
         final TextChannel joinLeaveChannel = this.guild.getTextChannelById(787282709512060939L);
         joinLeaveChannel.sendTyping().queue();
-        joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getPlayer().getName() + " s'est déconnecté !").build()).queue();
+        joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getPlayer().getName().getFormattedText() + " s'est déconnecté !").build()).queue();
     }
 
     public HomeCore getHomeCore()

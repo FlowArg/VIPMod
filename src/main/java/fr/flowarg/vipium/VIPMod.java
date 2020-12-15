@@ -1,8 +1,8 @@
 package fr.flowarg.vipium;
 
 import fr.flowarg.vipium.client.ClientManager;
-import fr.flowarg.vipium.client.creativetabs.BlocksGroup;
-import fr.flowarg.vipium.client.creativetabs.ItemsGroup;
+import fr.flowarg.vipium.common.creativetabs.BlocksGroup;
+import fr.flowarg.vipium.common.creativetabs.ItemsGroup;
 import fr.flowarg.vipium.client.renderer.VipiumChestRenderer;
 import fr.flowarg.vipium.client.screens.VipiumChestScreen;
 import fr.flowarg.vipium.client.screens.VipiumPurifierScreen;

@@ -1,9 +1,9 @@
-package fr.flowarg.vipium.common.handlers;
+package fr.flowarg.vipium.client;
 
 import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.client.screens.CustomInGameMenuScreen;
 import fr.flowarg.vipium.client.screens.CustomMainMenuScreen;
-import fr.flowarg.vipium.common.utils.VipiumConfig;
+import fr.flowarg.vipium.common.core.VipiumConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.IngameMenuScreen;
 import net.minecraft.client.gui.screen.MainMenuScreen;
@@ -13,8 +13,9 @@ import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = VIPMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ForgeEventHandler
+@OnlyIn(Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = VIPMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+public class ClientForgeEventHandler
 {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)

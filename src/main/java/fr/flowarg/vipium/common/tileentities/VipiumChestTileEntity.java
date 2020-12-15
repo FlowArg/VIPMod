@@ -2,7 +2,7 @@ package fr.flowarg.vipium.common.tileentities;
 
 import fr.flowarg.vipium.common.blocks.VipiumChestBlock;
 import fr.flowarg.vipium.common.containers.VipiumChestContainer;
-import fr.flowarg.vipium.common.handlers.RegistryHandler;
+import fr.flowarg.vipium.common.core.RegistryHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.player.PlayerEntity;

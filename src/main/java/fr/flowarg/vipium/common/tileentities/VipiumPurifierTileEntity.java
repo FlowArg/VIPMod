@@ -2,7 +2,7 @@ package fr.flowarg.vipium.common.tileentities;
 
 import fr.flowarg.vipium.common.blocks.VipiumPurifierBlock;
 import fr.flowarg.vipium.common.containers.VipiumPurifierContainer;
-import fr.flowarg.vipium.common.handlers.RegistryHandler;
+import fr.flowarg.vipium.common.core.RegistryHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;

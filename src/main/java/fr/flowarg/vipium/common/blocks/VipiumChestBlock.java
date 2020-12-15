@@ -1,6 +1,6 @@
 package fr.flowarg.vipium.common.blocks;
 
-import fr.flowarg.vipium.common.handlers.RegistryHandler;
+import fr.flowarg.vipium.common.core.RegistryHandler;
 import fr.flowarg.vipium.common.tileentities.VipiumChestTileEntity;
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.block.*;

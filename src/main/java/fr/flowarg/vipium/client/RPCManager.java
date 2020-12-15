@@ -4,7 +4,7 @@ import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;
 import club.minnced.discord.rpc.DiscordRichPresence;
 import fr.flowarg.vipium.VIPMod;
-import fr.flowarg.vipium.common.utils.VipiumConfig;
+import fr.flowarg.vipium.common.core.VipiumConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -55,7 +55,7 @@ public class RPCManager
             this.rpc.details = "Loading game";
             this.rpc.state = "Waiting Minecraft";
             this.rpc.smallImageText = mc.get().getSession().getUsername();
-            this.rpc.smallImageKey = this.names.get(mc.get().getSession().getUsername());
+            this.rpc.smallImageKey = this.names.getOrDefault(mc.get().getSession().getUsername(), "lambda");
             this.rpcLib.Discord_UpdatePresence(this.rpc);
             this.started = true;
 

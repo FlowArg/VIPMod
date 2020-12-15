@@ -6,8 +6,8 @@ import fr.flowarg.vipium.common.creativetabs.ItemsGroup;
 import fr.flowarg.vipium.client.renderer.VipiumChestRenderer;
 import fr.flowarg.vipium.client.screens.VipiumChestScreen;
 import fr.flowarg.vipium.client.screens.VipiumPurifierScreen;
-import fr.flowarg.vipium.common.handlers.RegistryHandler;
-import fr.flowarg.vipium.common.utils.VipiumConfig;
+import fr.flowarg.vipium.common.core.RegistryHandler;
+import fr.flowarg.vipium.common.core.VipiumConfig;
 import fr.flowarg.vipium.common.world.OreGeneration;
 import fr.flowarg.vipium.server.ServerException;
 import fr.flowarg.vipium.server.ServerManager;
@@ -71,9 +71,10 @@ public class VIPMod
     private void setupCommon(final FMLCommonSetupEvent event)
     {
         LOGGER.info(MARKER, "FMLSetup is loading Vipium Mod...");
-        LOGGER.info(MARKER, "Adding new ores to world generation...");
+
         final OreGeneration oreGeneration = new OreGeneration();
-        oreGeneration.setupVipiumGeneration();
+        oreGeneration.setupVipiumOreGeneration();
+        oreGeneration.setupVipiumBlockGeneration();
     }
 
     private void setupClient(final FMLClientSetupEvent event)

@@ -1,5 +1,9 @@
 package fr.flowarg.vipium.server;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+@OnlyIn(Dist.DEDICATED_SERVER)
 public class Home
 {
     private final String name;

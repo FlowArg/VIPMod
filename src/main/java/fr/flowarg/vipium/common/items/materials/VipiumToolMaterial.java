@@ -1,6 +1,6 @@
 package fr.flowarg.vipium.common.items.materials;
 
-import fr.flowarg.vipium.common.handlers.RegistryHandler;
+import fr.flowarg.vipium.common.core.RegistryHandler;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.crafting.Ingredient;
 

@@ -1,4 +1,4 @@
-package fr.flowarg.vipium.common.handlers;
+package fr.flowarg.vipium.client;
 
 import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.client.renderer.VipiumChestRenderer;
@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = VIPMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class ModEventHandler
+public class ClientModEventHandler
 {    
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent

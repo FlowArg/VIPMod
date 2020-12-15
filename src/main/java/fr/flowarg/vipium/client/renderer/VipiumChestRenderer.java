@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.common.blocks.VipiumChestBlock;
-import fr.flowarg.vipium.common.handlers.RegistryHandler;
+import fr.flowarg.vipium.common.core.RegistryHandler;
 import fr.flowarg.vipium.common.tileentities.VipiumChestTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

@@ -2,7 +2,7 @@ package fr.flowarg.vipium.common.containers;
 
 import fr.flowarg.vipium.common.containers.slots.upgrades.UpgradeSlot;
 import fr.flowarg.vipium.common.containers.slots.upgrades.UpgradeType;
-import fr.flowarg.vipium.common.handlers.RegistryHandler;
+import fr.flowarg.vipium.common.core.RegistryHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;

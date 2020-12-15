@@ -17,10 +17,8 @@ import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.minecraft.command.CommandSource;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
@@ -138,14 +136,11 @@ public class ServerManager implements EventListener
     }
 
     @SubscribeEvent
-    public void onPlayerJoin(EntityJoinWorldEvent event)
+    public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event)
     {
-        if(event.getEntity() instanceof PlayerEntity)
-        {
-            final TextChannel joinLeaveChannel = this.guild.getTextChannelById(787282709512060939L);
-            joinLeaveChannel.sendTyping().queue();
-            joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getEntity().getName().getFormattedText() + " s'est connecté !").build()).queue();
-        }
+        final TextChannel joinLeaveChannel = this.guild.getTextChannelById(787282709512060939L);
+        joinLeaveChannel.sendTyping().queue();
+        joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getPlayer().getGameProfile().getName() + " s'est connecté !").build()).queue();
     }
 
     @SubscribeEvent
@@ -153,7 +148,7 @@ public class ServerManager implements EventListener
     {
         final TextChannel joinLeaveChannel = this.guild.getTextChannelById(787282709512060939L);
         joinLeaveChannel.sendTyping().queue();
-        joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getPlayer().getName().getFormattedText() + " s'est déconnecté !").build()).queue();
+        joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getPlayer().getGameProfile().getName() + " s'est déconnecté !").build()).queue();
     }
 
     public HomeCore getHomeCore()

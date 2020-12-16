@@ -1,15 +1,15 @@
 package fr.flowarg.vipium;
 
 import fr.flowarg.vipium.client.ClientManager;
-import fr.flowarg.vipium.common.creativetabs.BlocksGroup;
-import fr.flowarg.vipium.common.creativetabs.ItemsGroup;
 import fr.flowarg.vipium.client.renderer.VipiumChestRenderer;
 import fr.flowarg.vipium.client.screens.VipiumChestScreen;
 import fr.flowarg.vipium.client.screens.VipiumPurifierScreen;
 import fr.flowarg.vipium.common.core.RegistryHandler;
 import fr.flowarg.vipium.common.core.VipiumConfig;
+import fr.flowarg.vipium.common.creativetabs.BlocksGroup;
+import fr.flowarg.vipium.common.creativetabs.ItemsGroup;
 import fr.flowarg.vipium.common.world.OreGeneration;
-import fr.flowarg.vipium.server.ServerException;
+import fr.flowarg.vipium.common.core.VIPException;
 import fr.flowarg.vipium.server.ServerManager;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.item.ItemGroup;
@@ -59,7 +59,7 @@ public class VIPMod
             {
                 serverManager = new ServerManager();
                 MinecraftForge.EVENT_BUS.register(serverManager);
-            } catch (ServerException e)
+            } catch (VIPException e)
             {
                 LOGGER.error(MARKER, "The ServerManager initialization encountered a problem.", e);
             }

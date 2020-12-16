@@ -32,6 +32,7 @@ public class RPCManager
         this.names.putIfAbsent("MaxleProt86", "max");
         this.names.putIfAbsent("squelletton", "squelletton");
         this.names.putIfAbsent("SSHEeveeDirector", "sshdirector");
+        VIPMod.LOGGER.info(VIPMod.MARKER, "Registered rich presences assets for application " + this.applicationID + ".");
     }
 
     public void makeChanges(RPCCallback callback)

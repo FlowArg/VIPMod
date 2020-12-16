@@ -2,6 +2,7 @@ package fr.flowarg.vipium.server;
 
 import com.mojang.brigadier.CommandDispatcher;
 import fr.flowarg.vipium.VIPMod;
+import fr.flowarg.vipium.common.core.VIPException;
 import fr.flowarg.vipium.server.commands.DelHomeCommand;
 import fr.flowarg.vipium.server.commands.HomeCommand;
 import fr.flowarg.vipium.server.commands.HomesCommand;
@@ -31,6 +32,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @OnlyIn(Dist.DEDICATED_SERVER)
 public class ServerManager implements EventListener
@@ -40,7 +44,7 @@ public class ServerManager implements EventListener
     private JDA jda;
     private Guild guild;
 
-    public ServerManager() throws ServerException
+    public ServerManager() throws VIPException
     {
         try
         {
@@ -49,7 +53,7 @@ public class ServerManager implements EventListener
         }
         catch (IOException e)
         {
-            throw new ServerException("An error as occurred on ServerManager initialization.", e);
+            throw new VIPException("An error as occurred on ServerManager initialization.", e);
         }
     }
 
@@ -116,7 +120,21 @@ public class ServerManager implements EventListener
             this.channelStateDiscord.getManager().setName("SERVEUR - OUVERT").queue();
             final TextChannel newsChannel = this.guild.getTextChannelById(657473712005578772L);
             newsChannel.sendTyping().queue();
-            newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Le serveur est ouvert ! ").append(this.guild.getRoleById(658309459755532289L)).build()).queue();
+            newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Le serveur est ouvert ! https://tenor.com/view/date-alive-yoshinon-patting-yoshino-gif-12018889 ").append(this.guild.getRoleById(658309459755532289L)).build()).queue();
+
+            final Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run()
+                {
+                    final Calendar cal = Calendar.getInstance();
+                    final int hour = cal.get(Calendar.HOUR_OF_DAY);
+                    final int minute = cal.get(Calendar.MINUTE);
+ 
+                    if(hour == 19 && minute == 45)
+                        newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Il est l'heure de manger ! https://tenor.com/view/yoshino-yoshino-himekawa-date-alive-anime-waifu-gif-17503754 ").append(ServerManager.this.guild.getRoleById(658309459755532289L)).build()).queue();
+                }
+            }, 10000, 10000);
         }
     }
     
@@ -131,7 +149,7 @@ public class ServerManager implements EventListener
         this.channelStateDiscord.getManager().setName("SERVEUR - FERMÉ").queue();
         final TextChannel newsChannel = this.guild.getTextChannelById(657473712005578772L);
         newsChannel.sendTyping().queue();
-        newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Le serveur est fermé ! ").append(this.guild.getRoleById(658309459755532289L)).build()).queue();
+        newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Le serveur est fermé ! https://tenor.com/view/yoshino-hide-anime-frightened-date-alive-gif-3532023 ").append(this.guild.getRoleById(658309459755532289L)).build()).queue();
         this.jda.shutdown();
     }
 

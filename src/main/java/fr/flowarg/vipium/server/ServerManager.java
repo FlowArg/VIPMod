@@ -131,7 +131,7 @@ public class ServerManager implements EventListener
                     final int hour = cal.get(Calendar.HOUR_OF_DAY);
                     final int minute = cal.get(Calendar.MINUTE);
  
-                    if(hour == 19 && minute == 45)
+                    if((hour == 19 && minute == 45) || (hour == 12 && minute == 30))
                         newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Il est l'heure de manger ! https://tenor.com/view/yoshino-yoshino-himekawa-date-alive-anime-waifu-gif-17503754 ").append(ServerManager.this.guild.getRoleById(658309459755532289L)).build()).queue();
                 }
             }, 10000, 10000);

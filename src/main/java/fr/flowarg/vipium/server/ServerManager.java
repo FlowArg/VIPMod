@@ -32,9 +32,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.util.*;
 
 @OnlyIn(Dist.DEDICATED_SERVER)
 public class ServerManager implements EventListener
@@ -123,21 +123,28 @@ public class ServerManager implements EventListener
             newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Le serveur est ouvert ! https://tenor.com/view/date-alive-yoshinon-patting-yoshino-gif-12018889 ").append(this.guild.getRoleById(658309459755532289L)).build()).queue();
 
             final Timer timer = new Timer();
+            final Map<Integer, List<int[]>> sended = new WeakHashMap<>();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run()
                 {
                     final Calendar cal = Calendar.getInstance();
+                    final int day = cal.get(Calendar.DAY_OF_MONTH);
                     final int hour = cal.get(Calendar.HOUR_OF_DAY);
                     final int minute = cal.get(Calendar.MINUTE);
  
                     if((hour == 19 && minute == 45) || (hour == 12 && minute == 45))
                     {
+                        if(sended.get(day) != null && sended.get(day).contains(new int[]{hour, minute}))
+                            return;
+                        sended.computeIfAbsent(day, k -> new ArrayList<>());
+                        sended.get(day).add(new int[]{hour, minute});
                         newsChannel.sendTyping().queue();
                         newsChannel.sendMessage(new MessageBuilder().append("Il est l'heure de manger ! https://tenor.com/view/yoshino-yoshino-himekawa-date-alive-anime-waifu-gif-17503754 ").build()).queue();
                     }
                 }
             }, 10000, 10000);
+            this.getLogger().info(VIPMod.MARKER, "Started task for Timezone" + TimeZone.getDefault().getDisplayName() + String.format(" (%s) ", new SimpleDateFormat("hh:mm:ss").format(new Date())));
         }
     }
     

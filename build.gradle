@@ -104,6 +104,7 @@ dependencies {
 }
 
 jar {
+    exclude 'homesexample.json'
     manifest {
         attributes([
                 "Specification-Title": project.name,

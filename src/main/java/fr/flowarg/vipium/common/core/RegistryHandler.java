@@ -83,7 +83,7 @@ public class RegistryHandler
         public void onArmorTick(ItemStack stack, World world, PlayerEntity player)
         {
             if(!world.isRemote)
-                player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 30, 4, false, false));
+                player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 200, 4, false, false));
         }
     });
     public static final RegistryObject<ArmorItem> VIPIUM_PURE_CHESTPLATE = ITEMS.register("vipium_pure_chestplate", () -> new ArmorItem(RegistryHandler.VIPIUM_PURE_ARMOR_MATERIAL, EquipmentSlotType.CHEST, newItemVipiumPureProperties()) {
@@ -92,13 +92,13 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
-                player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 30, 4, false, true));
+                player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 200, 4, false, false));
                 if(player.inventory.armorInventory.get(0).getItem() == VIPIUM_PURE_BOOTS.get()
                 && player.inventory.armorInventory.get(1).getItem() == VIPIUM_PURE_LEGGINGS.get()
                 && player.inventory.armorInventory.get(3).getItem() == VIPIUM_PURE_HELMET.get())
                 {
-                    player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 10, 2, true, false));
-                    player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 10, 2, true, false));
+                    player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 200, 2, false, false));
+                    player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 200, 2, false, false));
                 }
             }
         }
@@ -108,7 +108,7 @@ public class RegistryHandler
         public void onArmorTick(ItemStack stack, World world, PlayerEntity player)
         {
             if(!world.isRemote)
-                player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, true));
+                player.addPotionEffect(new EffectInstance(Effects.SPEED, 200, 2, false, false));
         }
     });
     public static final RegistryObject<ArmorItem> VIPIUM_PURE_BOOTS = ITEMS.register("vipium_pure_boots", () -> new ArmorItem(RegistryHandler.VIPIUM_PURE_ARMOR_MATERIAL, EquipmentSlotType.FEET, newItemVipiumPureProperties()) {
@@ -116,7 +116,7 @@ public class RegistryHandler
         public void onArmorTick(ItemStack stack, World world, PlayerEntity player)
         {
             if(!world.isRemote)
-                player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
+                player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 200, 4, false, false));
         }
     });
 

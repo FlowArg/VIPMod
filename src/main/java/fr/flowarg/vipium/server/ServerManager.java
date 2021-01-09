@@ -39,6 +39,7 @@ import java.util.*;
 public class ServerManager implements EventListener
 {
     private final HomeCore homeCore;
+    private final List<DHMTimestamp> eatTimeStamps = new ArrayList<>();
     private VoiceChannel channelStateDiscord;
     private JDA jda;
     private Guild guild;
@@ -122,7 +123,6 @@ public class ServerManager implements EventListener
             newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Le serveur est ouvert ! https://tenor.com/view/date-alive-yoshinon-patting-yoshino-gif-12018889 ").append(this.guild.getRoleById(658309459755532289L)).build()).queue();
 
             final Timer timer = new Timer();
-            final Map<Integer, List<int[]>> sended = new WeakHashMap<>();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run()
@@ -134,12 +134,13 @@ public class ServerManager implements EventListener
  
                     if((hour == 19 && minute == 45) || (hour == 12 && minute == 45))
                     {
-                        if(sended.get(day) != null && sended.get(day).contains(new int[]{hour, minute}))
-                            return;
-                        sended.computeIfAbsent(day, k -> new ArrayList<>());
-                        sended.get(day).add(new int[]{hour, minute});
-                        newsChannel.sendTyping().queue();
-                        newsChannel.sendMessage(new MessageBuilder().append("Il est l'heure de manger ! https://tenor.com/view/yoshino-yoshino-himekawa-date-alive-anime-waifu-gif-17503754 ").build()).queue();
+                        final DHMTimestamp timestamp = new DHMTimestamp(day, hour, minute);
+                        if(!ServerManager.this.eatTimeStamps.contains(timestamp))
+                        {
+                            ServerManager.this.eatTimeStamps.add(timestamp);
+                            newsChannel.sendTyping().queue();
+                            newsChannel.sendMessage(new MessageBuilder().append("Il est l'heure de manger ! https://tenor.com/view/yoshino-yoshino-himekawa-date-alive-anime-waifu-gif-17503754 ").build()).queue();
+                        }
                     }
                 }
             }, 10000, 10000);
@@ -160,6 +161,7 @@ public class ServerManager implements EventListener
         newsChannel.sendTyping().queue();
         newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Le serveur est fermé ! https://tenor.com/view/yoshino-hide-anime-frightened-date-alive-gif-3532023 ").append(this.guild.getRoleById(658309459755532289L)).build()).queue();
         this.jda.shutdown();
+        this.eatTimeStamps.clear();
     }
 
     @SubscribeEvent
@@ -167,7 +169,7 @@ public class ServerManager implements EventListener
     {
         final TextChannel joinLeaveChannel = this.guild.getTextChannelById(787282709512060939L);
         joinLeaveChannel.sendTyping().queue();
-        joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getPlayer().getGameProfile().getName() + " s'est connecté !").build()).queue();
+        joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getPlayer().getGameProfile().getName()).append(" s'est connecté !").build()).queue();
     }
 
     @SubscribeEvent
@@ -175,7 +177,7 @@ public class ServerManager implements EventListener
     {
         final TextChannel joinLeaveChannel = this.guild.getTextChannelById(787282709512060939L);
         joinLeaveChannel.sendTyping().queue();
-        joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getPlayer().getGameProfile().getName() + " s'est déconnecté !").build()).queue();
+        joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getPlayer().getGameProfile().getName()).append(" s'est déconnecté !").build()).queue();
     }
 
     public HomeCore getHomeCore()
@@ -186,5 +188,56 @@ public class ServerManager implements EventListener
     public Logger getLogger()
     {
         return VIPMod.LOGGER;
+    }
+
+    private static class DHMTimestamp
+    {
+        private final int day;
+        private final int hour;
+        private final int minute;
+
+        public DHMTimestamp(int day, int hour, int minute)
+        {
+            this.day = day;
+            this.hour = hour;
+            this.minute = minute;
+        }
+
+        public int getDay()
+        {
+            return this.day;
+        }
+
+        public int getHour()
+        {
+            return this.hour;
+        }
+
+        public int getMinute()
+        {
+            return this.minute;
+        }
+
+        @Override
+        public boolean equals(Object o)
+        {
+            if (this == o) return true;
+            if (o == null || this.getClass() != o.getClass()) return false;
+
+            final DHMTimestamp dhmTimestamp = (DHMTimestamp)o;
+
+            if (this.day != dhmTimestamp.day) return false;
+            if (this.hour != dhmTimestamp.hour) return false;
+            return this.minute == dhmTimestamp.minute;
+        }
+
+        @Override
+        public int hashCode()
+        {
+            int result = this.day;
+            result = 31 * result + this.hour;
+            result = 31 * result + this.minute;
+            return result;
+        }
     }
 }

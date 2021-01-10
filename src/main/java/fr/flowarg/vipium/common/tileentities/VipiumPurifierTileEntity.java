@@ -175,12 +175,10 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
         {
             if(this.rand.nextInt(100) != 0)
             {
-                this.player.setHealth(this.player.getHealth() - 0.5F);
-                if(this.items.get(0).getCount() >= 2)
+                if(this.items.get(0).getCount() >= 4)
                 {
-                    if(this.items.get(0).getCount() >= 4)
-                        this.items.get(0).shrink(2 + this.rand.nextInt(3));
-                    else this.items.get(0).shrink(2);
+                    this.player.setHealth(this.player.getHealth() - 0.5F);
+                    this.items.get(0).shrink(this.rand.nextInt(4) + 1);
                     if(this.rand.nextInt(180) == 0)
                         this.player.inventory.addItemStackToInventory(new ItemStack(RegistryHandler.VIPIUM_PURE_INGOT.get(), 1));
                     else this.player.inventory.addItemStackToInventory(new ItemStack(RegistryHandler.VIPIUM_PURE_FRAGMENT.get(), 3));

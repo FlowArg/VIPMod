@@ -1,13 +1,16 @@
 {
   "container.vipium_purifier": "Purifier de Vipium",
   "container.vipium_chest": "Coffre en Vipium",
+  "screen.vipium_armor_effects": "Modifier votre armure en Vipium Pure",
+  "key.vipium_pure_armor": "Modifier l'armure en Vipium Pure",
+  "key.categories.vip": "Touches VIP",
   "purifier.err.notenoughitems": "Il n'y a pas assez de lingot de Vipium dans le Purifier (Besoin d'au moins 4) !",
   "commands.home.nohomeavailable": "Aucun Home disponible pour vous.",
   "commands.home.baddimension": "Ce home n'est pas dans la même dimension que vous.",
   "commands.home.successset": "Le home a été défini avec succès !",
   "commands.home.successdel": "Le home a été défini avec succès !",
   "commands.home.error": "Une erreur est apparue.",
-  "commands.home.toomanyhomes": "Vous avez déjà 3 homes !",
+  "commands.home.toomanyhomes": "Vous avez déjà 3 homes dans cette dimension !",
 
   "itemGroup.vipium.items": "Vipium : Items",
   "itemGroup.vipium.blocks": "Vipium : Blocs",

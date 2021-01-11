@@ -53,6 +53,7 @@ public class VIPMod
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
             eventBus.addListener(this::setupClient);
             clientManager = new ClientManager();
+            clientManager.getKeyBindings().registerKeyBindings();
         });
         DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
             try
@@ -75,6 +76,7 @@ public class VIPMod
         final OreGeneration oreGeneration = new OreGeneration();
         oreGeneration.setupVipiumOreGeneration();
         oreGeneration.setupVipiumBlockGeneration();
+        oreGeneration.setupVipiumPureBlockGeneration();
     }
 
     private void setupClient(final FMLClientSetupEvent event)

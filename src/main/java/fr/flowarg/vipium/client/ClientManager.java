@@ -11,17 +11,24 @@ import java.util.function.Supplier;
 public class ClientManager
 {
     private final RPCManager rpcManager;
+    private final VIPKeyBindings keyBindings;
     private final Predicate<Supplier<Supplier<Minecraft>>> startTask;
 
     public ClientManager()
     {
         this.rpcManager = new RPCManager();
+        this.keyBindings = new VIPKeyBindings();
         this.startTask = supplier -> this.rpcManager.startRpc(supplier.get());
     }
 
     public RPCManager getRpcManager()
     {
         return this.rpcManager;
+    }
+
+    public VIPKeyBindings getKeyBindings()
+    {
+        return this.keyBindings;
     }
 
     public Predicate<Supplier<Supplier<Minecraft>>> getStartTask()

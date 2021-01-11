@@ -56,14 +56,14 @@ public class CustomInGameMenuScreen extends Screen
             if (this.minecraft != null)
                 this.minecraft.displayGuiScreen(new CustomOptionsScreen(this, this.minecraft.gameSettings));
         }));
-        Button button = this.addButton(new Button(this.width / 2 + 4, this.height / 4 + 72 + -16, 98, 20, I18n.format("menu.shareToLan"), (p_213068_1_) ->
+        final Button button = this.addButton(new Button(this.width / 2 + 4, this.height / 4 + 72 + -16, 98, 20, I18n.format("menu.shareToLan"), (p_213068_1_) ->
         {
             if (this.minecraft != null)
                 this.minecraft.displayGuiScreen(new ShareToLanScreen(this));
         }));
         if (this.minecraft != null)
             button.active = this.minecraft.isSingleplayer() && !Objects.requireNonNull(this.minecraft.getIntegratedServer()).getPublic();
-        Button button1 = this.addButton(new Button(this.width / 2 - 102, this.height / 4 + 96 + -16, 204, 20, I18n.format("menu.returnToMenu"), (button3) ->
+        final Button button1 = this.addButton(new Button(this.width / 2 - 102, this.height / 4 + 96 + -16, 204, 20, I18n.format("menu.returnToMenu"), (button3) ->
         {
             boolean flag = this.minecraft.isIntegratedServerRunning();
             button3.active = false;

@@ -29,13 +29,12 @@ public class VipiumPurifierScreen extends ContainerScreen<VipiumPurifierContaine
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float p_render_3_)
+    public void render(int mouseX, int mouseY, float partialTicks)
     {
         this.renderBackground();
         if (this.widthTooNarrow)
-            this.drawGuiContainerBackgroundLayer(p_render_3_, mouseX, mouseY);
-        else
-            super.render(mouseX, mouseY, p_render_3_);
+            this.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+        else super.render(mouseX, mouseY, partialTicks);
 
         this.renderHoveredToolTip(mouseX, mouseY);
     }
@@ -54,8 +53,6 @@ public class VipiumPurifierScreen extends ContainerScreen<VipiumPurifierContaine
         RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
         if (this.minecraft != null)
             this.minecraft.getTextureManager().bindTexture(VIPIUM_PURIFIER_GUI_TEXTURE);
-        final int i = this.guiLeft;
-        final int j = this.guiTop;
-        this.blit(i, j, 0, 0, this.xSize, this.ySize);
+        this.blit(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
     }
 }

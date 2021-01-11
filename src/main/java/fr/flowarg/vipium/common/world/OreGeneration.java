@@ -31,4 +31,15 @@ public class OreGeneration
             }
         });
     }
+
+    public void setupVipiumPureBlockGeneration()
+    {
+        ForgeRegistries.BIOMES.forEach(biome -> {
+            if(biome.getCategory() == Biome.Category.SWAMP)
+            {
+                final ConfiguredPlacement<CountRangeConfig> placement = Placement.COUNT_RANGE.configure(new CountRangeConfig(1, 1, 1, 4));
+                biome.addFeature(Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new OreFeatureConfig(FillerBlockType.NATURAL_STONE, RegistryHandler.VIPIUM_PURE_BLOCK.get().getDefaultState(), 1)).withPlacement(placement));
+            }
+        });
+    }
 }

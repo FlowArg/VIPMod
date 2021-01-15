@@ -13,6 +13,8 @@ import fr.flowarg.vipium.common.items.materials.VipiumArmorMaterial;
 import fr.flowarg.vipium.common.items.materials.VipiumPureArmorMaterial;
 import fr.flowarg.vipium.common.items.materials.VipiumPureToolMaterial;
 import fr.flowarg.vipium.common.items.materials.VipiumToolMaterial;
+import fr.flowarg.vipium.common.network.SendConfigPacket;
+import fr.flowarg.vipium.common.network.VIPNetwork;
 import fr.flowarg.vipium.common.tileentities.VipiumChestTileEntity;
 import fr.flowarg.vipium.common.tileentities.VipiumPurifierTileEntity;
 import net.minecraft.block.Block;
@@ -32,6 +34,7 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -53,8 +56,11 @@ public class RegistryHandler
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);
 
     public static final Food VIPIUM_APPLE_FOOD = new Food.Builder().hunger(10).saturation(1.5f).effect(() -> new EffectInstance(Effects.REGENERATION, 120, 2), 1.0f).effect(() -> new EffectInstance(Effects.RESISTANCE, 6100, 1), 1.0f).effect(() -> new EffectInstance(Effects.FIRE_RESISTANCE, 6100, 0), 1.0f).effect(() -> new EffectInstance(Effects.ABSORPTION, 2500, 2), 1.0f).effect(() -> new EffectInstance(Effects.HEALTH_BOOST, 4000, 3), 0.4f).setAlwaysEdible().build();
-    public static final Food VIPIUM_PURE_APPLE_FOOD = new Food.Builder().hunger(12).saturation(1.8f).effect(() -> new EffectInstance(Effects.REGENERATION, 200, 2), 1.0f).effect(() -> new EffectInstance(Effects.RESISTANCE, 6600, 2), 1.0f).effect(() -> new EffectInstance(Effects.FIRE_RESISTANCE, 6600, 1), 1.0f).effect(() -> new EffectInstance(Effects.ABSORPTION, 3000, 2), 1.0f).effect(() -> new EffectInstance(Effects.HEALTH_BOOST, 4600, 3), 0.8f).setAlwaysEdible().build();
-    public static final Food FRENCH_BAGUETTE_FOOD = new Food.Builder().hunger(8).saturation(1.7f).fastToEat().build();
+    public static final Food VIPIUM_PURE_APPLE_FOOD = new Food.Builder().hunger(12).saturation(1.9f).effect(() -> new EffectInstance(Effects.REGENERATION, 200, 2), 1.0f).effect(() -> new EffectInstance(Effects.RESISTANCE, 6600, 2), 1.0f).effect(() -> new EffectInstance(Effects.FIRE_RESISTANCE, 6600, 1), 1.0f).effect(() -> new EffectInstance(Effects.ABSORPTION, 3000, 2), 1.0f).effect(() -> new EffectInstance(Effects.HEALTH_BOOST, 4600, 3), 0.8f).setAlwaysEdible().build();
+    public static final Food FRENCH_BAGUETTE_FOOD = new Food.Builder().hunger(8).saturation(1.65f).fastToEat().build();
+
+    @OnlyIn(Dist.DEDICATED_SERVER)
+    public static boolean[] config = null;
 
     public static final RegistryObject<Block> VIPIUM_BLOCK = BLOCKS.register("vipium_block", () -> new Block(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).hardnessAndResistance(30f, 30f)));
     public static final RegistryObject<VipiumOre> VIPIUM_ORE = BLOCKS.register("vipium_ore", VipiumOre::new);
@@ -82,8 +88,21 @@ public class RegistryHandler
         @Override
         public void onArmorTick(ItemStack stack, World world, PlayerEntity player)
         {
-            if(!world.isRemote && VipiumConfig.CLIENT.getEnableHelmetEffect().get())
-                player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 4, false, false));
+            if(!world.isRemote)
+            {
+                if(side == Dist.CLIENT)
+                {
+                    final boolean[] conf = new boolean[]{VipiumConfig.CLIENT.getEnableHelmetEffect().get(), VipiumConfig.CLIENT.getEnableChestplateEffect().get(), VipiumConfig.CLIENT.getEnableLeggingsEffect().get(), VipiumConfig.CLIENT.getEnableBootsEffect().get(), VipiumConfig.CLIENT.getEnableFirstFullEffect().get(), VipiumConfig.CLIENT.getEnableSecondFullEffect().get()};
+                    VIPNetwork.CHANNEL.send(PacketDistributor.SERVER.noArg(), new SendConfigPacket(conf));
+                    if(VipiumConfig.CLIENT.getEnableHelmetEffect().get())
+                        player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 4, false, false));
+                }
+                else
+                {
+                    if(config[0])
+                        player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 4, false, false));
+                }
+            }
         }
     });
     public static final RegistryObject<ArmorItem> VIPIUM_PURE_CHESTPLATE = ITEMS.register("vipium_pure_chestplate", () -> new ArmorItem(RegistryHandler.VIPIUM_PURE_ARMOR_MATERIAL, EquipmentSlotType.CHEST, newItemVipiumPureProperties()) {
@@ -92,17 +111,26 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
-                if(VipiumConfig.CLIENT.getEnableChestplateEffect().get())
-                    player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 30, 4, false, false));
-
-                if(player.inventory.armorInventory.get(0).getItem() == VIPIUM_PURE_BOOTS.get()
-                && player.inventory.armorInventory.get(1).getItem() == VIPIUM_PURE_LEGGINGS.get()
-                && player.inventory.armorInventory.get(3).getItem() == VIPIUM_PURE_HELMET.get())
+                if(side == Dist.CLIENT)
                 {
-                    if(VipiumConfig.CLIENT.getEnableFirstFullEffect().get())
-                        player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 2, false, false));
-                    if(VipiumConfig.CLIENT.getEnableSecondFullEffect().get())
-                        player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 30, 2, false, false));
+                    final boolean[] conf = new boolean[]{VipiumConfig.CLIENT.getEnableHelmetEffect().get(), VipiumConfig.CLIENT.getEnableChestplateEffect().get(), VipiumConfig.CLIENT.getEnableLeggingsEffect().get(), VipiumConfig.CLIENT.getEnableBootsEffect().get(), VipiumConfig.CLIENT.getEnableFirstFullEffect().get(), VipiumConfig.CLIENT.getEnableSecondFullEffect().get()};
+                    VIPNetwork.CHANNEL.send(PacketDistributor.SERVER.noArg(), new SendConfigPacket(conf));
+                    if(VipiumConfig.CLIENT.getEnableHelmetEffect().get())
+                        player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 30, 4, false, false));
+                }
+                else
+                {
+                    if(config[1])
+                        player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 30, 4, false, false));
+                    if(player.inventory.armorInventory.get(0).getItem() == VIPIUM_PURE_BOOTS.get()
+                            && player.inventory.armorInventory.get(1).getItem() == VIPIUM_PURE_LEGGINGS.get()
+                            && player.inventory.armorInventory.get(3).getItem() == VIPIUM_PURE_HELMET.get())
+                    {
+                        if(config[4])
+                            player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 2, false, false));
+                        if(config[5])
+                            player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 30, 2, false, false));
+                    }
                 }
             }
         }
@@ -111,16 +139,42 @@ public class RegistryHandler
         @Override
         public void onArmorTick(ItemStack stack, World world, PlayerEntity player)
         {
-            if(!world.isRemote && VipiumConfig.CLIENT.getEnableLeggingsEffect().get())
-                player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
+            if(!world.isRemote)
+            {
+                if(side == Dist.CLIENT)
+                {
+                    final boolean[] conf = new boolean[]{VipiumConfig.CLIENT.getEnableHelmetEffect().get(), VipiumConfig.CLIENT.getEnableChestplateEffect().get(), VipiumConfig.CLIENT.getEnableLeggingsEffect().get(), VipiumConfig.CLIENT.getEnableBootsEffect().get(), VipiumConfig.CLIENT.getEnableFirstFullEffect().get(), VipiumConfig.CLIENT.getEnableSecondFullEffect().get()};
+                    VIPNetwork.CHANNEL.send(PacketDistributor.SERVER.noArg(), new SendConfigPacket(conf));
+                    if(VipiumConfig.CLIENT.getEnableHelmetEffect().get())
+                        player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
+                }
+                else
+                {
+                    if(config[2])
+                        player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
+                }
+            }
         }
     });
     public static final RegistryObject<ArmorItem> VIPIUM_PURE_BOOTS = ITEMS.register("vipium_pure_boots", () -> new ArmorItem(RegistryHandler.VIPIUM_PURE_ARMOR_MATERIAL, EquipmentSlotType.FEET, newItemVipiumPureProperties()) {
         @Override
         public void onArmorTick(ItemStack stack, World world, PlayerEntity player)
         {
-            if(!world.isRemote && VipiumConfig.CLIENT.getEnableBootsEffect().get())
-                player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
+            if(!world.isRemote)
+            {
+                if(side == Dist.CLIENT)
+                {
+                    final boolean[] conf = new boolean[]{VipiumConfig.CLIENT.getEnableHelmetEffect().get(), VipiumConfig.CLIENT.getEnableChestplateEffect().get(), VipiumConfig.CLIENT.getEnableLeggingsEffect().get(), VipiumConfig.CLIENT.getEnableBootsEffect().get(), VipiumConfig.CLIENT.getEnableFirstFullEffect().get(), VipiumConfig.CLIENT.getEnableSecondFullEffect().get()};
+                    VIPNetwork.CHANNEL.send(PacketDistributor.SERVER.noArg(), new SendConfigPacket(conf));
+                    if(VipiumConfig.CLIENT.getEnableHelmetEffect().get())
+                        player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
+                }
+                else
+                {
+                    if(config[3])
+                        player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
+                }
+            }
         }
     });
 

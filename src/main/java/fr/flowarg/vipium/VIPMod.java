@@ -9,6 +9,7 @@ import fr.flowarg.vipium.common.core.VIPException;
 import fr.flowarg.vipium.common.core.VipiumConfig;
 import fr.flowarg.vipium.common.creativetabs.BlocksGroup;
 import fr.flowarg.vipium.common.creativetabs.ItemsGroup;
+import fr.flowarg.vipium.common.network.VIPNetwork;
 import fr.flowarg.vipium.common.world.OreGeneration;
 import fr.flowarg.vipium.server.ServerManager;
 import net.minecraft.client.gui.ScreenManager;
@@ -46,18 +47,23 @@ public class VIPMod
     @OnlyIn(Dist.DEDICATED_SERVER)
     public static ServerManager serverManager;
 
+    public static Dist side;
+
     public VIPMod()
     {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         eventBus.addListener(this::setupCommon);
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
+            side = Dist.CLIENT;
             eventBus.addListener(this::setupClient);
             clientManager = new ClientManager();
+            MinecraftForge.EVENT_BUS.register(clientManager);
             clientManager.getKeyBindings().registerKeyBindings();
         });
         DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
             try
             {
+                side = Dist.DEDICATED_SERVER;
                 serverManager = new ServerManager();
                 MinecraftForge.EVENT_BUS.register(serverManager);
             } catch (VIPException e)
@@ -65,6 +71,7 @@ public class VIPMod
                 LOGGER.error(MARKER, "The ServerManager initialization encountered a problem.", e);
             }
         });
+        VIPNetwork.registerPackets();
         RegistryHandler.init(eventBus);
         ModLoadingContext.get().registerConfig(Type.CLIENT, VipiumConfig.CLIENT_SPECS);
     }

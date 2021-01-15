@@ -120,7 +120,7 @@ public class RegistryHandler
                             && player.inventory.armorInventory.get(1).getItem() == VIPIUM_PURE_LEGGINGS.get()
                             && player.inventory.armorInventory.get(3).getItem() == VIPIUM_PURE_HELMET.get())
                     {
-                        if(VipiumConfig.CLIENT.getEnableFirstFullEffect())
+                        if(VipiumConfig.CLIENT.getEnableFirstFullEffect().get())
                             player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 2, false, false));
                         if(VipiumConfig.CLIENT.getEnableSecondFullEffect().get())
                             player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 30, 2, false, false));

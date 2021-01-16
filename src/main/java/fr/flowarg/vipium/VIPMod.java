@@ -48,8 +48,6 @@ public class VIPMod
     @OnlyIn(Dist.DEDICATED_SERVER)
     public static ServerManager serverManager;
 
-    public static Dist side;
-
     public VIPMod()
     {
         final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -57,7 +55,6 @@ public class VIPMod
 
         modBus.addListener(this::setupCommon);
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
-            side = Dist.CLIENT;
             modBus.addListener(this::setupClient);
             clientManager = new ClientManager();
             forgeBus.register(clientManager);
@@ -66,7 +63,6 @@ public class VIPMod
         DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
             try
             {
-                side = Dist.DEDICATED_SERVER;
                 serverManager = new ServerManager();
                 forgeBus.register(serverManager);
             } catch (VIPException e)

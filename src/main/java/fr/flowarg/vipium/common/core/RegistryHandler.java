@@ -64,6 +64,7 @@ public class RegistryHandler
     public static final Food FRENCH_BAGUETTE_FOOD = new Food.Builder().hunger(8).saturation(1.65f).fastToEat().build();
 
     public static final Map<String, boolean[]> CONFIG_BY_PLAYER = new HashMap<>();
+    public static final boolean[] DEFAULT_BOOLEAN_ARRAY = new boolean[]{true, true, true, true, true, true};
 
     public static final RegistryObject<Block> VIPIUM_BLOCK = BLOCKS.register("vipium_block", () -> new Block(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).hardnessAndResistance(30f, 30f)));
     public static final RegistryObject<VipiumOre> VIPIUM_ORE = BLOCKS.register("vipium_ore", VipiumOre::new);
@@ -99,7 +100,7 @@ public class RegistryHandler
                     updateConfig(playerName);
                     enable.set(VipiumConfig.CLIENT.getEnableHelmetEffect().get());
                 });
-                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> enable.set(CONFIG_BY_PLAYER.get(playerName)[0]));
+                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> enable.set(CONFIG_BY_PLAYER.getOrDefault(playerName, DEFAULT_BOOLEAN_ARRAY)[0]));
 
                 if(enable.get())
                     player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 4, false, false));
@@ -124,7 +125,7 @@ public class RegistryHandler
                     enable2.set(VipiumConfig.CLIENT.getEnableSecondFullEffect().get());
                 });
                 DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
-                    final boolean[] config = CONFIG_BY_PLAYER.get(playerName);
+                    final boolean[] config = CONFIG_BY_PLAYER.getOrDefault(playerName, DEFAULT_BOOLEAN_ARRAY);
                     enable.set(config[1]);
                     enable1.set(config[4]);
                     enable2.set(config[5]);
@@ -158,7 +159,7 @@ public class RegistryHandler
                     updateConfig(playerName);
                     enable.set(VipiumConfig.CLIENT.getEnableLeggingsEffect().get());
                 });
-                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> enable.set(CONFIG_BY_PLAYER.get(playerName)[2]));
+                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> enable.set(CONFIG_BY_PLAYER.getOrDefault(playerName, DEFAULT_BOOLEAN_ARRAY)[2]));
 
                 if(enable.get())
                     player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
@@ -177,7 +178,7 @@ public class RegistryHandler
                     updateConfig(playerName);
                     enable.set(VipiumConfig.CLIENT.getEnableBootsEffect().get());
                 });
-                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> enable.set(CONFIG_BY_PLAYER.get(playerName)[3]));
+                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> enable.set(CONFIG_BY_PLAYER.getOrDefault(playerName, DEFAULT_BOOLEAN_ARRAY)[3]));
 
                 if(enable.get())
                     player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));

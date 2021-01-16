@@ -2,6 +2,7 @@ package fr.flowarg.vipium.server;
 
 import com.mojang.brigadier.CommandDispatcher;
 import fr.flowarg.vipium.VIPMod;
+import fr.flowarg.vipium.common.core.RegistryHandler;
 import fr.flowarg.vipium.common.core.VIPException;
 import fr.flowarg.vipium.server.commands.DelHomeCommand;
 import fr.flowarg.vipium.server.commands.HomeCommand;
@@ -167,6 +168,7 @@ public class ServerManager implements EventListener
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event)
     {
+        RegistryHandler.CONFIG_BY_PLAYER.put(event.getPlayer().getName().getFormattedText(), RegistryHandler.DEFAULT_BOOLEAN_ARRAY);
         final TextChannel joinLeaveChannel = this.guild.getTextChannelById(787282709512060939L);
         joinLeaveChannel.sendTyping().queue();
         joinLeaveChannel.sendMessage(new MessageBuilder().append(event.getPlayer().getGameProfile().getName()).append(" s'est connecté !").build()).queue();

@@ -7,7 +7,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class VIPNetwork
 {
-    private static final String PROTOCOL_VERSION = "1";
+    private static final String PROTOCOL_VERSION = String.valueOf(1);
 
     public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(VIPMod.MODID, "vip_channel"))

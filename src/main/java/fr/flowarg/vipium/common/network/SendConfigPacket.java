@@ -4,6 +4,7 @@ import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.common.core.RegistryHandler;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.Arrays;
@@ -40,13 +41,10 @@ public class SendConfigPacket
 
     public static void handle(SendConfigPacket pck, Supplier<NetworkEvent.Context> ctx)
     {
-        if (VIPMod.side == Dist.DEDICATED_SERVER)
-        {
-            ctx.get().enqueueWork(() -> {
-                RegistryHandler.CONFIG_BY_PLAYER.remove(pck.playerName);
-                RegistryHandler.CONFIG_BY_PLAYER.put(pck.playerName, pck.config);
-            });
-        }
+        DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> ctx.get().enqueueWork(() -> {
+            RegistryHandler.CONFIG_BY_PLAYER.remove(pck.playerName);
+            RegistryHandler.CONFIG_BY_PLAYER.put(pck.playerName, pck.config);
+        }));
         ctx.get().setPacketHandled(true);
     }
 

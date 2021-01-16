@@ -38,6 +38,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import static fr.flowarg.vipium.VIPMod.*;
@@ -59,7 +61,7 @@ public class RegistryHandler
     public static final Food VIPIUM_PURE_APPLE_FOOD = new Food.Builder().hunger(12).saturation(1.9f).effect(() -> new EffectInstance(Effects.REGENERATION, 200, 2), 1.0f).effect(() -> new EffectInstance(Effects.RESISTANCE, 6600, 2), 1.0f).effect(() -> new EffectInstance(Effects.FIRE_RESISTANCE, 6600, 1), 1.0f).effect(() -> new EffectInstance(Effects.ABSORPTION, 3000, 2), 1.0f).effect(() -> new EffectInstance(Effects.HEALTH_BOOST, 4600, 3), 0.8f).setAlwaysEdible().build();
     public static final Food FRENCH_BAGUETTE_FOOD = new Food.Builder().hunger(8).saturation(1.65f).fastToEat().build();
 
-    public static boolean[] config = null;
+    public static final Map<String, boolean[]> CONFIG_BY_PLAYER = new HashMap<>();
 
     public static final RegistryObject<Block> VIPIUM_BLOCK = BLOCKS.register("vipium_block", () -> new Block(Block.Properties.create(Material.IRON).harvestTool(ToolType.PICKAXE).hardnessAndResistance(30f, 30f)));
     public static final RegistryObject<VipiumOre> VIPIUM_ORE = BLOCKS.register("vipium_ore", VipiumOre::new);
@@ -89,16 +91,16 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
+                final String playerName = player.getName().getFormattedText();
                 if(side == Dist.CLIENT)
                 {
-                    final boolean[] conf = new boolean[]{VipiumConfig.CLIENT.getEnableHelmetEffect().get(), VipiumConfig.CLIENT.getEnableChestplateEffect().get(), VipiumConfig.CLIENT.getEnableLeggingsEffect().get(), VipiumConfig.CLIENT.getEnableBootsEffect().get(), VipiumConfig.CLIENT.getEnableFirstFullEffect().get(), VipiumConfig.CLIENT.getEnableSecondFullEffect().get()};
-                    VIPNetwork.CHANNEL.send(PacketDistributor.SERVER.noArg(), new SendConfigPacket(conf));
+                    updateConfig(playerName);
                     if(VipiumConfig.CLIENT.getEnableHelmetEffect().get())
                         player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 4, false, false));
                 }
                 else
                 {
-                    if(config[0])
+                    if(CONFIG_BY_PLAYER.get(playerName)[0])
                         player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 4, false, false));
                 }
             }
@@ -110,10 +112,10 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
+                final String playerName = player.getName().getFormattedText();
                 if(side == Dist.CLIENT)
                 {
-                    final boolean[] conf = new boolean[]{VipiumConfig.CLIENT.getEnableHelmetEffect().get(), VipiumConfig.CLIENT.getEnableChestplateEffect().get(), VipiumConfig.CLIENT.getEnableLeggingsEffect().get(), VipiumConfig.CLIENT.getEnableBootsEffect().get(), VipiumConfig.CLIENT.getEnableFirstFullEffect().get(), VipiumConfig.CLIENT.getEnableSecondFullEffect().get()};
-                    VIPNetwork.CHANNEL.send(PacketDistributor.SERVER.noArg(), new SendConfigPacket(conf));
+                    updateConfig(playerName);
                     if(VipiumConfig.CLIENT.getEnableHelmetEffect().get())
                         player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 30, 4, false, false));
                     if(player.inventory.armorInventory.get(0).getItem() == VIPIUM_PURE_BOOTS.get()
@@ -128,6 +130,7 @@ public class RegistryHandler
                 }
                 else
                 {
+                    final boolean[] config = CONFIG_BY_PLAYER.get(playerName);
                     if(config[1])
                         player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 30, 4, false, false));
                     if(player.inventory.armorInventory.get(0).getItem() == VIPIUM_PURE_BOOTS.get()
@@ -149,16 +152,16 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
+                final String playerName = player.getName().getFormattedText();
                 if(side == Dist.CLIENT)
                 {
-                    final boolean[] conf = new boolean[]{VipiumConfig.CLIENT.getEnableHelmetEffect().get(), VipiumConfig.CLIENT.getEnableChestplateEffect().get(), VipiumConfig.CLIENT.getEnableLeggingsEffect().get(), VipiumConfig.CLIENT.getEnableBootsEffect().get(), VipiumConfig.CLIENT.getEnableFirstFullEffect().get(), VipiumConfig.CLIENT.getEnableSecondFullEffect().get()};
-                    VIPNetwork.CHANNEL.send(PacketDistributor.SERVER.noArg(), new SendConfigPacket(conf));
+                    updateConfig(playerName);
                     if(VipiumConfig.CLIENT.getEnableHelmetEffect().get())
                         player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
                 }
                 else
                 {
-                    if(config[2])
+                    if(CONFIG_BY_PLAYER.get(playerName)[2])
                         player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
                 }
             }
@@ -170,16 +173,16 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
+                final String playerName = player.getName().getFormattedText();
                 if(side == Dist.CLIENT)
                 {
-                    final boolean[] conf = new boolean[]{VipiumConfig.CLIENT.getEnableHelmetEffect().get(), VipiumConfig.CLIENT.getEnableChestplateEffect().get(), VipiumConfig.CLIENT.getEnableLeggingsEffect().get(), VipiumConfig.CLIENT.getEnableBootsEffect().get(), VipiumConfig.CLIENT.getEnableFirstFullEffect().get(), VipiumConfig.CLIENT.getEnableSecondFullEffect().get()};
-                    VIPNetwork.CHANNEL.send(PacketDistributor.SERVER.noArg(), new SendConfigPacket(conf));
+                    updateConfig(playerName);
                     if(VipiumConfig.CLIENT.getEnableHelmetEffect().get())
                         player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
                 }
                 else
                 {
-                    if(config[3])
+                    if(CONFIG_BY_PLAYER.get(playerName)[3])
                         player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
                 }
             }
@@ -247,6 +250,12 @@ public class RegistryHandler
     private static Callable<ItemStackTileEntityRenderer> createVipiumChestRenderer()
     {
         return () -> new VipiumChestItemStackRenderer(VipiumChestTileEntity::new);
+    }
+
+    private static void updateConfig(String playerName)
+    {
+        final boolean[] conf = new boolean[]{VipiumConfig.CLIENT.getEnableHelmetEffect().get(), VipiumConfig.CLIENT.getEnableChestplateEffect().get(), VipiumConfig.CLIENT.getEnableLeggingsEffect().get(), VipiumConfig.CLIENT.getEnableBootsEffect().get(), VipiumConfig.CLIENT.getEnableFirstFullEffect().get(), VipiumConfig.CLIENT.getEnableSecondFullEffect().get()};
+        VIPNetwork.CHANNEL.send(PacketDistributor.SERVER.noArg(), new SendConfigPacket(playerName, conf));
     }
 
     public static void init(IEventBus bus)

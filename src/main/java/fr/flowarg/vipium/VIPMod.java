@@ -4,6 +4,7 @@ import fr.flowarg.vipium.client.ClientManager;
 import fr.flowarg.vipium.client.renderer.VipiumChestRenderer;
 import fr.flowarg.vipium.client.screens.VipiumChestScreen;
 import fr.flowarg.vipium.client.screens.VipiumPurifierScreen;
+import fr.flowarg.vipium.common.core.ForgeEventHandler;
 import fr.flowarg.vipium.common.core.RegistryHandler;
 import fr.flowarg.vipium.common.core.VIPException;
 import fr.flowarg.vipium.common.core.VipiumConfig;
@@ -51,13 +52,15 @@ public class VIPMod
 
     public VIPMod()
     {
-        final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        eventBus.addListener(this::setupCommon);
+        final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+
+        modBus.addListener(this::setupCommon);
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
             side = Dist.CLIENT;
-            eventBus.addListener(this::setupClient);
+            modBus.addListener(this::setupClient);
             clientManager = new ClientManager();
-            MinecraftForge.EVENT_BUS.register(clientManager);
+            forgeBus.register(clientManager);
             clientManager.getKeyBindings().registerKeyBindings();
         });
         DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
@@ -65,14 +68,15 @@ public class VIPMod
             {
                 side = Dist.DEDICATED_SERVER;
                 serverManager = new ServerManager();
-                MinecraftForge.EVENT_BUS.register(serverManager);
+                forgeBus.register(serverManager);
             } catch (VIPException e)
             {
                 LOGGER.error(MARKER, "The ServerManager initialization encountered a problem.", e);
             }
         });
+        forgeBus.register(new ForgeEventHandler());
         VIPNetwork.registerPackets();
-        RegistryHandler.init(eventBus);
+        RegistryHandler.init(modBus);
         ModLoadingContext.get().registerConfig(Type.CLIENT, VipiumConfig.CLIENT_SPECS);
     }
 

@@ -32,19 +32,17 @@ public class SendConfigPacket
 
     public static SendConfigPacket decode(PacketBuffer buf)
     {
+        final String playerName = buf.readString();
         final int configSize = buf.readInt();
         final boolean[] config = new boolean[configSize];
         for (int i = 0; i < configSize; i++)
             config[i] = buf.readBoolean();
-        return new SendConfigPacket(buf.readString(), config);
+        return new SendConfigPacket(playerName, config);
     }
 
     public static void handle(SendConfigPacket pck, Supplier<NetworkEvent.Context> ctx)
     {
-        DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> ctx.get().enqueueWork(() -> {
-            RegistryHandler.CONFIG_BY_PLAYER.remove(pck.playerName);
-            RegistryHandler.CONFIG_BY_PLAYER.put(pck.playerName, pck.config);
-        }));
+        DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> ctx.get().enqueueWork(() -> RegistryHandler.CONFIG_BY_PLAYER.put(pck.playerName, pck.config)));
         ctx.get().setPacketHandled(true);
     }
 

@@ -24,7 +24,7 @@ public class CustomOptionsScreen extends Screen
 
     private Button difficultyButton;
     private LockIconButton lockButton;
-    private Difficulty field_213062_f;
+    private Difficulty difficulty;
 
     public CustomOptionsScreen(Screen lastScreenIn, GameSettings settingsIn)
     {
@@ -52,11 +52,11 @@ public class CustomOptionsScreen extends Screen
 
         if (this.minecraft.world != null)
         {
-            this.field_213062_f = this.minecraft.world.getDifficulty();
-            this.difficultyButton = this.addButton(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 - 12 + 24 * (i >> 1), 150, 20, this.getDifficultyText(this.field_213062_f), (p_213051_1_) -> {
-                this.field_213062_f = Difficulty.byId(this.field_213062_f.getId() + 1);
-                this.minecraft.getConnection().sendPacket(new CSetDifficultyPacket(this.field_213062_f));
-                this.difficultyButton.setMessage(this.getDifficultyText(this.field_213062_f));
+            this.difficulty = this.minecraft.world.getDifficulty();
+            this.difficultyButton = this.addButton(new Button(this.width / 2 - 155 + i % 2 * 160, this.height / 6 - 12 + 24 * (i >> 1), 150, 20, this.getDifficultyText(this.difficulty), (p_213051_1_) -> {
+                this.difficulty = Difficulty.byId(this.difficulty.getId() + 1);
+                this.minecraft.getConnection().sendPacket(new CSetDifficultyPacket(this.difficulty));
+                this.difficultyButton.setMessage(this.getDifficultyText(this.difficulty));
             }));
             if (this.minecraft.isSingleplayer() && !this.minecraft.world.getWorldInfo().isHardcore())
             {

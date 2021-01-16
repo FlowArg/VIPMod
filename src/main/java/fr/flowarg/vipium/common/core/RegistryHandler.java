@@ -33,6 +33,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.DeferredRegister;
@@ -41,6 +42,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static fr.flowarg.vipium.VIPMod.*;
 import static net.minecraft.item.Rarity.*;
@@ -92,17 +94,15 @@ public class RegistryHandler
             if(!world.isRemote)
             {
                 final String playerName = player.getName().getFormattedText();
-                if(side == Dist.CLIENT)
-                {
+                final AtomicBoolean enable = new AtomicBoolean(true);
+                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
                     updateConfig(playerName);
-                    if(VipiumConfig.CLIENT.getEnableHelmetEffect().get())
-                        player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 4, false, false));
-                }
-                else
-                {
-                    if(CONFIG_BY_PLAYER.get(playerName)[0])
-                        player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 4, false, false));
-                }
+                    enable.set(VipiumConfig.CLIENT.getEnableHelmetEffect().get());
+                });
+                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> enable.set(CONFIG_BY_PLAYER.get(playerName)[0]));
+
+                if(enable.get())
+                    player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 4, false, false));
             }
         }
     });
@@ -113,35 +113,35 @@ public class RegistryHandler
             if(!world.isRemote)
             {
                 final String playerName = player.getName().getFormattedText();
-                if(side == Dist.CLIENT)
-                {
+                final AtomicBoolean enable = new AtomicBoolean(true);
+                final AtomicBoolean enable1 = new AtomicBoolean(true);
+                final AtomicBoolean enable2 = new AtomicBoolean(true);
+
+                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
                     updateConfig(playerName);
-                    if(VipiumConfig.CLIENT.getEnableHelmetEffect().get())
-                        player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 30, 4, false, false));
-                    if(player.inventory.armorInventory.get(0).getItem() == VIPIUM_PURE_BOOTS.get()
-                            && player.inventory.armorInventory.get(1).getItem() == VIPIUM_PURE_LEGGINGS.get()
-                            && player.inventory.armorInventory.get(3).getItem() == VIPIUM_PURE_HELMET.get())
-                    {
-                        if(VipiumConfig.CLIENT.getEnableFirstFullEffect().get())
-                            player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 2, false, false));
-                        if(VipiumConfig.CLIENT.getEnableSecondFullEffect().get())
-                            player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 30, 2, false, false));
-                    }    
-                }
-                else
-                {
+                    enable.set(VipiumConfig.CLIENT.getEnableChestplateEffect().get());
+                    enable1.set(VipiumConfig.CLIENT.getEnableFirstFullEffect().get());
+                    enable2.set(VipiumConfig.CLIENT.getEnableSecondFullEffect().get());
+                });
+                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
                     final boolean[] config = CONFIG_BY_PLAYER.get(playerName);
-                    if(config[1])
-                        player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 30, 4, false, false));
-                    if(player.inventory.armorInventory.get(0).getItem() == VIPIUM_PURE_BOOTS.get()
-                            && player.inventory.armorInventory.get(1).getItem() == VIPIUM_PURE_LEGGINGS.get()
-                            && player.inventory.armorInventory.get(3).getItem() == VIPIUM_PURE_HELMET.get())
-                    {
-                        if(config[4])
-                            player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 2, false, false));
-                        if(config[5])
-                            player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 30, 2, false, false));
-                    }
+                    enable.set(config[1]);
+                    enable1.set(config[4]);
+                    enable2.set(config[5]);
+                });
+
+                if(enable.get())
+                    player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
+
+                if(player.inventory.armorInventory.get(0).getItem() == VIPIUM_PURE_BOOTS.get()
+                        && player.inventory.armorInventory.get(1).getItem() == VIPIUM_PURE_LEGGINGS.get()
+                        && player.inventory.armorInventory.get(3).getItem() == VIPIUM_PURE_HELMET.get())
+                {
+                    if(enable1.get())
+                        player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 2, false, false));
+
+                    if(enable2.get())
+                        player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 30, 2, false, false));
                 }
             }
         }
@@ -153,17 +153,15 @@ public class RegistryHandler
             if(!world.isRemote)
             {
                 final String playerName = player.getName().getFormattedText();
-                if(side == Dist.CLIENT)
-                {
+                final AtomicBoolean enable = new AtomicBoolean(true);
+                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
                     updateConfig(playerName);
-                    if(VipiumConfig.CLIENT.getEnableHelmetEffect().get())
-                        player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
-                }
-                else
-                {
-                    if(CONFIG_BY_PLAYER.get(playerName)[2])
-                        player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
-                }
+                    enable.set(VipiumConfig.CLIENT.getEnableLeggingsEffect().get());
+                });
+                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> enable.set(CONFIG_BY_PLAYER.get(playerName)[2]));
+
+                if(enable.get())
+                    player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
             }
         }
     });
@@ -174,17 +172,15 @@ public class RegistryHandler
             if(!world.isRemote)
             {
                 final String playerName = player.getName().getFormattedText();
-                if(side == Dist.CLIENT)
-                {
+                final AtomicBoolean enable = new AtomicBoolean(true);
+                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
                     updateConfig(playerName);
-                    if(VipiumConfig.CLIENT.getEnableHelmetEffect().get())
-                        player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
-                }
-                else
-                {
-                    if(CONFIG_BY_PLAYER.get(playerName)[3])
-                        player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
-                }
+                    enable.set(VipiumConfig.CLIENT.getEnableBootsEffect().get());
+                });
+                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> enable.set(CONFIG_BY_PLAYER.get(playerName)[3]));
+
+                if(enable.get())
+                    player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
             }
         }
     });

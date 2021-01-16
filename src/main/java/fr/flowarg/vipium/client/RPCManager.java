@@ -31,7 +31,7 @@ public class RPCManager
         this.names.putIfAbsent("Kot0_", "kot0");
         this.names.putIfAbsent("MaxleProt86", "max");
         this.names.putIfAbsent("squelletton", "squelletton");
-        this.names.putIfAbsent("SSHEeveeDirector", "sshdirector");
+        this.names.putIfAbsent("SSHFoxyDirector", "sshdirector");
         this.names.putIfAbsent("novissou", "novissou");
         VIPMod.LOGGER.info(VIPMod.MARKER, "Registered rich presences assets for application " + this.applicationID + ".");
     }
@@ -72,7 +72,7 @@ public class RPCManager
                             {
                                 if(mc.get().getCurrentServerData().serverIP.equals("flowargbyfistin.francecentral.cloudapp.azure.com:25565"))
                                 {
-                                    VIPMod.clientManager.getRpcManager().makeChanges(rpc -> {
+                                    this.makeChanges(rpc -> {
                                         rpc.details = "Playing in V.I.P";
                                         rpc.state = "Connected";
                                     });
@@ -84,6 +84,7 @@ public class RPCManager
                         Thread.sleep(200);
                     } catch (InterruptedException ignored) {}
                 }
+                this.rpcLib.Discord_Shutdown();
                 this.started = false;
             }, "RPC-Callback-Handler").start();
             return true;

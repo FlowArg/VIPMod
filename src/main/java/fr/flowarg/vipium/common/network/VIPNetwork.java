@@ -18,10 +18,10 @@ public class VIPNetwork
 
     public static void registerPackets()
     {
-        CHANNEL.messageBuilder(SendConfigPacket.class, 0)
-                .encoder(SendConfigPacket::encode)
-                .decoder(SendConfigPacket::decode)
-                .consumer(SendConfigPacket::handle)
+        CHANNEL.messageBuilder(SyncConfigPacket.class, 0)
+                .encoder(SyncConfigPacket::encode)
+                .decoder(SyncConfigPacket::decode)
+                .consumer(SyncConfigPacket::handle)
                 .add();
     }
 }

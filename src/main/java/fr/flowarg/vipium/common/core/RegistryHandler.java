@@ -4,6 +4,7 @@ import fr.flowarg.vipium.client.renderer.VipiumChestItemStackRenderer;
 import fr.flowarg.vipium.common.blocks.VipiumChestBlock;
 import fr.flowarg.vipium.common.blocks.VipiumPurifierBlock;
 import fr.flowarg.vipium.common.blocks.ores.VipiumOre;
+import fr.flowarg.vipium.common.capability.armorconfig.ArmorConfigCapability;
 import fr.flowarg.vipium.common.containers.VipiumChestContainer;
 import fr.flowarg.vipium.common.containers.VipiumPurifierContainer;
 import fr.flowarg.vipium.common.containers.slots.upgrades.UpgradeType;
@@ -13,8 +14,6 @@ import fr.flowarg.vipium.common.items.materials.VipiumArmorMaterial;
 import fr.flowarg.vipium.common.items.materials.VipiumPureArmorMaterial;
 import fr.flowarg.vipium.common.items.materials.VipiumPureToolMaterial;
 import fr.flowarg.vipium.common.items.materials.VipiumToolMaterial;
-import fr.flowarg.vipium.common.network.SendConfigPacket;
-import fr.flowarg.vipium.common.network.VIPNetwork;
 import fr.flowarg.vipium.common.tileentities.VipiumChestTileEntity;
 import fr.flowarg.vipium.common.tileentities.VipiumPurifierTileEntity;
 import net.minecraft.block.Block;
@@ -33,9 +32,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -94,15 +91,9 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
-                final String playerName = player.getName().getFormattedText();
-                final AtomicBoolean enable = new AtomicBoolean(true);
-                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    updateConfig(playerName);
-                    enable.set(VipiumConfig.CLIENT.getEnableHelmetEffect().get());
-                });
-                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> enable.set(CONFIG_BY_PLAYER.getOrDefault(playerName, DEFAULT_BOOLEAN_ARRAY)[0]));
-
-                if(enable.get())
+                final AtomicBoolean active = new AtomicBoolean(true);
+                player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> active.set(iArmorConfig.getArmorConfig()[0] == 1));
+                if(active.get())
                     player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 4, false, false));
             }
         }
@@ -113,35 +104,27 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
-                final String playerName = player.getName().getFormattedText();
-                final AtomicBoolean enable = new AtomicBoolean(true);
-                final AtomicBoolean enable1 = new AtomicBoolean(true);
-                final AtomicBoolean enable2 = new AtomicBoolean(true);
-
-                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    updateConfig(playerName);
-                    enable.set(VipiumConfig.CLIENT.getEnableChestplateEffect().get());
-                    enable1.set(VipiumConfig.CLIENT.getEnableFirstFullEffect().get());
-                    enable2.set(VipiumConfig.CLIENT.getEnableSecondFullEffect().get());
-                });
-                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
-                    final boolean[] config = CONFIG_BY_PLAYER.getOrDefault(playerName, DEFAULT_BOOLEAN_ARRAY);
-                    enable.set(config[1]);
-                    enable1.set(config[4]);
-                    enable2.set(config[5]);
+                final AtomicBoolean active = new AtomicBoolean(true);
+                final AtomicBoolean active1 = new AtomicBoolean(true);
+                final AtomicBoolean active2 = new AtomicBoolean(true);
+                player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> {
+                    final int[] config = iArmorConfig.getArmorConfig();
+                    active.set(config[1] == 1);
+                    active1.set(config[4] == 1);
+                    active2.set(config[5] == 1);
                 });
 
-                if(enable.get())
-                    player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
+                if(active.get())
+                    player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 30, 2, false, false));
 
                 if(player.inventory.armorInventory.get(0).getItem() == VIPIUM_PURE_BOOTS.get()
                         && player.inventory.armorInventory.get(1).getItem() == VIPIUM_PURE_LEGGINGS.get()
                         && player.inventory.armorInventory.get(3).getItem() == VIPIUM_PURE_HELMET.get())
                 {
-                    if(enable1.get())
+                    if(active1.get())
                         player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 2, false, false));
 
-                    if(enable2.get())
+                    if(active2.get())
                         player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 30, 2, false, false));
                 }
             }
@@ -153,15 +136,10 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
-                final String playerName = player.getName().getFormattedText();
-                final AtomicBoolean enable = new AtomicBoolean(true);
-                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    updateConfig(playerName);
-                    enable.set(VipiumConfig.CLIENT.getEnableLeggingsEffect().get());
-                });
-                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> enable.set(CONFIG_BY_PLAYER.getOrDefault(playerName, DEFAULT_BOOLEAN_ARRAY)[2]));
+                final AtomicBoolean active = new AtomicBoolean(true);
+                player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> active.set(iArmorConfig.getArmorConfig()[2] == 1));
 
-                if(enable.get())
+                if(active.get())
                     player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
             }
         }
@@ -172,15 +150,10 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
-                final String playerName = player.getName().getFormattedText();
-                final AtomicBoolean enable = new AtomicBoolean(true);
-                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    updateConfig(playerName);
-                    enable.set(VipiumConfig.CLIENT.getEnableBootsEffect().get());
-                });
-                DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> enable.set(CONFIG_BY_PLAYER.getOrDefault(playerName, DEFAULT_BOOLEAN_ARRAY)[3]));
+                final AtomicBoolean active = new AtomicBoolean(true);
+                player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> active.set(iArmorConfig.getArmorConfig()[3] == 1));
 
-                if(enable.get())
+                if(active.get())
                     player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
             }
         }
@@ -247,12 +220,6 @@ public class RegistryHandler
     private static Callable<ItemStackTileEntityRenderer> createVipiumChestRenderer()
     {
         return () -> new VipiumChestItemStackRenderer(VipiumChestTileEntity::new);
-    }
-
-    private static void updateConfig(String playerName)
-    {
-        final boolean[] conf = new boolean[]{VipiumConfig.CLIENT.getEnableHelmetEffect().get(), VipiumConfig.CLIENT.getEnableChestplateEffect().get(), VipiumConfig.CLIENT.getEnableLeggingsEffect().get(), VipiumConfig.CLIENT.getEnableBootsEffect().get(), VipiumConfig.CLIENT.getEnableFirstFullEffect().get(), VipiumConfig.CLIENT.getEnableSecondFullEffect().get()};
-        VIPNetwork.CHANNEL.send(PacketDistributor.SERVER.noArg(), new SendConfigPacket(playerName, conf));
     }
 
     public static void init(IEventBus bus)

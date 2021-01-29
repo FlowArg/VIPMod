@@ -4,6 +4,7 @@ import fr.flowarg.vipium.client.ClientManager;
 import fr.flowarg.vipium.client.renderer.VipiumChestRenderer;
 import fr.flowarg.vipium.client.screens.VipiumChestScreen;
 import fr.flowarg.vipium.client.screens.VipiumPurifierScreen;
+import fr.flowarg.vipium.common.capability.armorconfig.ArmorConfigCapability;
 import fr.flowarg.vipium.common.core.ForgeEventHandler;
 import fr.flowarg.vipium.common.core.RegistryHandler;
 import fr.flowarg.vipium.common.core.VIPException;
@@ -84,6 +85,8 @@ public class VIPMod
         oreGeneration.setupVipiumOreGeneration();
         oreGeneration.setupVipiumBlockGeneration();
         oreGeneration.setupVipiumPureBlockGeneration();
+
+        ArmorConfigCapability.register();
     }
 
     private void setupClient(final FMLClientSetupEvent event)

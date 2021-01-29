@@ -3,7 +3,7 @@ loaderVersion="[31,)"
 
 [[mods]]
 modId="vipium"
-version="1.3.2"
+version="1.3.3"
 displayName="V.I.P Mod"
 # updateJSONURL="http://myurl.me/"
 displayURL="https://github.com/FlowArg/VIPMod"

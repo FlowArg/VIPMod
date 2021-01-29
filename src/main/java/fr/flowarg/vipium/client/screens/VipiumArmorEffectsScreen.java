@@ -2,14 +2,14 @@ package fr.flowarg.vipium.client.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.flowarg.vipium.VIPMod;
-import fr.flowarg.vipium.common.core.VipiumConfig;
+import fr.flowarg.vipium.common.capability.armorconfig.ArmorConfigCapability;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.CheckboxButton;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 
 @OnlyIn(Dist.CLIENT)
 public class VipiumArmorEffectsScreen extends Screen
@@ -29,12 +29,18 @@ public class VipiumArmorEffectsScreen extends Screen
         this.guiLeft = (this.width - 176) / 2;
         this.guiTop = (this.height - 166) / 2;
 
-        this.addButton(new VAESCheckbox(this.guiLeft, this.guiTop + 8, VipiumConfig.CLIENT.getEnableHelmetEffect()));
-        this.addButton(new VAESCheckbox(this.guiLeft, this.guiTop + 30, VipiumConfig.CLIENT.getEnableChestplateEffect()));
-        this.addButton(new VAESCheckbox(this.guiLeft, this.guiTop + 52, VipiumConfig.CLIENT.getEnableLeggingsEffect()));
-        this.addButton(new VAESCheckbox(this.guiLeft, this.guiTop + 74, VipiumConfig.CLIENT.getEnableBootsEffect()));
-        this.addButton(new VAESCheckbox(this.guiLeft, this.guiTop + 102, VipiumConfig.CLIENT.getEnableFirstFullEffect()));
-        this.addButton(new VAESCheckbox(this.guiLeft, this.guiTop + 124, VipiumConfig.CLIENT.getEnableSecondFullEffect()));
+        final boolean[] config = new boolean[6];
+        Minecraft.getInstance().player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> {
+            final int[] conf = iArmorConfig.getArmorConfig();
+            for (int i = 0; i < conf.length; i++)
+                config[i] = conf[i] == 1;
+        });
+        this.addButton(new VAESCheckbox(this.guiLeft, this.guiTop + 8, config[0], 0));
+        this.addButton(new VAESCheckbox(this.guiLeft, this.guiTop + 30, config[1], 1));
+        this.addButton(new VAESCheckbox(this.guiLeft, this.guiTop + 52, config[2], 2));
+        this.addButton(new VAESCheckbox(this.guiLeft, this.guiTop + 74, config[3], 3));
+        this.addButton(new VAESCheckbox(this.guiLeft, this.guiTop + 102, config[4], 4));
+        this.addButton(new VAESCheckbox(this.guiLeft, this.guiTop + 124, config[5], 5));
     }
 
     @Override
@@ -54,10 +60,14 @@ public class VipiumArmorEffectsScreen extends Screen
     {
         private final IPressable onPress;
 
-        public VAESCheckbox(int xOffset, int yIn, BooleanValue property)
+        public VAESCheckbox(int xOffset, int yIn, boolean property, int index)
         {
-            super(xOffset + 150, yIn, 18, 18, "", property.get());
-            this.onPress = checkbox -> property.set(checkbox.isChecked());
+            super(xOffset + 150, yIn, 18, 18, "", property);
+            this.onPress = checkbox -> Minecraft.getInstance().player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> {
+                final int[] current = iArmorConfig.getArmorConfig();
+                current[index] = property ? 1 : 0;
+                iArmorConfig.setArmorConfig(current);
+            });
         }
 
         @Override

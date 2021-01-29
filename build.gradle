@@ -20,7 +20,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'fr.flowarg'
 archivesBaseName = 'vipium'
-version '1.3.2'
+version '1.3.3'
 
 compileJava {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -122,14 +122,14 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 task serverJar(type: ShadowJar) {
     configurations = [project.configurations.serverShade]
-    classifier 'server'
+    classifier 'serverlibs'
     relocate 'gnu.trove', 'libraries.gnu.trove'
     relocate 'org.apache.commons.collections4', 'libraries.org.apache.commons.collections4'
 }
 
 task clientJar(type: ShadowJar) {
     configurations = [project.configurations.clientShade]
-    classifier 'client'
+    classifier 'clientlibs'
 }
 
 

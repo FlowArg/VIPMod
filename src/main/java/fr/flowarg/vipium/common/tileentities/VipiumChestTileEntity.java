@@ -91,6 +91,8 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
             if (this.lidAngle < 0.0F)
                 this.lidAngle = 0.0F;
         }
+        
+        this.markDirty();
     }
 
     @Override
@@ -110,14 +112,14 @@ public class VipiumChestTileEntity extends LockableLootTileEntity implements ICh
     {
         super.read(compound);
         this.chestContents = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        if (this.checkLootAndRead(compound)) ItemStackHelper.loadAllItems(compound, this.chestContents);
+        if (!this.checkLootAndRead(compound)) ItemStackHelper.loadAllItems(compound, this.chestContents);
     }
 
     @Nonnull
     public CompoundNBT write(@Nonnull CompoundNBT compound)
     {
         super.write(compound);
-        if (this.checkLootAndWrite(compound)) ItemStackHelper.saveAllItems(compound, this.chestContents);
+        if (!this.checkLootAndWrite(compound)) ItemStackHelper.saveAllItems(compound, this.chestContents);
         return compound;
     }
 

@@ -12,24 +12,24 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
-public class VipiumChestContainer extends Container
+public class VIPChestContainer extends Container
 {
     private final IInventory chestInventory;
     private final int numRows;
 
-    public VipiumChestContainer(int id, PlayerInventory playerInventory, PacketBuffer buffer)
+    public VIPChestContainer(int id, PlayerInventory playerInventory, PacketBuffer buffer)
     {
         this(id, playerInventory);
     }
 
-    public VipiumChestContainer(int id, PlayerInventory playerInventory)
+    public VIPChestContainer(int id, PlayerInventory playerInventory)
     {
         this(id, playerInventory, new Inventory(80), 6);
     }
 
-    public VipiumChestContainer(int id, PlayerInventory playerInventoryIn, IInventory inv, int rows)
+    public VIPChestContainer(int id, PlayerInventory playerInventoryIn, IInventory inv, int rows)
     {
-        super(RegistryHandler.VIPIUM_CHEST_CONTAINER.get(), id);
+        super(RegistryHandler.VIP_CHEST_CONTAINER.get(), id);
         assertInventorySize(inv, (rows * 13) + 2);
         this.chestInventory = inv;
         this.numRows = rows;

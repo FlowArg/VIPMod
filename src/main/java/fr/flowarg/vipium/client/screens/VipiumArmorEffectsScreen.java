@@ -3,6 +3,7 @@ package fr.flowarg.vipium.client.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.common.capability.armorconfig.ArmorConfigCapability;
+import fr.flowarg.vipium.common.capability.armorconfig.IArmorConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.CheckboxButton;
@@ -29,7 +30,7 @@ public class VipiumArmorEffectsScreen extends Screen
         this.guiLeft = (this.width - 176) / 2;
         this.guiTop = (this.height - 166) / 2;
 
-        final boolean[] config = new boolean[6];
+        final boolean[] config = new boolean[IArmorConfig.DEFAULT.length];
         Minecraft.getInstance().player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> {
             final int[] conf = iArmorConfig.getArmorConfig();
             for (int i = 0; i < conf.length; i++)
@@ -65,7 +66,7 @@ public class VipiumArmorEffectsScreen extends Screen
             super(xOffset + 150, yIn, 18, 18, "", property);
             this.onPress = checkbox -> Minecraft.getInstance().player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> {
                 final int[] current = iArmorConfig.getArmorConfig();
-                current[index] = property ? 1 : 0;
+                current[index] = checkbox.active ? 1 : 0;
                 iArmorConfig.setArmorConfig(current);
             });
         }

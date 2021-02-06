@@ -1,7 +1,7 @@
 package fr.flowarg.vipium.client;
 
 import fr.flowarg.vipium.VIPMod;
-import fr.flowarg.vipium.client.renderer.VipiumChestRenderer;
+import fr.flowarg.vipium.client.renderer.VIPChestRenderer;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -21,6 +21,6 @@ public class ClientModEventHandler
             return;
 
         VIPMod.LOGGER.info(VIPMod.MARKER, "Adding VipiumChest Texture in Chest Atlas");
-        event.addSprite(VipiumChestRenderer.CHEST_TEXTURE_LOCATION);
+        event.addSprite(VIPChestRenderer.CHEST_TEXTURE_LOCATION);
     }
 }

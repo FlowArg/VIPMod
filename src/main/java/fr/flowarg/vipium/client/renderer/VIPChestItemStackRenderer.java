@@ -1,7 +1,7 @@
 package fr.flowarg.vipium.client.renderer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import fr.flowarg.vipium.common.tileentities.VipiumChestTileEntity;
+import fr.flowarg.vipium.common.tileentities.VIPChestTileEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -12,11 +12,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
-public class VipiumChestItemStackRenderer extends ItemStackTileEntityRenderer
+public class VIPChestItemStackRenderer extends ItemStackTileEntityRenderer
 {
-    private final Supplier<VipiumChestTileEntity> te;
+    private final Supplier<VIPChestTileEntity> te;
 
-    public VipiumChestItemStackRenderer(Supplier<VipiumChestTileEntity> te)
+    public VIPChestItemStackRenderer(Supplier<VIPChestTileEntity> te)
     {
         this.te = te;
     }

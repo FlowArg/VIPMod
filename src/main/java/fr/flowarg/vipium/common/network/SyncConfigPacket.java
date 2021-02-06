@@ -4,6 +4,7 @@ import fr.flowarg.vipium.common.capability.armorconfig.ArmorConfigCapability;
 import fr.flowarg.vipium.common.capability.armorconfig.IArmorConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -45,6 +46,8 @@ public class SyncConfigPacket
     {
         if (ctxSupplier.get().getDirection().getReceptionSide() == LogicalSide.CLIENT)
             ctxSupplier.get().enqueueWork(() -> handleClientUpdate(pck));
+        else if(ctxSupplier.get().getDirection().getReceptionSide() == LogicalSide.SERVER)
+            ctxSupplier.get().enqueueWork(() -> handleServerUpdate(pck, ctxSupplier.get().getSender()));
         ctxSupplier.get().setPacketHandled(true);
     }
 
@@ -52,6 +55,11 @@ public class SyncConfigPacket
     private static void handleClientUpdate(SyncConfigPacket pck)
     {
         final ClientPlayerEntity player = Minecraft.getInstance().player;
+        player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> iArmorConfig.setArmorConfig(pck.armorConfig));
+    }
+
+    private static void handleServerUpdate(SyncConfigPacket pck, ServerPlayerEntity player)
+    {
         player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> iArmorConfig.setArmorConfig(pck.armorConfig));
     }
 }

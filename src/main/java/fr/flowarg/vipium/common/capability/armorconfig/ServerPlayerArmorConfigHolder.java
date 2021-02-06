@@ -5,11 +5,11 @@ import fr.flowarg.vipium.common.network.VIPNetwork;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class PlayerArmorConfigHolder extends DefaultArmorConfigHolder
+public class ServerPlayerArmorConfigHolder extends DefaultArmorConfigHolder
 {
     private final ServerPlayerEntity player;
 
-    public PlayerArmorConfigHolder(ServerPlayerEntity player)
+    public ServerPlayerArmorConfigHolder(ServerPlayerEntity player)
     {
         this.player = player;
     }

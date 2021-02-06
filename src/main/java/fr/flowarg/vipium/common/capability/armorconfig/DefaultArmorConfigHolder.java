@@ -2,7 +2,7 @@ package fr.flowarg.vipium.common.capability.armorconfig;
 
 public class DefaultArmorConfigHolder implements IArmorConfig
 {
-    private int[] armorConfig;
+    private int[] armorConfig = {1, 1, 1, 1, 1, 1};
 
     @Override
     public int[] getArmorConfig()

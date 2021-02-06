@@ -1,11 +1,10 @@
 package fr.flowarg.vipium;
 
 import fr.flowarg.vipium.client.ClientManager;
-import fr.flowarg.vipium.client.renderer.VipiumChestRenderer;
-import fr.flowarg.vipium.client.screens.VipiumChestScreen;
+import fr.flowarg.vipium.client.renderer.VIPChestRenderer;
+import fr.flowarg.vipium.client.screens.VIPChestScreen;
 import fr.flowarg.vipium.client.screens.VipiumPurifierScreen;
 import fr.flowarg.vipium.common.capability.armorconfig.ArmorConfigCapability;
-import fr.flowarg.vipium.common.core.ForgeEventHandler;
 import fr.flowarg.vipium.common.core.RegistryHandler;
 import fr.flowarg.vipium.common.core.VIPException;
 import fr.flowarg.vipium.common.core.VipiumConfig;
@@ -37,8 +36,8 @@ import org.apache.logging.log4j.MarkerManager;
 public class VIPMod
 {
     public static final String MODID = "vipium";
-    public static final Marker MARKER = MarkerManager.getMarker("Vipium");
-    public static final Logger LOGGER = LogManager.getLogger("Vipium");
+    public static final Marker MARKER = MarkerManager.getMarker("V.I.P");
+    public static final Logger LOGGER = LogManager.getLogger("V.I.P");
 
     public static final ItemGroup BLOCK_GROUP = new BlocksGroup();
     public static final ItemGroup ITEM_GROUP = new ItemsGroup();
@@ -71,31 +70,30 @@ public class VIPMod
                 LOGGER.error(MARKER, "The ServerManager initialization encountered a problem.", e);
             }
         });
-        forgeBus.register(new ForgeEventHandler());
-        VIPNetwork.registerPackets();
         RegistryHandler.init(modBus);
         ModLoadingContext.get().registerConfig(Type.CLIENT, VipiumConfig.CLIENT_SPECS);
     }
 
     private void setupCommon(final FMLCommonSetupEvent event)
     {
-        LOGGER.info(MARKER, "FMLSetup is loading Vipium Mod...");
+        LOGGER.info(MARKER, "FMLSetup is loading V.I.P Mod...");
 
         final OreGeneration oreGeneration = new OreGeneration();
         oreGeneration.setupVipiumOreGeneration();
         oreGeneration.setupVipiumBlockGeneration();
         oreGeneration.setupVipiumPureBlockGeneration();
 
+        VIPNetwork.registerPackets();
         ArmorConfigCapability.register();
     }
 
     private void setupClient(final FMLClientSetupEvent event)
     {
-        LOGGER.info(MARKER, "FMLSetup is loading Vipium Mod (Client Side)...");
+        LOGGER.info(MARKER, "FMLSetup is loading V.I.P Mod (Client Side)...");
 
         clientManager.getStartTask().test(event::getMinecraftSupplier);
         ScreenManager.registerFactory(RegistryHandler.VIPIUM_PURIFIER_CONTAINER.get(), VipiumPurifierScreen::new);
-        ScreenManager.registerFactory(RegistryHandler.VIPIUM_CHEST_CONTAINER.get(), VipiumChestScreen::new);
-        ClientRegistry.bindTileEntityRenderer(RegistryHandler.VIPIUM_CHEST_TILE_ENTITY.get(), VipiumChestRenderer::new);
+        ScreenManager.registerFactory(RegistryHandler.VIP_CHEST_CONTAINER.get(), VIPChestScreen::new);
+        ClientRegistry.bindTileEntityRenderer(RegistryHandler.VIP_CHEST_TILE_ENTITY.get(), VIPChestRenderer::new);
     }
 }

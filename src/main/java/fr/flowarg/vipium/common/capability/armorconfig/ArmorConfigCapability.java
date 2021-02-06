@@ -1,6 +1,7 @@
 package fr.flowarg.vipium.common.capability.armorconfig;
 
 import fr.flowarg.vipium.VIPMod;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -40,7 +41,8 @@ public class ArmorConfigCapability
         IArmorConfig holder;
         if (event.getObject() instanceof PlayerEntity)
         {
-            if (event.getObject() instanceof ServerPlayerEntity) holder = new PlayerArmorConfigHolder((ServerPlayerEntity)event.getObject());
+            if (event.getObject() instanceof ServerPlayerEntity) holder = new ServerPlayerArmorConfigHolder((ServerPlayerEntity)event.getObject());
+            else if(event.getObject() instanceof ClientPlayerEntity) holder = new ClientPlayerArmorConfigHolder((ClientPlayerEntity)event.getObject());
             else holder = ARMOR_CONFIG_CAPABILITY.getDefaultInstance();
 
             final PlayerArmorConfigWrapper wrapper = new PlayerArmorConfigWrapper(holder);

@@ -3,9 +3,9 @@ package fr.flowarg.vipium.client.renderer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import fr.flowarg.vipium.VIPMod;
-import fr.flowarg.vipium.common.blocks.VipiumChestBlock;
+import fr.flowarg.vipium.common.blocks.VIPChestBlock;
 import fr.flowarg.vipium.common.core.RegistryHandler;
-import fr.flowarg.vipium.common.tileentities.VipiumChestTileEntity;
+import fr.flowarg.vipium.common.tileentities.VIPChestTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.Atlases;
@@ -25,14 +25,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class VipiumChestRenderer extends TileEntityRenderer<VipiumChestTileEntity>
+public class VIPChestRenderer extends TileEntityRenderer<VIPChestTileEntity>
 {
     public static final ResourceLocation CHEST_TEXTURE_LOCATION = new ResourceLocation(VIPMod.MODID, "entity/vipium_chest");
     private final ModelRenderer chestLid;
     private final ModelRenderer chestBottom;
     private final ModelRenderer chestLock;
 
-    public VipiumChestRenderer(TileEntityRendererDispatcher tileEntityRendererDispatcher)
+    public VIPChestRenderer(TileEntityRendererDispatcher tileEntityRendererDispatcher)
     {
         super(tileEntityRendererDispatcher);
 
@@ -48,34 +48,34 @@ public class VipiumChestRenderer extends TileEntityRenderer<VipiumChestTileEntit
     }
 
     @Override
-    public void render(VipiumChestTileEntity tileEntity, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
+    public void render(VIPChestTileEntity tileEntity, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
     {
         final World world = tileEntity.getWorld();
         final boolean flag = world != null;
-        final BlockState blockstate = flag ? tileEntity.getBlockState() : RegistryHandler.VIPIUM_CHEST_BLOCK.get().getDefaultState().with(VipiumChestBlock.FACING, Direction.SOUTH);
+        final BlockState blockstate = flag ? tileEntity.getBlockState() : RegistryHandler.VIP_CHEST_BLOCK.get().getDefaultState().with(VIPChestBlock.FACING, Direction.SOUTH);
         final Block block = blockstate.getBlock();
 
-        if (block instanceof VipiumChestBlock)
+        if (block instanceof VIPChestBlock)
         {
-            VipiumChestBlock ironChestBlock = (VipiumChestBlock)block;
+            VIPChestBlock vipChestBlock = (VIPChestBlock)block;
 
             matrixStackIn.push();
-            float f = blockstate.get(VipiumChestBlock.FACING).getHorizontalAngle();
+            float f = blockstate.get(VIPChestBlock.FACING).getHorizontalAngle();
             matrixStackIn.translate(0.5D, 0.5D, 0.5D);
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-f));
             matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
 
-            TileEntityMerger.ICallbackWrapper<? extends VipiumChestTileEntity> iCallbackWrapper;
+            TileEntityMerger.ICallbackWrapper<? extends VIPChestTileEntity> iCallbackWrapper;
             if (flag)
             {
-                iCallbackWrapper = ironChestBlock.getWrapper(blockstate, world, tileEntity.getPos(), true);
+                iCallbackWrapper = vipChestBlock.combine(blockstate, world, tileEntity.getPos(), true);
             }
             else
             {
                 iCallbackWrapper = TileEntityMerger.ICallback::func_225537_b_;
             }
 
-            float f1 = iCallbackWrapper.apply(VipiumChestBlock.getLid(tileEntity)).get(partialTicks);
+            float f1 = iCallbackWrapper.apply(VIPChestBlock.getLid(tileEntity)).get(partialTicks);
             f1 = 1.0F - f1;
             f1 = 1.0F - f1 * f1 * f1;
             int i = iCallbackWrapper.apply(new DualBrightnessCallback<>()).applyAsInt(combinedLightIn);

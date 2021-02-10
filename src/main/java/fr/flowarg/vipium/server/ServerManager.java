@@ -71,6 +71,7 @@ public class ServerManager implements EventListener
         SetHomeCommand.register(dispatcher);
         DelHomeCommand.register(dispatcher);
         SubmitCDCommand.register(dispatcher);
+        GetSubmitCommand.register(dispatcher);
 
         try
         {

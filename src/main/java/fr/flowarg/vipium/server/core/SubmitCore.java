@@ -33,36 +33,61 @@ public class SubmitCore implements IStringUser
         final AtomicBoolean musicExist = new AtomicBoolean(false);
         array.forEach(baseElem -> {
             final JsonObject obj = baseElem.getAsJsonObject();
-            final JsonObject playerObj = obj.getAsJsonObject(playerName);
-            if(playerObj != null)
+            JsonObject playerObj = obj.getAsJsonObject(playerName);
+            if(playerObj == null)
             {
-                final JsonArray content = obj.getAsJsonArray("submitted");
-                content.forEach(baseContentElem -> {
-                    if(baseContentElem.isJsonPrimitive())
-                    {
-                        final JsonPrimitive primitive = baseContentElem.getAsJsonPrimitive();
-                        if(primitive.isString())
-                        {
-                            final String musicName = primitive.getAsString();
-                            if(musicName.equalsIgnoreCase(music))
-                                musicExist.set(true);
-                        }
-                    }
-                });
-                if(!musicExist.get())
+                playerObj = new JsonObject();
+                playerObj.add("submitted", new JsonArray());
+                obj.add(playerName, playerObj);
+            }
+
+            final JsonArray content = playerObj.getAsJsonArray("submitted");
+            content.forEach(baseContentElem -> {
+                if(baseContentElem.isJsonPrimitive())
                 {
-                    try
+                    final JsonPrimitive primitive = baseContentElem.getAsJsonPrimitive();
+                    if(primitive.isString())
                     {
-                        content.add(music);
-                        Files.write(this.submitFiles.toPath(), Collections.singleton(array.toString()), StandardCharsets.UTF_8);
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
+                        final String musicName = primitive.getAsString();
+                        if(musicName.equalsIgnoreCase(music))
+                            musicExist.set(true);
                     }
+                }
+            });
+            if(!musicExist.get())
+            {
+                try
+                {
+                    content.add(music);
+                    Files.write(this.submitFiles.toPath(), Collections.singleton(array.toString()), StandardCharsets.UTF_8);
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
                 }
             }
         });
         return musicExist.get() ? SubmitResult.SUBMIT_EXIST : SubmitResult.SUCCESS;
+    }
+
+    public String getSubmittedByPlayer(String playerName) throws Exception
+    {
+        final JsonArray array = new JsonParser().parse(this.toString(Files.readAllLines(this.submitFiles.toPath(), StandardCharsets.UTF_8))).getAsJsonArray();
+        final StringBuilder sb = new StringBuilder("[");
+        array.forEach(baseElem -> {
+            final JsonObject obj = baseElem.getAsJsonObject();
+            final JsonObject playerObj = obj.getAsJsonObject(playerName);
+            if(playerObj == null) return;
+
+            final JsonArray content = playerObj.getAsJsonArray("submitted");
+            content.forEach(baseContentElem -> {
+                if(baseContentElem.isJsonPrimitive())
+                {
+                    final JsonPrimitive primitive = baseContentElem.getAsJsonPrimitive();
+                    if(primitive.isString()) sb.append(primitive.getAsString());
+                }
+            });
+        });
+        return sb.toString();
     }
 
     public enum SubmitResult

@@ -1,23 +1,22 @@
 package fr.flowarg.vipium.server;
 
+import com.google.common.io.Files;
 import com.mojang.brigadier.CommandDispatcher;
 import fr.flowarg.vipium.VIPMod;
 import fr.flowarg.vipium.common.core.VIPException;
-import fr.flowarg.vipium.server.commands.DelHomeCommand;
-import fr.flowarg.vipium.server.commands.HomeCommand;
-import fr.flowarg.vipium.server.commands.HomesCommand;
-import fr.flowarg.vipium.server.commands.SetHomeCommand;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.OnlineStatus;
+import fr.flowarg.vipium.server.commands.*;
+import fr.flowarg.vipium.server.core.HomeCore;
+import fr.flowarg.vipium.server.core.SubmitCore;
+import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.minecraft.command.CommandSource;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -28,21 +27,25 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
-import java.io.BufferedReader;
+import java.awt.*;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.*;
 
 @OnlyIn(Dist.DEDICATED_SERVER)
 public class ServerManager implements EventListener
 {
     private final HomeCore homeCore;
+    private final SubmitCore submitCore;
     private final List<DHMTimestamp> eatTimeStamps = new ArrayList<>();
     private VoiceChannel channelStateDiscord;
     private JDA jda;
     private Guild guild;
+    private MinecraftServer server;
+    private boolean started = false;
 
     public ServerManager() throws VIPException
     {
@@ -50,6 +53,7 @@ public class ServerManager implements EventListener
         {
             this.getLogger().info(VIPMod.MARKER, "Loading ServerManager...");
             this.homeCore = new HomeCore();
+            this.submitCore = new SubmitCore();
         }
         catch (IOException e)
         {
@@ -60,18 +64,21 @@ public class ServerManager implements EventListener
     @SubscribeEvent
     public void onServerStart(FMLServerStartingEvent event)
     {
+        this.server = event.getServer();
         final CommandDispatcher<CommandSource> dispatcher = event.getCommandDispatcher();
         HomeCommand.register(dispatcher);
         HomesCommand.register(dispatcher);
         SetHomeCommand.register(dispatcher);
         DelHomeCommand.register(dispatcher);
+        SubmitCDCommand.register(dispatcher);
+
         try
         {
             final File fileToken = new File("token");
             if(!fileToken.exists())
                 return;
             
-            final String token = loadFile(fileToken);
+            final String token = Files.readFirstLine(fileToken, StandardCharsets.UTF_8);
             final JDABuilder jdaBuilder = JDABuilder.createDefault(token);
 
             jdaBuilder.setStatus(OnlineStatus.ONLINE);
@@ -87,24 +94,6 @@ public class ServerManager implements EventListener
         {
             e.printStackTrace();
         }
-    }
-    
-    public static String loadFile(final File file) throws IOException
-    {
-        if (file.exists())
-        {
-            final BufferedReader reader = new BufferedReader(new FileReader(file));
-            final StringBuilder text = new StringBuilder();
-
-            String line;
-
-            while ((line = reader.readLine()) != null)
-                text.append(line);
-            
-            reader.close();
-            return text.toString();
-        }
-        return "";
     }
     
     @Override
@@ -145,7 +134,42 @@ public class ServerManager implements EventListener
                 }
             }, 10000, 10000);
             this.getLogger().info(VIPMod.MARKER, "Started task for Timezone" + TimeZone.getDefault().getDisplayName() + String.format(" (%s) ", new SimpleDateFormat("hh:mm:ss").format(new Date())));
+            this.started = true;
         }
+        else if(this.started)
+        {
+            if(event instanceof MessageReceivedEvent)
+                this.onMessageReceivedEvent((MessageReceivedEvent)event);
+        }
+    }
+
+    private void onMessageReceivedEvent(MessageReceivedEvent event)
+    {
+        if(event.getMessage().getContentRaw().equalsIgnoreCase("!stopVIP"))
+        {
+            event.getChannel().sendTyping().complete();
+            if (this.server != null)
+            {
+                if(this.server.getCurrentPlayerCount() == 0)
+                {
+                    event.getChannel().sendMessage(this.defaultEmbed(new Color(7, 170, 52), "You want to stop server and...", "Server is stopping !", event.getMember())).complete();
+                    this.server.initiateShutdown(false);
+                }
+                else event.getChannel().sendMessage(this.defaultEmbed(new Color(234, 197, 6), "You want to stop server but...", "Server is not empty !", event.getMember())).complete();
+            }
+            else event.getChannel().sendMessage(this.defaultEmbed(new Color(175, 5, 5), "You want to stop server but...", "Server cannot stop !", event.getMember())).complete();
+        }
+    }
+
+    private MessageEmbed defaultEmbed(Color color, String actionName, String actionValue, Member sender)
+    {
+        final EmbedBuilder embedBuilder = new EmbedBuilder();
+        final User user = sender.getUser();
+        embedBuilder.setColor(color);
+        embedBuilder.addField(actionName, actionValue, false);
+        embedBuilder.setTitle("Action from " + sender.getEffectiveName() + '(' + user.getName() + '#' + user.getDiscriminator() + ')');
+        embedBuilder.setAuthor("FlowArg", "https://github.com/FlowArg").build();
+        return embedBuilder.build();
     }
     
     @SubscribeEvent
@@ -162,6 +186,7 @@ public class ServerManager implements EventListener
         newsChannel.sendMessage(new MessageBuilder().allowMentions(Message.MentionType.ROLE).append("Le serveur est fermé ! https://tenor.com/view/yoshino-hide-anime-frightened-date-alive-gif-3532023 ").append(this.guild.getRoleById(658309459755532289L)).build()).queue();
         this.jda.shutdown();
         this.eatTimeStamps.clear();
+        this.started = false;
     }
 
     @SubscribeEvent
@@ -184,7 +209,12 @@ public class ServerManager implements EventListener
     {
         return this.homeCore;
     }
-    
+
+    public SubmitCore getSubmitCore()
+    {
+        return this.submitCore;
+    }
+
     public Logger getLogger()
     {
         return VIPMod.LOGGER;
@@ -201,21 +231,6 @@ public class ServerManager implements EventListener
             this.day = day;
             this.hour = hour;
             this.minute = minute;
-        }
-
-        public int getDay()
-        {
-            return this.day;
-        }
-
-        public int getHour()
-        {
-            return this.hour;
-        }
-
-        public int getMinute()
-        {
-            return this.minute;
         }
 
         @Override

@@ -11,6 +11,8 @@
   "commands.home.successdel": "Successfully deleted home !",
   "commands.home.error": "An error has occurred.",
   "commands.home.toomanyhomes": "You have already 3 homes in this dimension !",
+  "commands.submit.success": "Your request was sent !",
+  "commands.submit.exist": "Your request already exists !",
 
   "itemGroup.vipium.items": "Vipium : Items",
   "itemGroup.vipium.blocks": "Vipium : Blocks",

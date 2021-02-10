@@ -11,6 +11,8 @@
   "commands.home.successdel": "Le home a été défini avec succès !",
   "commands.home.error": "Une erreur est apparue.",
   "commands.home.toomanyhomes": "Vous avez déjà 3 homes dans cette dimension !",
+  "commands.submit.success": "Votre requête a été envoyée !",
+  "commands.submit.exist": "Votre requête existe déjà !",
 
   "itemGroup.vipium.items": "Vipium : Items",
   "itemGroup.vipium.blocks": "Vipium : Blocs",

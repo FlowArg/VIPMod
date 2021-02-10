@@ -1,23 +1,25 @@
-package fr.flowarg.vipium.server;
+package fr.flowarg.vipium.server.core;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import fr.flowarg.vipium.server.Home;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @OnlyIn(Dist.DEDICATED_SERVER)
-public class HomeCore
+public class HomeCore implements IStringUser
 {
-    /** We are 5 players on server. A file is okay for our usage. A database is recommended for a lot of players */
+    /** We are 6 players on server. A file is okay for our usage. A database is recommended for a lot of players */
     private final File homeFiles =  new File(".", "homes.json");
 
     public HomeCore() throws IOException
@@ -31,7 +33,7 @@ public class HomeCore
         final List<Home> result = new ArrayList<>();
         try
         {
-            final JsonObject json = new JsonParser().parse(FileUtils.readFileToString(this.homeFiles, StandardCharsets.UTF_8)).getAsJsonObject();
+            final JsonObject json = new JsonParser().parse(this.toString(Files.readAllLines(this.homeFiles.toPath(), StandardCharsets.UTF_8))).getAsJsonObject();
             final JsonObject homes = json.getAsJsonObject("homes");
             final JsonArray parsedHomes = homes.getAsJsonArray(playerName);
             parsedHomes.forEach(homeElement -> {
@@ -70,7 +72,7 @@ public class HomeCore
             if(this.getHome(playerName, toAddHome.getName(), toAddHome.getDimension()) != null)
                 return 1;
 
-            final String content = FileUtils.readFileToString(this.homeFiles, StandardCharsets.UTF_8);
+            final String content = this.toString(Files.readAllLines(this.homeFiles.toPath(), StandardCharsets.UTF_8));
             final JsonObject json;
             final JsonObject homes;
             if(content.isEmpty())
@@ -95,7 +97,7 @@ public class HomeCore
             if(!homes.has(playerName))
                 homes.add(playerName, playerHomes);
 
-            FileUtils.write(this.homeFiles, json.toString(), StandardCharsets.UTF_8);
+            Files.write(this.homeFiles.toPath(), Collections.singleton(json.toString()), StandardCharsets.UTF_8);
             return 0;
         }
         catch (Exception e)
@@ -112,7 +114,7 @@ public class HomeCore
             final Home home = this.getHome(playerName, homeName, 0) == null ? (this.getHome(playerName, homeName, 1) == null ? this.getHome(playerName, homeName, -1) : this.getHome(playerName, homeName, 1)) : this.getHome(playerName, homeName, 0);
             if(home == null)
                 return 1;
-            final JsonObject json = new JsonParser().parse(FileUtils.readFileToString(this.homeFiles, StandardCharsets.UTF_8)).getAsJsonObject();
+            final JsonObject json = new JsonParser().parse(this.toString(Files.readAllLines(this.homeFiles.toPath(), StandardCharsets.UTF_8))).getAsJsonObject();
             final JsonObject homes = json.getAsJsonObject("homes");
             if(!homes.has(playerName))
                 return 1;
@@ -128,7 +130,7 @@ public class HomeCore
                 }
             }
             playerHomes.remove(toRemove);
-            FileUtils.write(this.homeFiles, json.toString(), StandardCharsets.UTF_8);
+            Files.write(this.homeFiles.toPath(), Collections.singleton(json.toString()), StandardCharsets.UTF_8);
             return 0;
         }
         catch (Exception e)

@@ -169,7 +169,7 @@ public class ServerManager implements EventListener
         embedBuilder.setColor(color);
         embedBuilder.addField(actionName, actionValue, false);
         embedBuilder.setTitle("Action from " + sender.getEffectiveName() + '(' + user.getName() + '#' + user.getDiscriminator() + ')');
-        embedBuilder.setAuthor("FlowArg", "https://github.com/FlowArg").build();
+        embedBuilder.setFooter("Created by FlowArg for V.I.P community!").build();
         return embedBuilder.build();
     }
     

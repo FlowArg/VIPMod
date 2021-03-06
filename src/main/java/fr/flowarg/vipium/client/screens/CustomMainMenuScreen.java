@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.RenderSkybox;
 import net.minecraft.client.renderer.RenderSkyboxCube;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SharedConstants;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
@@ -132,18 +131,18 @@ public class CustomMainMenuScreen extends Screen
         if (this.firstRenderTime == 0L && this.showFadeInAnimation)
             this.firstRenderTime = Util.milliTime();
 
-        float f = this.showFadeInAnimation ? (float)(Util.milliTime() - this.firstRenderTime) / 1000.0F : 1.0F;
+        final float f = this.showFadeInAnimation ? (float)(Util.milliTime() - this.firstRenderTime) / 1000.0F : 1.0F;
         fill(0, 0, this.width, this.height, -1);
         this.panorama.render(p_render_3_, MathHelper.clamp(f, 0.0F, 1.0F));
-        int j = this.width / 2 - 137;
+        final int j = this.width / 2 - 137;
         if (this.minecraft != null)
             this.minecraft.getTextureManager().bindTexture(PANORAMA_OVERLAY_TEXTURES);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.showFadeInAnimation ? (float)MathHelper.ceil(MathHelper.clamp(f, 0.0F, 1.0F)) : 1.0F);
         blit(0, 0, this.width, this.height, 0.0F, 0.0F, 16, 128, 16, 128);
-        float f1 = this.showFadeInAnimation ? MathHelper.clamp(f - 1.0F, 0.0F, 1.0F) : 1.0F;
-        int l = MathHelper.ceil(f1 * 255.0F) << 24;
+        final float f1 = this.showFadeInAnimation ? MathHelper.clamp(f - 1.0F, 0.0F, 1.0F) : 1.0F;
+        final int l = MathHelper.ceil(f1 * 255.0F) << 24;
         if ((l & -67108864) != 0)
         {
             this.minecraft.getTextureManager().bindTexture(MINECRAFT_TITLE_TEXTURES);
@@ -196,14 +195,6 @@ public class CustomMainMenuScreen extends Screen
                 RenderSystem.scalef(f2, f2, f2);
                 this.drawCenteredString(this.font, this.splashText, 0, -8, 16776960 | l);
                 RenderSystem.popMatrix();
-            }
-
-            String s = "Minecraft " + SharedConstants.getVersion().getName();
-            s = s + ("release".equalsIgnoreCase(this.minecraft.getVersionType()) ? "" : "/" + this.minecraft.getVersionType());
-
-            if (this.minecraft.func_230151_c_())
-            {
-                s = s + I18n.format("menu.modded");
             }
 
             BrandingControl.forEachLine(true, true, (brdline, brd) -> this.drawString(this.font, brd, 2, this.height - (10 + brdline * (this.font.FONT_HEIGHT + 1)), 16777215 | l));

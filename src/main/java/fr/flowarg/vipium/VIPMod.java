@@ -43,10 +43,10 @@ public class VIPMod
     public static final ItemGroup ITEM_GROUP = new ItemsGroup();
 
     @OnlyIn(Dist.CLIENT)
-    public static ClientManager clientManager;
+    public static ClientManager clientManager = null;
 
     @OnlyIn(Dist.DEDICATED_SERVER)
-    public static ServerManager serverManager;
+    public static ServerManager serverManager = null;
 
     public VIPMod()
     {

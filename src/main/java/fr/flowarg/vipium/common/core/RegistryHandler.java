@@ -4,7 +4,6 @@ import fr.flowarg.vipium.client.renderer.VIPChestItemStackRenderer;
 import fr.flowarg.vipium.common.blocks.VIPChestBlock;
 import fr.flowarg.vipium.common.blocks.VipiumPurifierBlock;
 import fr.flowarg.vipium.common.blocks.ores.VipiumOre;
-import fr.flowarg.vipium.common.capability.armorconfig.ArmorConfigCapability;
 import fr.flowarg.vipium.common.containers.VIPChestContainer;
 import fr.flowarg.vipium.common.containers.VipiumPurifierContainer;
 import fr.flowarg.vipium.common.containers.slots.upgrades.UpgradeType;
@@ -37,7 +36,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static fr.flowarg.vipium.VIPMod.*;
 import static net.minecraft.item.Rarity.*;
@@ -86,10 +84,7 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
-                final AtomicBoolean active = new AtomicBoolean(true);
-                player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> active.set(iArmorConfig.getArmorConfig()[0] == 1));
-                if(active.get())
-                    player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 4, false, false));
+                player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 600, 4, false, false));
             }
         }
     });
@@ -99,28 +94,14 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
-                final AtomicBoolean active = new AtomicBoolean(true);
-                final AtomicBoolean active1 = new AtomicBoolean(true);
-                final AtomicBoolean active2 = new AtomicBoolean(true);
-                player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> {
-                    final int[] config = iArmorConfig.getArmorConfig();
-                    active.set(config[1] == 1);
-                    active1.set(config[4] == 1);
-                    active2.set(config[5] == 1);
-                });
-
-                if(active.get())
-                    player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 30, 2, false, false));
+                player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 30, 2, false, false));
 
                 if(player.inventory.armorInventory.get(0).getItem() == VIPIUM_PURE_BOOTS.get()
                         && player.inventory.armorInventory.get(1).getItem() == VIPIUM_PURE_LEGGINGS.get()
                         && player.inventory.armorInventory.get(3).getItem() == VIPIUM_PURE_HELMET.get())
                 {
-                    if(active1.get())
-                        player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 2, false, false));
-
-                    if(active2.get())
-                        player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 30, 2, false, false));
+                    player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 2, false, false));
+                    player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 30, 2, false, false));
                 }
             }
         }
@@ -131,11 +112,7 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
-                final AtomicBoolean active = new AtomicBoolean(true);
-                player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> active.set(iArmorConfig.getArmorConfig()[2] == 1));
-
-                if(active.get())
-                    player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
+                player.addPotionEffect(new EffectInstance(Effects.SPEED, 30, 2, false, false));
             }
         }
     });
@@ -145,11 +122,7 @@ public class RegistryHandler
         {
             if(!world.isRemote)
             {
-                final AtomicBoolean active = new AtomicBoolean(true);
-                player.getCapability(ArmorConfigCapability.ARMOR_CONFIG_CAPABILITY).ifPresent(iArmorConfig -> active.set(iArmorConfig.getArmorConfig()[3] == 1));
-
-                if(active.get())
-                    player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
+                player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 30, 4, false, false));
             }
         }
     });

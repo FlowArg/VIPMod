@@ -4,13 +4,11 @@ import fr.flowarg.vipium.client.ClientManager;
 import fr.flowarg.vipium.client.renderer.VIPChestRenderer;
 import fr.flowarg.vipium.client.screens.VIPChestScreen;
 import fr.flowarg.vipium.client.screens.VipiumPurifierScreen;
-import fr.flowarg.vipium.common.capability.armorconfig.ArmorConfigCapability;
 import fr.flowarg.vipium.common.core.RegistryHandler;
 import fr.flowarg.vipium.common.core.VIPException;
 import fr.flowarg.vipium.common.core.VipiumConfig;
 import fr.flowarg.vipium.common.creativetabs.BlocksGroup;
 import fr.flowarg.vipium.common.creativetabs.ItemsGroup;
-import fr.flowarg.vipium.common.network.VIPNetwork;
 import fr.flowarg.vipium.common.world.OreGeneration;
 import fr.flowarg.vipium.server.ServerManager;
 import net.minecraft.client.gui.ScreenManager;
@@ -43,10 +41,10 @@ public class VIPMod
     public static final ItemGroup ITEM_GROUP = new ItemsGroup();
 
     @OnlyIn(Dist.CLIENT)
-    public static ClientManager clientManager = null;
+    public static ClientManager clientManager;
 
     @OnlyIn(Dist.DEDICATED_SERVER)
-    public static ServerManager serverManager = null;
+    public static ServerManager serverManager;
 
     public VIPMod()
     {
@@ -82,9 +80,6 @@ public class VIPMod
         oreGeneration.setupVipiumOreGeneration();
         oreGeneration.setupVipiumBlockGeneration();
         oreGeneration.setupVipiumPureBlockGeneration();
-
-        VIPNetwork.registerPackets();
-        ArmorConfigCapability.register();
     }
 
     private void setupClient(final FMLClientSetupEvent event)

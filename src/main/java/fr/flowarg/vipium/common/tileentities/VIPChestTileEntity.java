@@ -61,17 +61,14 @@ public class VIPChestTileEntity extends ChestTileEntity implements IChestLid
     {
         super.read(compound);
         this.chestContents = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        if (!this.checkLootAndRead(compound))
-            ItemStackHelper.loadAllItems(compound, this.chestContents);
+        ItemStackHelper.loadAllItems(compound, this.chestContents);
     }
 
     @Override
     public CompoundNBT write(CompoundNBT compound)
     {
         super.write(compound);
-        if (!this.checkLootAndWrite(compound))
-            ItemStackHelper.saveAllItems(compound, this.chestContents);
-
+        ItemStackHelper.saveAllItems(compound, this.chestContents);
         return compound;
     }
 

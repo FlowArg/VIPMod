@@ -14,7 +14,6 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
@@ -159,10 +158,8 @@ public class VipiumPurifierTileEntity extends LockableTileEntity implements ISid
         {
             if(this.world != null)
             {
-                final BlockPos playerPos = new BlockPos(this.pos.getX(), this.pos.getY() + 1, this.pos.getZ());
-                final PlayerEntity player = this.world.getClosestPlayer(playerPos.getX(), playerPos.getY(), playerPos.getZ());
-                this.player = player;
-                return player != null && player.getPosition().equals(playerPos);
+                this.player = this.world.getClosestPlayer(this.pos.getX(), this.pos.getY(), this.pos.getZ());
+                return this.player != null && this.player.getPosX() == this.pos.getX() && this.player.getPosZ() == this.pos.getZ() && this.player.getPosY() == (this.pos.getY() + 1);
             }
             else return false;
         }

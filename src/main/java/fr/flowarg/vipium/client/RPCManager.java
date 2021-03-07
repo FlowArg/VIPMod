@@ -62,7 +62,7 @@ public class RPCManager
             this.started = true;
 
             new Thread(() -> {
-                while (!Thread.currentThread().isInterrupted() && VipiumConfig.CLIENT.getEnableRPC().get())
+                while (!Thread.currentThread().isInterrupted() && VipiumConfig.CLIENT.getEnableRPC().get() && !VIPMod.isStopping())
                 {
                     try
                     {

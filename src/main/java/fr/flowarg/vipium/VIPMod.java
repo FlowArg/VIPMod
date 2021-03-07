@@ -46,6 +46,9 @@ public class VIPMod
     @OnlyIn(Dist.DEDICATED_SERVER)
     public static ServerManager serverManager;
 
+    @OnlyIn(Dist.CLIENT)
+    private static boolean isStopping;
+
     public VIPMod()
     {
         final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -53,6 +56,7 @@ public class VIPMod
 
         modBus.addListener(this::setupCommon);
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
+            setIsStopping(false);
             modBus.addListener(this::setupClient);
             clientManager = new ClientManager();
             forgeBus.register(clientManager);
@@ -70,6 +74,18 @@ public class VIPMod
         });
         RegistryHandler.init(modBus);
         ModLoadingContext.get().registerConfig(Type.CLIENT, VipiumConfig.CLIENT_SPECS);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static boolean isStopping()
+    {
+        return isStopping;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void setIsStopping(boolean isStopping)
+    {
+        VIPMod.isStopping = isStopping;
     }
 
     private void setupCommon(final FMLCommonSetupEvent event)

@@ -18,6 +18,7 @@ import fr.flowarg.vipium.common.tileentities.VipiumPurifierTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
+import net.minecraft.entity.item.PaintingType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
@@ -51,6 +52,7 @@ public class RegistryHandler
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MODID);
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);
+    public static final DeferredRegister<PaintingType> PAINTINGS = DeferredRegister.create(ForgeRegistries.PAINTING_TYPES, MODID);
 
     public static final Food VIPIUM_APPLE_FOOD = new Food.Builder().hunger(10).saturation(1.5f).effect(() -> new EffectInstance(Effects.REGENERATION, 120, 2), 1.0f).effect(() -> new EffectInstance(Effects.RESISTANCE, 6100, 1), 1.0f).effect(() -> new EffectInstance(Effects.FIRE_RESISTANCE, 6100, 0), 1.0f).effect(() -> new EffectInstance(Effects.ABSORPTION, 2500, 2), 1.0f).effect(() -> new EffectInstance(Effects.HEALTH_BOOST, 4000, 3), 0.4f).setAlwaysEdible().build();
     public static final Food VIPIUM_PURE_APPLE_FOOD = new Food.Builder().hunger(12).saturation(1.9f).effect(() -> new EffectInstance(Effects.REGENERATION, 200, 2), 1.0f).effect(() -> new EffectInstance(Effects.RESISTANCE, 6600, 2), 1.0f).effect(() -> new EffectInstance(Effects.FIRE_RESISTANCE, 6600, 1), 1.0f).effect(() -> new EffectInstance(Effects.ABSORPTION, 3000, 2), 1.0f).effect(() -> new EffectInstance(Effects.HEALTH_BOOST, 4600, 3), 0.8f).setAlwaysEdible().build();
@@ -163,6 +165,7 @@ public class RegistryHandler
 
     public static final RegistryObject<ContainerType<VipiumPurifierContainer>> VIPIUM_PURIFIER_CONTAINER = CONTAINERS.register("vipium_purifier", () -> IForgeContainerType.create(VipiumPurifierContainer::new));
     public static final RegistryObject<ContainerType<VIPChestContainer>> VIP_CHEST_CONTAINER = CONTAINERS.register("vipium_chest", () -> IForgeContainerType.create(VIPChestContainer::new));
+    public static final RegistryObject<PaintingType> KABBALE_PAINTING = PAINTINGS.register("kabbale", () -> new PaintingType(256, 512));
 
     public static Item.Properties newItemVipiumProperties()
     {
@@ -196,5 +199,6 @@ public class RegistryHandler
         ITEMS.register(bus);
         TILE_ENTITIES.register(bus);
         CONTAINERS.register(bus);
+        PAINTINGS.register(bus);
     }
 }

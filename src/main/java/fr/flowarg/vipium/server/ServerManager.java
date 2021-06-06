@@ -154,7 +154,7 @@ public class ServerManager implements EventListener
                 if(this.server.getCurrentPlayerCount() == 0)
                 {
                     event.getChannel().sendMessage(this.defaultEmbed(new Color(7, 170, 52), "You want to stop server and...", "Server is stopping !", event.getMember())).complete();
-                    this.server.initiateShutdown(true);
+                    this.server.initiateShutdown(false);
                 }
                 else event.getChannel().sendMessage(this.defaultEmbed(new Color(234, 197, 6), "You want to stop server but...", "Server is not empty !", event.getMember())).complete();
             }

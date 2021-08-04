@@ -1,8 +1,0 @@
-{
-  "parent": "block/orientable",
-  "textures": {
-    "top": "vipium:block/vipium_purifier_top",
-    "front": "vipium:block/vipium_purifier_front",
-    "side": "vipium:block/vipium_purifier_side"
-  }
-}

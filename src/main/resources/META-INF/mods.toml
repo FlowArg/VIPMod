@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="[37,)"
+license="All rights reserved, (c) Flow (FlowArg) Arg 2021"
+[[mods]]
+modId="vip3"
+version="1.0.0"
+displayName="VIP3"
+# A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
+# updateJSONURL="https://change.me.example.invalid/updates.json"
+displayURL="https://github.com/FlowArg/VIPMod"
+logoFile="vip.png"
+credits="Kot0_ ; th3frenchENGINE ; and all VIP players"
+authors="FlowArg for development, th3frenchENGINE for 3D models, Kot0_ for textures."
+description='''
+Mod officiel du serveur V.I.P V3.
+'''
+
+[[dependencies.vip3]]
+    modId="forge"
+    mandatory=true
+    versionRange="[37,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.vip3]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.17.1,1.18)"
+    ordering="NONE"
+    side="BOTH"

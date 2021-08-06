@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " XX",
+    " YX",
+    " Y "
+  ],
+  "key": {
+    "X": {
+      "item": "vip3:vipium_ingot"
+    },
+    "Y": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "vip3:vipium_axe"
+  }
+}

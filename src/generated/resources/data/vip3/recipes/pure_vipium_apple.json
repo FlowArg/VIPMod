@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "vip3:pure_vipium_ingot"
+    },
+    "Y": {
+      "item": "minecraft:apple"
+    }
+  },
+  "result": {
+    "item": "vip3:pure_vipium_apple"
+  }
+}

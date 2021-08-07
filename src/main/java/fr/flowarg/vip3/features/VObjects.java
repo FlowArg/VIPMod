@@ -1,15 +1,16 @@
 package fr.flowarg.vip3.features;
 
 import fr.flowarg.vip3.VIP3;
-import net.minecraft.client.renderer.EffectInstance;
-import net.minecraft.server.commands.EffectCommands;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -94,6 +95,16 @@ public class VObjects
     public static final RegistryObject<Item> FRENCH_BAGUETTE = ITEMS.register("french_baguette", () -> new Item(new Item.Properties().tab(VIP_TAB).rarity(Rarity.UNCOMMON).food(FRENCH_BAGUETTE_FOOD).setNoRepair()));
 
     public static final RegistryObject<SwordItem> AUBIN_SLAYER = ITEMS.register("aubin_slayer", () -> new AubinSlayer(newVipiumPureProperties()));
+
+    public static final RegistryObject<Block> VIPIUM_BLOCK = BLOCKS.register("vipium_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().harvestTool(ToolType.PICKAXE).strength(25F, 50F).sound(SoundType.METAL)));
+    public static final RegistryObject<Block> PURE_VIPIUM_BLOCK = BLOCKS.register("pure_vipium_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().harvestTool(ToolType.PICKAXE).strength(50F, 100F).sound(SoundType.METAL)));
+    public static final RegistryObject<VipiumOre> VIPIUM_ORE = BLOCKS.register("vipium_ore", VipiumOre::new);
+    public static final RegistryObject<VipiumOre> DEEPSLATE_VIPIUM_ORE = BLOCKS.register("deepslate_vipium_ore", VipiumOre::new);
+
+    public static final RegistryObject<BlockItem> VIPIUM_BLOCK_ITEM = ITEMS.register("vipium_block", () -> new BlockItem(VIPIUM_BLOCK.get(), newVipiumProperties()));
+    public static final RegistryObject<BlockItem> PURE_VIPIUM_BLOCK_ITEM = ITEMS.register("pure_vipium_block", () -> new BlockItem(PURE_VIPIUM_BLOCK.get(), newVipiumPureProperties()));
+    public static final RegistryObject<BlockItem> VIPIUM_ORE_ITEM = ITEMS.register("vipium_ore", () -> new BlockItem(VIPIUM_ORE.get(), new Item.Properties().tab(VIP_TAB)));
+    public static final RegistryObject<BlockItem> DEEPSLATE_VIPIUM_ORE_ITEM = ITEMS.register("deepslate_vipium_ore", () -> new BlockItem(DEEPSLATE_VIPIUM_ORE.get(), new Item.Properties().tab(VIP_TAB)));
 
     private static Item.Properties newVipiumProperties()
     {

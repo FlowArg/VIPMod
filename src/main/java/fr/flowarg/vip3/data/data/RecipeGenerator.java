@@ -1,13 +1,14 @@
 package fr.flowarg.vip3.data.data;
 
+import fr.flowarg.vip3.VIP3;
 import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -206,10 +207,40 @@ public class RecipeGenerator extends RecipeProvider
                     .define('X', Items.WHEAT)
                     .define('Y', Items.PAPER)
                     .unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(Items.PAPER, Items.WHEAT)), consumer);
+
+        this.build(VObjects.VIPIUM_BLOCK_ITEM.get(), builder ->
+                builder.pattern("XXX")
+                        .pattern("XXX")
+                        .pattern("XXX")
+                        .define('X', VObjects.VIPIUM_INGOT.get())
+                        .unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.VIPIUM_INGOT.get())), consumer);
+
+        this.build(VObjects.PURE_VIPIUM_BLOCK_ITEM.get(), builder ->
+                builder.pattern("XXX")
+                        .pattern("XXX")
+                        .pattern("XXX")
+                        .define('X', VObjects.PURE_VIPIUM_INGOT.get())
+                        .unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.PURE_VIPIUM_INGOT.get())), consumer);
+
+        this.buildShapelessFromBlock(VObjects.VIPIUM_INGOT.get(), builder ->
+                builder.requires(VObjects.VIPIUM_BLOCK_ITEM.get())
+                        .unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.VIPIUM_BLOCK_ITEM.get())), consumer);
+
+        this.buildShapelessFromBlock(VObjects.PURE_VIPIUM_INGOT.get(), builder ->
+                builder.requires(VObjects.PURE_VIPIUM_BLOCK_ITEM.get())
+                        .unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.PURE_VIPIUM_BLOCK_ITEM.get())), consumer);
+
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(VObjects.VIPIUM_ORE.get()), VObjects.VIPIUM_FRAGMENT.get(), 20, 200);
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(VObjects.VIPIUM_ORE.get()), VObjects.VIPIUM_FRAGMENT.get(), 20, 100);
     }
 
     private void build(Item item, Function<ShapedRecipeBuilder, ShapedRecipeBuilder> function, Consumer<FinishedRecipe> consumer)
     {
         function.apply(ShapedRecipeBuilder.shaped(item)).save(consumer);
+    }
+
+    private void buildShapelessFromBlock(Item item, Function<ShapelessRecipeBuilder, ShapelessRecipeBuilder> function, Consumer<FinishedRecipe> consumer)
+    {
+        function.apply(ShapelessRecipeBuilder.shapeless(item, 9)).save(consumer, new ResourceLocation(VIP3.MOD_ID, item.getRegistryName().getPath() + "_from_block"));
     }
 }

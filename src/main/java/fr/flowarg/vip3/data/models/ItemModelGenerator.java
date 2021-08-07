@@ -3,12 +3,15 @@ package fr.flowarg.vip3.data.models;
 import fr.flowarg.vip3.VIP3;
 import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.fml.loading.LogMarkers;
 import net.minecraftforge.fmllegacy.RegistryObject;
+import org.apache.logging.log4j.MarkerManager;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -49,6 +52,8 @@ public class ItemModelGenerator extends ItemModelProvider
 
                     if(IGNORED.contains(Objects.requireNonNull(obj.getRegistryName()).getPath())) continue;
 
+                    if(obj instanceof BlockItem) return;
+
                     if (obj instanceof DiggerItem || obj instanceof SwordItem) this.buildSimpleItem(itemHandheld, Objects.requireNonNull(obj.getRegistryName()).getPath());
                     else this.buildSimpleItem(itemGenerated, Objects.requireNonNull(obj.getRegistryName()).getPath());
                 }
@@ -61,6 +66,9 @@ public class ItemModelGenerator extends ItemModelProvider
     }
 
     private void buildSimpleItem(ModelFile modelFile, String name) {
-        this.getBuilder(name).parent(modelFile).texture("layer0", this.modLoc("item/" + name));
+        final var texture = this.modLoc("item/" + name);
+        if(this.existingFileHelper.exists(texture, TEXTURE))
+            this.getBuilder(name).parent(modelFile).texture("layer0", texture);
+        else VIP3.LOGGER.error("Missing texture: " + texture);
     }
 }

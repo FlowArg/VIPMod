@@ -38,7 +38,7 @@ public class ClientEventHandler
 
         final var level = minecraft.player.getArmorValue();
 
-        for (int i = 1; level > 0 && i < 60; i += 2)
+        for (int i = 1; level > 0 && i < (level <= 20 ? 20 : level <= 40 ? 40 : 60); i += 2)
         {
             final var usedBar = i < 20 ? firstBar : i < 40 ? secondBar : thirdBar;
 

@@ -2,6 +2,7 @@ package fr.flowarg.vip3.data;
 
 import fr.flowarg.vip3.VIP3;
 import fr.flowarg.vip3.data.data.BlockTagsGenerator;
+import fr.flowarg.vip3.data.data.LootTablesGenerator;
 import fr.flowarg.vip3.data.data.RecipeGenerator;
 import fr.flowarg.vip3.data.lang.ENLanguageGenerator;
 import fr.flowarg.vip3.data.lang.FRLanguageGenerator;
@@ -18,14 +19,19 @@ public class DataGeneration
     public static void gatherData(GatherDataEvent event) {
         final var generator = event.getGenerator();
 
+        final var existingFileHelper = event.getExistingFileHelper();
+
         if(event.includeClient()) {
-            final var existingFileHelper = event.getExistingFileHelper();
             generator.addProvider(new ItemModelGenerator(generator, existingFileHelper));
             generator.addProvider(new BlockModelGenerator(generator, existingFileHelper));
-            generator.addProvider(new BlockTagsGenerator(generator, existingFileHelper));
-            generator.addProvider(new RecipeGenerator(generator));
             generator.addProvider(new ENLanguageGenerator(generator));
             generator.addProvider(new FRLanguageGenerator(generator));
+        }
+
+        if(event.includeServer()) {
+            generator.addProvider(new BlockTagsGenerator(generator, existingFileHelper));
+            generator.addProvider(new RecipeGenerator(generator));
+            generator.addProvider(new LootTablesGenerator(generator));
         }
     }
 }

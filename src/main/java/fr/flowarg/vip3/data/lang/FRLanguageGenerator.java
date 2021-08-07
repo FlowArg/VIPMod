@@ -47,5 +47,10 @@ public class FRLanguageGenerator extends CommonLanguageProvider
         this.addItem(VObjects.VIPIUM_APPLE, "Pomme en Vipium");
         this.addItem(VObjects.PURE_VIPIUM_APPLE, "Pomme en Vipium Pur");
         this.addItem(VObjects.FRENCH_BAGUETTE, "Baguette Française");
+
+        this.addBlock(VObjects.VIPIUM_BLOCK, "Bloc de Vipium");
+        this.addBlock(VObjects.PURE_VIPIUM_BLOCK, "Block de Vipium Pur");
+        this.addBlock(VObjects.VIPIUM_ORE, "Minerai de Vipium");
+        this.addBlock(VObjects.DEEPSLATE_VIPIUM_ORE, "Minerai de Vipium des Abîmes");
     }
 }

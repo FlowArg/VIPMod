@@ -18,7 +18,6 @@ public class ClientEventHandler
 
             if(minecraft.options.hideGui || !gui.shouldDrawSurvivalElements()) return;
 
-            gui.setupOverlayRenderState(true, false);
             this.renderBar(event, gui, minecraft);
             event.setCanceled(true);
         }
@@ -26,6 +25,8 @@ public class ClientEventHandler
 
     private void renderBar(RenderGameOverlayEvent.PreLayer event, ForgeIngameGui gui, Minecraft minecraft)
     {
+        gui.setupOverlayRenderState(true, false);
+
         RenderSystem.enableBlend();
 
         final var guiScaledWidth = event.getWindow().getGuiScaledWidth();

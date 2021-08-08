@@ -18,6 +18,13 @@ public class BlockTagsGenerator extends BlockTagsProvider
     @Override
     protected void addTags()
     {
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(VObjects.VIPIUM_BLOCK.get(), VObjects.PURE_VIPIUM_BLOCK.get(), VObjects.VIPIUM_ORE.get(), VObjects.DEEPSLATE_VIPIUM_ORE.get());
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
+                VObjects.VIPIUM_BLOCK.get(),
+                VObjects.PURE_VIPIUM_BLOCK.get(),
+                VObjects.VIPIUM_ORE.get(),
+                VObjects.DEEPSLATE_VIPIUM_ORE.get(),
+                VObjects.VIPIUM_PURIFIER.get(),
+                VObjects.VIPIUM_CRUSHER.get()
+        );
     }
 }

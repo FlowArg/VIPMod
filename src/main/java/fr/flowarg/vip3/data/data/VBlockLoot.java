@@ -2,7 +2,6 @@ package fr.flowarg.vip3.data.data;
 
 import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.data.loot.BlockLoot;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -21,6 +20,8 @@ public class VBlockLoot extends BlockLoot
         this.dropSelf(VObjects.PURE_VIPIUM_BLOCK.get());
         this.add(VObjects.VIPIUM_ORE.get(), this::createVipiumOreDrops);
         this.add(VObjects.DEEPSLATE_VIPIUM_ORE.get(), this::createVipiumOreDrops);
+        this.add(VObjects.VIPIUM_PURIFIER.get(), BlockLoot::createNameableBlockEntityTable);
+        this.add(VObjects.VIPIUM_CRUSHER.get(), BlockLoot::createNameableBlockEntityTable);
     }
 
     protected LootTable.Builder createVipiumOreDrops(Block block)

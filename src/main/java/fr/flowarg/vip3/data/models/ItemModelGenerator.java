@@ -5,13 +5,12 @@ import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.loading.LogMarkers;
 import net.minecraftforge.fmllegacy.RegistryObject;
-import org.apache.logging.log4j.MarkerManager;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ public class ItemModelGenerator extends ItemModelProvider
 
                     if(IGNORED.contains(Objects.requireNonNull(obj.getRegistryName()).getPath())) continue;
 
-                    if(obj instanceof BlockItem) return;
+                    if((!(obj instanceof Item)) || obj instanceof BlockItem) continue;
 
                     if (obj instanceof DiggerItem || obj instanceof SwordItem) this.buildSimpleItem(itemHandheld, Objects.requireNonNull(obj.getRegistryName()).getPath());
                     else this.buildSimpleItem(itemGenerated, Objects.requireNonNull(obj.getRegistryName()).getPath());

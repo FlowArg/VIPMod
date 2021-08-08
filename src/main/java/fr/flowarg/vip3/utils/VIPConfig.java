@@ -20,10 +20,10 @@ public class VIPConfig
         private final ForgeConfigSpec.BooleanValue enableRPC;
 
         public Client(@NotNull ForgeConfigSpec.Builder builder) {
-            builder.comment(" Welcome to the Vipium Configuration !")
+            builder.comment(" Welcome to the VIP 3 Configuration !")
                     .push("client");
 
-            this.enableRPC = builder.comment(" Enable/Disable the VIP'S Discord Rich Presence.")
+            this.enableRPC = builder.comment(" Enable/Disable the VIP's Discord Rich Presence.")
                     .define("enableRPC", true);
 
             builder.pop();

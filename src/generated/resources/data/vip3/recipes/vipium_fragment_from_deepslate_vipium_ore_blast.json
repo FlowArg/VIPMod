@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "vip3:deepslate_vipium_ore"
+  },
+  "result": "vip3:vipium_fragment",
+  "experience": 20.0,
+  "cookingtime": 100
+}

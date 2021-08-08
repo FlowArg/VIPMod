@@ -9,6 +9,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -74,8 +75,8 @@ public class VObjects
             .build();
 
     private static final FoodProperties PURE_VIPIUM_APPLE_FOOD = new FoodProperties.Builder()
-            .nutrition(12)
-            .saturationMod(1.9f)
+            .nutrition(15)
+            .saturationMod(2f)
             .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 200, 2), 1.0f)
             .effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 6600, 2), 1.0f)
             .effect(() -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 6600, 1), 1.0f)
@@ -100,11 +101,15 @@ public class VObjects
     public static final RegistryObject<Block> PURE_VIPIUM_BLOCK = BLOCKS.register("pure_vipium_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().harvestTool(ToolType.PICKAXE).strength(50F, 100F).sound(SoundType.METAL)));
     public static final RegistryObject<VipiumOre> VIPIUM_ORE = BLOCKS.register("vipium_ore", VipiumOre::new);
     public static final RegistryObject<VipiumOre> DEEPSLATE_VIPIUM_ORE = BLOCKS.register("deepslate_vipium_ore", VipiumOre::new);
+    public static final RegistryObject<Block> VIPIUM_PURIFIER = BLOCKS.register("vipium_purifier", () -> new VMachine(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(9.5F).lightLevel(value -> value.getValue(BlockStateProperties.LIT) ? 13 : 0)));
+    public static final RegistryObject<Block> VIPIUM_CRUSHER = BLOCKS.register("vipium_breaker", () -> new VMachine(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(9.5F).lightLevel(value -> value.getValue(BlockStateProperties.LIT) ? 13 : 0)));
 
     public static final RegistryObject<BlockItem> VIPIUM_BLOCK_ITEM = ITEMS.register("vipium_block", () -> new BlockItem(VIPIUM_BLOCK.get(), newVipiumProperties()));
     public static final RegistryObject<BlockItem> PURE_VIPIUM_BLOCK_ITEM = ITEMS.register("pure_vipium_block", () -> new BlockItem(PURE_VIPIUM_BLOCK.get(), newVipiumPureProperties()));
     public static final RegistryObject<BlockItem> VIPIUM_ORE_ITEM = ITEMS.register("vipium_ore", () -> new BlockItem(VIPIUM_ORE.get(), new Item.Properties().tab(VIP_TAB)));
     public static final RegistryObject<BlockItem> DEEPSLATE_VIPIUM_ORE_ITEM = ITEMS.register("deepslate_vipium_ore", () -> new BlockItem(DEEPSLATE_VIPIUM_ORE.get(), new Item.Properties().tab(VIP_TAB)));
+    public static final RegistryObject<BlockItem> VIPIUM_PURIFIER_ITEM = ITEMS.register("vipium_purifier", () -> new BlockItem(VIPIUM_PURIFIER.get(), newVipiumProperties()));
+    public static final RegistryObject<BlockItem> VIPIUM_BREAKER_ITEM = ITEMS.register("vipium_breaker", () -> new BlockItem(VIPIUM_CRUSHER.get(), newVipiumProperties()));
 
     private static Item.Properties newVipiumProperties()
     {

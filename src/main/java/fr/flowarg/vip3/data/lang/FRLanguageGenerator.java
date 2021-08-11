@@ -54,5 +54,10 @@ public class FRLanguageGenerator extends CommonLanguageProvider
         this.addBlock(VObjects.DEEPSLATE_VIPIUM_ORE, "Minerai de Vipium des Abîmes");
         this.addBlock(VObjects.VIPIUM_PURIFIER, "Purificateur de Vipium");
         this.addBlock(VObjects.VIPIUM_CRUSHER, "Concasseur de Vipium");
+
+        this.add("container.vipium_purifier", "Purificateur de Vipium");
+        this.add("container.vipium_crusher", "Concasseur de Vipium");
+        this.add("container.vipium_crusher.start", "Démarrer le concasseur");
+        this.add("container.vipium_crusher.stop", "Stopper le concasseur");
     }
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:blasting",
+  "group": "vipium_fragment",
   "ingredient": {
     "item": "vip3:deepslate_vipium_ore"
   },

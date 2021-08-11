@@ -1,11 +1,17 @@
 package fr.flowarg.vip3.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+@OnlyIn(Dist.CLIENT)
 public class ClientEventHandler
 {
     @SubscribeEvent
@@ -55,5 +61,10 @@ public class ClientEventHandler
         gui.left_height += 10;
 
         RenderSystem.disableBlend();
+    }
+
+    public void clientSetup(FMLClientSetupEvent event)
+    {
+        MenuScreens.register(VObjects.VIPIUM_CRUSHER_MENU.get(), VCrusherScreen::new);
     }
 }

@@ -53,6 +53,11 @@ public class ENLanguageGenerator extends CommonLanguageProvider
         this.addBlock(VObjects.VIPIUM_ORE, "Vipium Ore");
         this.addBlock(VObjects.DEEPSLATE_VIPIUM_ORE, "Deepslate Vipium Ore");
         this.addBlock(VObjects.VIPIUM_PURIFIER, "Vipium Purifier");
-        this.addBlock(VObjects.VIPIUM_CRUSHER, "Vipium Breaker");
+        this.addBlock(VObjects.VIPIUM_CRUSHER, "Vipium Crusher");
+
+        this.add("container.vipium_purifier", "Vipium Purifier");
+        this.add("container.vipium_crusher", "Vipium Crusher");
+        this.add("container.vipium_crusher.start", "Start crusher");
+        this.add("container.vipium_crusher.stop", "Stop crusher");
     }
 }

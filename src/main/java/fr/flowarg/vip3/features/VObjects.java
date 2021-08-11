@@ -1,17 +1,23 @@
 package fr.flowarg.vip3.features;
 
 import fr.flowarg.vip3.VIP3;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -24,6 +30,9 @@ public class VObjects
 
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, VIP3.MOD_ID);
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, VIP3.MOD_ID);
+    private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, VIP3.MOD_ID);
+    private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, VIP3.MOD_ID);
+    private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, VIP3.MOD_ID);
 
     private static final CreativeModeTab VIP_TAB = new CreativeModeTab("vip3") {
         @Override
@@ -97,19 +106,33 @@ public class VObjects
 
     public static final RegistryObject<SwordItem> AUBIN_SLAYER = ITEMS.register("aubin_slayer", () -> new AubinSlayer(newVipiumPureProperties()));
 
-    public static final RegistryObject<Block> VIPIUM_BLOCK = BLOCKS.register("vipium_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().harvestTool(ToolType.PICKAXE).strength(25F, 50F).sound(SoundType.METAL)));
-    public static final RegistryObject<Block> PURE_VIPIUM_BLOCK = BLOCKS.register("pure_vipium_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().harvestTool(ToolType.PICKAXE).strength(50F, 100F).sound(SoundType.METAL)));
+    public static final RegistryObject<Block> VIPIUM_BLOCK = BLOCKS.register("vipium_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(25F, 50F).sound(SoundType.METAL)));
+    public static final RegistryObject<Block> PURE_VIPIUM_BLOCK = BLOCKS.register("pure_vipium_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(50F, 100F).sound(SoundType.METAL)));
     public static final RegistryObject<VipiumOre> VIPIUM_ORE = BLOCKS.register("vipium_ore", VipiumOre::new);
     public static final RegistryObject<VipiumOre> DEEPSLATE_VIPIUM_ORE = BLOCKS.register("deepslate_vipium_ore", VipiumOre::new);
-    public static final RegistryObject<Block> VIPIUM_PURIFIER = BLOCKS.register("vipium_purifier", () -> new VMachine(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(9.5F).lightLevel(value -> value.getValue(BlockStateProperties.LIT) ? 13 : 0)));
-    public static final RegistryObject<Block> VIPIUM_CRUSHER = BLOCKS.register("vipium_breaker", () -> new VMachine(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(9.5F).lightLevel(value -> value.getValue(BlockStateProperties.LIT) ? 13 : 0)));
+    public static final RegistryObject<VPurifier> VIPIUM_PURIFIER = BLOCKS.register("vipium_purifier", () -> new VPurifier(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(9.5F).lightLevel(value -> value.getValue(BlockStateProperties.LIT) ? 13 : 0)));
+    public static final RegistryObject<VCrusherBlock> VIPIUM_CRUSHER = BLOCKS.register("vipium_crusher", () -> new VCrusherBlock(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(9.5F).lightLevel(value -> value.getValue(BlockStateProperties.LIT) ? 13 : 0)));
 
     public static final RegistryObject<BlockItem> VIPIUM_BLOCK_ITEM = ITEMS.register("vipium_block", () -> new BlockItem(VIPIUM_BLOCK.get(), newVipiumProperties()));
     public static final RegistryObject<BlockItem> PURE_VIPIUM_BLOCK_ITEM = ITEMS.register("pure_vipium_block", () -> new BlockItem(PURE_VIPIUM_BLOCK.get(), newVipiumPureProperties()));
     public static final RegistryObject<BlockItem> VIPIUM_ORE_ITEM = ITEMS.register("vipium_ore", () -> new BlockItem(VIPIUM_ORE.get(), new Item.Properties().tab(VIP_TAB)));
     public static final RegistryObject<BlockItem> DEEPSLATE_VIPIUM_ORE_ITEM = ITEMS.register("deepslate_vipium_ore", () -> new BlockItem(DEEPSLATE_VIPIUM_ORE.get(), new Item.Properties().tab(VIP_TAB)));
     public static final RegistryObject<BlockItem> VIPIUM_PURIFIER_ITEM = ITEMS.register("vipium_purifier", () -> new BlockItem(VIPIUM_PURIFIER.get(), newVipiumProperties()));
-    public static final RegistryObject<BlockItem> VIPIUM_BREAKER_ITEM = ITEMS.register("vipium_breaker", () -> new BlockItem(VIPIUM_CRUSHER.get(), newVipiumProperties()));
+    public static final RegistryObject<BlockItem> VIPIUM_CRUSHER_ITEM = ITEMS.register("vipium_crusher", () -> new BlockItem(VIPIUM_CRUSHER.get(), newVipiumProperties()));
+
+    public static final RegistryObject<BlockEntityType<VCrusherEntity>> VIPIUM_CRUSHER_ENTITY = BLOCK_ENTITIES.register("vipium_crusher", () -> BlockEntityType.Builder.of(VCrusherEntity::new, VIPIUM_CRUSHER.get()).build(null));
+
+    public static final RegistryObject<MenuType<VCrusherMenu>> VIPIUM_CRUSHER_MENU = CONTAINERS.register("vipium_crusher", () -> IForgeContainerType.create(VCrusherMenu::new));
+
+    public static final RecipeType<VCrushingRecipe> CRUSHING_RECIPE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(VIP3.MOD_ID, "crushing"), new RecipeType<VCrushingRecipe>() {
+        @Override
+        public String toString()
+        {
+            return VIP3.MOD_ID + ':' + "crushing";
+        }
+    });
+
+    public static final RegistryObject<VCrushingRecipeSerializer> CRUSHING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crushing", VCrushingRecipeSerializer::new);
 
     private static Item.Properties newVipiumProperties()
     {
@@ -128,6 +151,12 @@ public class VObjects
         BLOCKS.register(bus);
         VIP3.LOGGER.info("Registering items...");
         ITEMS.register(bus);
+        VIP3.LOGGER.info("Registering recipe serializers...");
+        RECIPE_SERIALIZERS.register(bus);
+        VIP3.LOGGER.info("Registering block entities...");
+        BLOCK_ENTITIES.register(bus);
+        VIP3.LOGGER.info("Registering containers...");
+        CONTAINERS.register(bus);
 
         registered = true;
     }

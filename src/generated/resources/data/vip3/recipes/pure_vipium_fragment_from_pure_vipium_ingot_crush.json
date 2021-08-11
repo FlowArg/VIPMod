@@ -1,0 +1,9 @@
+{
+  "type": "vip3:crushing",
+  "ingredient": {
+    "item": "vip3:pure_vipium_ingot"
+  },
+  "result": "vip3:pure_vipium_fragment",
+  "experience": 26.0,
+  "crushingTime": 400
+}

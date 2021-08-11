@@ -1,6 +1,7 @@
 package fr.flowarg.vip3.data.data;
 
 import fr.flowarg.vip3.VIP3;
+import fr.flowarg.vip3.data.builders.CrushingRecipeBuilder;
 import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.DataGenerator;
@@ -58,6 +59,9 @@ public class RecipeGenerator extends RecipeProvider
 
         this.buildOreCook(VObjects.VIPIUM_ORE.get(), VObjects.VIPIUM_FRAGMENT.get(), consumer);
         this.buildOreCook(VObjects.DEEPSLATE_VIPIUM_ORE.get(), VObjects.VIPIUM_FRAGMENT.get(), consumer);
+
+        this.buildCrush(VObjects.VIPIUM_INGOT.get(), VObjects.VIPIUM_FRAGMENT.get(), 13f, 200, consumer);
+        this.buildCrush(VObjects.PURE_VIPIUM_INGOT.get(), VObjects.PURE_VIPIUM_FRAGMENT.get(), 26f, 400, consumer);
     }
 
     private void build(Item item, Function<ShapedRecipeBuilder, ShapedRecipeBuilder> function, Consumer<FinishedRecipe> consumer)
@@ -72,8 +76,16 @@ public class RecipeGenerator extends RecipeProvider
 
     private void buildOreCook(OreBlock ore, Item result, Consumer<FinishedRecipe> consumer)
     {
-        final var base = result.getRegistryName().getPath() + "_from_" + ore.getRegistryName().getPath();
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(ore), result, 20, 200).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(ore)).save(consumer, new ResourceLocation(VIP3.MOD_ID, base + "_smelt"));
-        SimpleCookingRecipeBuilder.blasting(Ingredient.of(ore), result, 20, 100).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(ore)).save(consumer, new ResourceLocation(VIP3.MOD_ID, base + "_blast"));
+        final var name = result.getRegistryName().getPath().replace("deepslate_", "");
+        final var base = name + "_from_" + ore.getRegistryName().getPath();
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(ore), result, 20, 200).group(name).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(ore)).save(consumer, new ResourceLocation(VIP3.MOD_ID, base + "_smelt"));
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(ore), result, 20, 100).group(name).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(ore)).save(consumer, new ResourceLocation(VIP3.MOD_ID, base + "_blast"));
+    }
+
+    private void buildCrush(Item ingredient, Item result, float experience, int crushingTime, Consumer<FinishedRecipe> consumer)
+    {
+        CrushingRecipeBuilder.crushing(Ingredient.of(ingredient), result, experience, crushingTime)
+                .unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.VIPIUM_CRUSHER_ITEM.get()))
+                .save(consumer, new ResourceLocation(VIP3.MOD_ID, result.getRegistryName().getPath() + "_from_" + ingredient.getRegistryName().getPath() + "_crush"));
     }
 }

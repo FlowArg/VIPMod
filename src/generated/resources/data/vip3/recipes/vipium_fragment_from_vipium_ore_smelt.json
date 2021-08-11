@@ -1,5 +1,6 @@
 {
   "type": "minecraft:smelting",
+  "group": "vipium_fragment",
   "ingredient": {
     "item": "vip3:vipium_ore"
   },

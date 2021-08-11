@@ -1,15 +1,11 @@
 package fr.flowarg.vip3.features;
 
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ToolType;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Set;
 
 public class VMultiToolItem extends DiggerItem
 {
@@ -19,16 +15,9 @@ public class VMultiToolItem extends DiggerItem
     }
 
     @Override
-    public boolean canHarvestBlock(ItemStack stack, BlockState state)
+    public boolean isCorrectToolForDrops(@NotNull ItemStack stack, @NotNull BlockState state)
     {
         return true;
-    }
-
-    @NotNull
-    @Override
-    public Set<ToolType> getToolTypes(@NotNull ItemStack stack)
-    {
-        return ImmutableSet.of(ToolType.PICKAXE, ToolType.SHOVEL, ToolType.AXE);
     }
 
     @Override

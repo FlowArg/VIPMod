@@ -6,16 +6,13 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.OreBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.common.ToolType;
 import org.jetbrains.annotations.NotNull;
 
 public class VipiumOre extends OreBlock
 {
     public VipiumOre()
     {
-        super(Properties.of(Material.STONE)
-                      .harvestTool(ToolType.PICKAXE)
-                      .strength(25f, 24f));
+        super(Properties.of(Material.STONE).strength(25f, 24f));
     }
 
     @Override

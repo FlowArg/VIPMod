@@ -26,7 +26,7 @@ public class BlockModelGenerator extends BlockStateProvider
         this.buildSimpleBlock(VObjects.PURE_VIPIUM_BLOCK.get());
         this.buildSimpleBlock(VObjects.VIPIUM_ORE.get());
         this.buildSimpleBlock(VObjects.DEEPSLATE_VIPIUM_ORE.get());
-        this.buildOrientableFaceLitBlock(VObjects.VIPIUM_PURIFIER.get());
+        //this.buildOrientableFaceLitBlock(VObjects.VIPIUM_PURIFIER.get());
         this.buildOrientableFaceLitBlock(VObjects.VIPIUM_CRUSHER.get());
     }
 

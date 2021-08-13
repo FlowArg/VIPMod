@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "side": "vip3:block/vipium_purifier_side",
-    "front": "vip3:block/vipium_purifier_front",
-    "top": "vip3:block/vipium_purifier_top"
-  }
-}

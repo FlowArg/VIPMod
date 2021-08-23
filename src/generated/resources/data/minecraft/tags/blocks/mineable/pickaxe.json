@@ -5,6 +5,7 @@
     "vip3:pure_vipium_block",
     "vip3:vipium_ore",
     "vip3:deepslate_vipium_ore",
-    "vip3:vipium_crusher"
+    "vip3:vipium_crusher",
+    "vip3:teleportation_altar"
   ]
 }

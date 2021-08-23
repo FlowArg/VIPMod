@@ -57,6 +57,8 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
     private int crushingProgress;
     private int crushingTotalTime;
     private int started;
+    private int crushedIngots;
+    private int fragmentsResult;
 
     private final ContainerData dataAccess = new ContainerData() {
         @Override
@@ -65,7 +67,8 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
             return switch (index) {
                 case 0 -> VCrusherEntity.this.crushingProgress;
                 case 1 -> VCrusherEntity.this.crushingTotalTime;
-                case 2 -> VCrusherEntity.this.started;
+                case 2 -> VCrusherEntity.this.crushedIngots;
+                case 3 -> VCrusherEntity.this.fragmentsResult;
                 default -> 0;
             };
         }
@@ -77,14 +80,15 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
             {
                 case 0 -> VCrusherEntity.this.crushingProgress = val;
                 case 1 -> VCrusherEntity.this.crushingTotalTime = val;
-                case 2-> VCrusherEntity.this.started = val;
+                case 2 -> VCrusherEntity.this.crushedIngots = val;
+                case 3 -> VCrusherEntity.this.fragmentsResult = val;
             }
         }
 
         @Override
         public int getCount()
         {
-            return 3;
+            return 4;
         }
     };
 
@@ -100,41 +104,46 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
     }
 
     @Override
-    public void load(@NotNull CompoundTag compoundTag)
+    public void load(@NotNull CompoundTag tag)
     {
-        super.load(compoundTag);
+        super.load(tag);
 
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(compoundTag, this.items);
+        ContainerHelper.loadAllItems(tag, this.items);
 
-        this.crushingProgress = compoundTag.getInt("CrushTime");
-        this.crushingTotalTime = compoundTag.getInt("CrushTimeTotal");
-        this.started = compoundTag.getInt("Started");
-        final var recipesUsed = compoundTag.getCompound("RecipesUsed");
+        this.crushingProgress = tag.getInt("CrushTime");
+        this.crushingTotalTime = tag.getInt("CrushTimeTotal");
+        this.started = tag.getInt("Started");
+        this.crushedIngots = tag.getInt("CrushedIngots");
+        this.fragmentsResult = tag.getInt("FragmentsResult");
+        final var recipesUsed = tag.getCompound("RecipesUsed");
 
         recipesUsed.getAllKeys().forEach(s -> this.recipesUsed.put(new ResourceLocation(s), recipesUsed.getInt(s)));
     }
 
     @Override
-    public @NotNull CompoundTag save(@NotNull CompoundTag compoundTag)
+    public @NotNull CompoundTag save(@NotNull CompoundTag compound)
     {
-        super.save(compoundTag);
-        compoundTag.putInt("CrushTime", this.crushingProgress);
-        compoundTag.putInt("CrushTimeTotal", this.crushingTotalTime);
-        compoundTag.putInt("Started", this.started);
-        ContainerHelper.saveAllItems(compoundTag, this.items);
+        super.save(compound);
+        compound.putInt("CrushTime", this.crushingProgress);
+        compound.putInt("CrushTimeTotal", this.crushingTotalTime);
+        compound.putInt("Started", this.started);
+        compound.putInt("CrushedIngots", this.crushedIngots);
+        compound.putInt("FragmentsResult", this.fragmentsResult);
+
+        ContainerHelper.saveAllItems(compound, this.items);
 
         final var recipesUsed = new CompoundTag();
         this.recipesUsed.forEach((id, count) -> recipesUsed.putInt(id.toString(), count));
 
-        compoundTag.put("RecipesUsed", recipesUsed);
-        return compoundTag;
+        compound.put("RecipesUsed", recipesUsed);
+        return compound;
     }
 
     @Override
-    public int @NotNull [] getSlotsForFace(@NotNull Direction direction)
+    public int @NotNull [] getSlotsForFace(@NotNull Direction side)
     {
-        return direction == Direction.DOWN ? SLOTS_FOR_DOWN : direction == Direction.UP ? SLOTS_FOR_UP : SLOTS_FOR_SIDES;
+        return side == Direction.DOWN ? SLOTS_FOR_DOWN : side == Direction.UP ? SLOTS_FOR_UP : SLOTS_FOR_SIDES;
     }
 
     @Override
@@ -297,6 +306,16 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
         return this.crushingProgress > 0;
     }
 
+    public void setCrushedIngots(int crushedIngots)
+    {
+        this.crushedIngots = crushedIngots;
+    }
+
+    public void setFragmentsResult(int fragmentsResult)
+    {
+        this.fragmentsResult = fragmentsResult;
+    }
+
     private boolean canCrush(VCrushingRecipe recipe, @NotNull NonNullList<ItemStack> items)
     {
         if(items.get(SLOT_LOCKED).isEmpty() || recipe == null) return false;
@@ -326,12 +345,17 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
         final var recipeResult = recipe.assemble(this);
         final var currentOutputItem = items.get(SLOT_OUTPUT);
 
-        recipeResult.setCount(this.random.nextInt(6) + 1);
+        final var newCount = this.random.nextInt(6) + 1;
+        recipeResult.setCount(newCount);
+
+        this.fragmentsResult += newCount;
 
         if(currentOutputItem.isEmpty()) items.set(SLOT_OUTPUT, recipeResult.copy());
         else if(currentOutputItem.is(recipeResult.getItem())) currentOutputItem.grow(recipeResult.getCount());
 
         lockedStack.shrink(1);
+
+        this.crushedIngots++;
 
         return true;
     }
@@ -406,7 +430,11 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
                         changed = true;
                     }
                 }
-                else entity.crushingProgress = 0;
+                else
+                {
+                    entity.crushingProgress = 0;
+                    entity.setStarted(false);
+                }
             }
         }
 

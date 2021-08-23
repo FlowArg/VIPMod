@@ -59,5 +59,14 @@ public class FRLanguageGenerator extends CommonLanguageProvider
         this.add("container.vipium_crusher", "Concasseur de Vipium");
         this.add("container.vipium_crusher.start", "Démarrer le concasseur");
         this.add("container.vipium_crusher.stop", "Stopper le concasseur");
+        this.add("container.vipium_crusher.stats", "Fragments obtenables: ");
+        this.add("container.vipium_crusher.stats.total_ingots", "Total des lingots concassés: %d");
+        this.add("container.vipium_crusher.stats.total_fragments", "Total des fragments obtenus: %d");
+        this.add("container.vipium_crusher.stats.luck", "Votre chance: %s%%");
+        this.add("container.vipium_crusher.stats.average_single", "Moyenne des fragments pour 1 lingot: %s");
+
+        this.addBlock(VObjects.TELEPORTATION_ALTAR, "Altar de téléportation");
+        this.addItem(VObjects.TELEPORTATION_ATLAS, "Atlas de téléportation");
+        this.addItem(VObjects.HOLY_CHICKEN_BIBLE, "Bible du Saint Poulet");
     }
 }

@@ -14,14 +14,14 @@ import org.jetbrains.annotations.NotNull;
 public class VCrusherMenu extends AbstractContainerMenu
 {
     private static final int SLOT_COUNT = 3;
-    private static final int DATA_COUNT = 3;
+    private static final int DATA_COUNT = 4;
 
     private final Container container;
     private final RecipeType<VCrushingRecipe> recipeType;
     private final ContainerData data;
     private final Level level;
 
-    public VCrusherMenu(int id, Inventory inventory, FriendlyByteBuf byteBuf)
+    public VCrusherMenu(int id, Inventory inventory, FriendlyByteBuf buffer)
     {
         this(id, inventory);
     }
@@ -43,9 +43,9 @@ public class VCrusherMenu extends AbstractContainerMenu
         checkContainerSize(this.container, SLOT_COUNT);
         checkContainerDataCount(this.data, DATA_COUNT);
 
-        this.addSlot(new Slot(container, VCrusherEntity.SLOT_INPUT, 13, 47));
-        this.addSlot(new VCrusherLockedSlot(container, VCrusherEntity.SLOT_LOCKED, 76, 47));
-        this.addSlot(new VCrusherResultSlot(inventory.player, container, VCrusherEntity.SLOT_OUTPUT, 134, 47));
+        this.addSlot(new Slot(container, VCrusherEntity.SLOT_INPUT, 7, 47));
+        this.addSlot(new VCrusherLockedSlot(container, VCrusherEntity.SLOT_LOCKED, 70, 47));
+        this.addSlot(new VCrusherResultSlot(inventory.player, container, VCrusherEntity.SLOT_OUTPUT, 128, 47));
 
         for(int k = 0; k < 9; ++k)
             this.addSlot(new Slot(inventory, k, 8 + k * 18, 142));
@@ -106,6 +106,32 @@ public class VCrusherMenu extends AbstractContainerMenu
         }
 
         return empty;
+    }
+
+    public int getCrushedIngotCount()
+    {
+        return this.data.get(2);
+    }
+
+    public int getFragmentsResultCount()
+    {
+        return this.data.get(3);
+    }
+
+    public float getLuck()
+    {
+        if(this.getCrushedIngotCount() == 0 || this.getFragmentsResultCount() == 0) return 0;
+
+        float x = this.getFragmentsResultCount();
+        for(int i = 0; i < this.getCrushedIngotCount(); i++)
+            x += -3.5;
+        return x / (5 * this.getCrushedIngotCount()) * 100 + 50F;
+    }
+
+    public float getAverage()
+    {
+        if(this.getCrushedIngotCount() == 0 || this.getFragmentsResultCount() == 0) return 0;
+        return (float)this.getFragmentsResultCount() / this.getCrushedIngotCount();
     }
 
     public int getBurnProgress()

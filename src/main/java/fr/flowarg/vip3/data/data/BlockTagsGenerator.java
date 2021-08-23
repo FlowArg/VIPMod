@@ -23,8 +23,8 @@ public class BlockTagsGenerator extends BlockTagsProvider
                 VObjects.PURE_VIPIUM_BLOCK.get(),
                 VObjects.VIPIUM_ORE.get(),
                 VObjects.DEEPSLATE_VIPIUM_ORE.get(),
-                //VObjects.VIPIUM_PURIFIER.get(),
-                VObjects.VIPIUM_CRUSHER.get()
+                VObjects.VIPIUM_CRUSHER.get(),
+                VObjects.TELEPORTATION_ALTAR.get()
         );
     }
 }

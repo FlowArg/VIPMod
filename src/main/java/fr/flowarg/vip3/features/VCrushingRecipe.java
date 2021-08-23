@@ -34,19 +34,19 @@ public class VCrushingRecipe implements Recipe<Container>
     }
 
     @Override
-    public boolean matches(@NotNull Container entity, @NotNull Level level)
+    public boolean matches(@NotNull Container container, @NotNull Level level)
     {
-        return this.ingredient.test(entity.getItem(VCrusherEntity.SLOT_LOCKED));
+        return this.ingredient.test(container.getItem(VCrusherEntity.SLOT_LOCKED));
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull Container entity)
+    public @NotNull ItemStack assemble(@NotNull Container container)
     {
         return this.result.copy();
     }
 
     @Override
-    public boolean canCraftInDimensions(int p_43999_, int p_44000_)
+    public boolean canCraftInDimensions(int width, int height)
     {
         return true;
     }

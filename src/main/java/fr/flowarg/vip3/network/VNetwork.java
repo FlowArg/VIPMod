@@ -2,8 +2,11 @@ package fr.flowarg.vip3.network;
 
 import fr.flowarg.vip3.VIP3;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import net.minecraftforge.fmllegacy.network.NetworkRegistry;
 import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+
+import java.util.Optional;
 
 public class VNetwork
 {
@@ -18,8 +21,8 @@ public class VNetwork
 
     public static void registerPackets()
     {
-        SYNC_CHANNEL.registerMessage(0, VStartStopCrusherPacket.class, VStartStopCrusherPacket::encode, VStartStopCrusherPacket::decode, VStartStopCrusherPacket::handle);
-        SYNC_CHANNEL.registerMessage(1, VLockSlotCrusherPacket.class, VLockSlotCrusherPacket::encode, VLockSlotCrusherPacket::decode, VLockSlotCrusherPacket::handle);
-        SYNC_CHANNEL.registerMessage(2, VInputSlotCrusherPacket.class, VInputSlotCrusherPacket::encode, VInputSlotCrusherPacket::decode, VInputSlotCrusherPacket::handle);
+        SYNC_CHANNEL.registerMessage(0, VStartStopCrusherPacket.class, VStartStopCrusherPacket::encode, VStartStopCrusherPacket::decode, VStartStopCrusherPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        SYNC_CHANNEL.registerMessage(1, VSwapSlotCrusherPacket.class, VSwapSlotCrusherPacket::encode, VSwapSlotCrusherPacket::decode, VSwapSlotCrusherPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        SYNC_CHANNEL.registerMessage(2, VResetCrusherDataPacket.class, VResetCrusherDataPacket::encode, VResetCrusherDataPacket::decode, VResetCrusherDataPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
     }
 }

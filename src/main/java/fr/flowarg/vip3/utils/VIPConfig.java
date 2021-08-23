@@ -4,8 +4,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-public class VIPConfig
-{
+public class VIPConfig {
     public static final ForgeConfigSpec CLIENT_SPECS;
     public static final Client CLIENT;
 
@@ -15,11 +14,10 @@ public class VIPConfig
         CLIENT = clientPair.getLeft();
     }
 
-    public static class Client
-    {
+    public static class Client {
         private final ForgeConfigSpec.BooleanValue enableRPC;
 
-        public Client(@NotNull ForgeConfigSpec.Builder builder) {
+        private Client(@NotNull ForgeConfigSpec.Builder builder) {
             builder.comment(" Welcome to the VIP 3 Configuration !")
                     .push("client");
 
@@ -29,8 +27,7 @@ public class VIPConfig
             builder.pop();
         }
 
-        public ForgeConfigSpec.BooleanValue getEnableRPC()
-        {
+        public ForgeConfigSpec.BooleanValue getEnableRPC() {
             return this.enableRPC;
         }
     }

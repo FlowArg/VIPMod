@@ -1,9 +1,14 @@
 package fr.flowarg.vip3.features;
 
+import fr.flowarg.vip3.VIP3;
+import fr.flowarg.vip3.network.VNetwork;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.TierSortingRegistry;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public enum VTiers implements Tier
@@ -67,5 +72,15 @@ public enum VTiers implements Tier
     public @NotNull Ingredient getRepairIngredient()
     {
         return this.repairIngredient.get();
+    }
+
+    public static void init()
+    {
+        final var vipium = new ResourceLocation(VIP3.MOD_ID, "vipium");
+        final var pureVipium = new ResourceLocation(VIP3.MOD_ID, "pure_vipium");
+        final var aubinSlayer = new ResourceLocation(VIP3.MOD_ID, "aubin_slayer");
+        TierSortingRegistry.registerTier(VIPIUM, vipium, List.of(), List.of(pureVipium, aubinSlayer));
+        TierSortingRegistry.registerTier(PURE_VIPIUM, pureVipium, List.of(vipium), List.of(aubinSlayer));
+        TierSortingRegistry.registerTier(AUBIN_SLAYER, aubinSlayer, List.of(vipium, pureVipium), List.of());
     }
 }

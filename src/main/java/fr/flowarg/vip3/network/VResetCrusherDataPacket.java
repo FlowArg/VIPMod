@@ -7,20 +7,19 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public record VStartStopCrusherPacket(BlockPos blockPos, boolean start)
+public record VResetCrusherDataPacket(BlockPos blockPos)
 {
-    public static void encode(VStartStopCrusherPacket packet, FriendlyByteBuf buffer)
+    public static void encode(VResetCrusherDataPacket packet, FriendlyByteBuf buffer)
     {
         buffer.writeBlockPos(packet.blockPos);
-        buffer.writeBoolean(packet.start);
     }
 
-    public static VStartStopCrusherPacket decode(FriendlyByteBuf buffer)
+    public static VResetCrusherDataPacket decode(FriendlyByteBuf buffer)
     {
-        return new VStartStopCrusherPacket(buffer.readBlockPos(), buffer.readBoolean());
+        return new VResetCrusherDataPacket(buffer.readBlockPos());
     }
 
-    public static void handle(VStartStopCrusherPacket packet, Supplier<NetworkEvent.Context> ctx)
+    public static void handle(VResetCrusherDataPacket packet, Supplier<NetworkEvent.Context> ctx)
     {
         ctx.get().enqueueWork(() -> {
             final var player = ctx.get().getSender();
@@ -29,7 +28,8 @@ public record VStartStopCrusherPacket(BlockPos blockPos, boolean start)
             {
                 if(!crusherEntity.stillValid(player)) return;
 
-                crusherEntity.setStarted(packet.start);
+                crusherEntity.setFragmentsResult(0);
+                crusherEntity.setCrushedIngots(0);
             }
         });
         ctx.get().setPacketHandled(true);
@@ -38,6 +38,6 @@ public record VStartStopCrusherPacket(BlockPos blockPos, boolean start)
     @Override
     public String toString()
     {
-        return "VStartStopCrusherPacket{" + "blockPos=" + this.blockPos + ", start=" + this.start + '}';
+        return "VResetCrusherDataPacket{" + "blockPos=" + this.blockPos + '}';
     }
 }

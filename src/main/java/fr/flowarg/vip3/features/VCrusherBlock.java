@@ -137,9 +137,7 @@ public class VCrusherBlock extends BaseEntityBlock
     protected void openContainer(Level level, BlockPos pos, Player player)
     {
         if(level.getBlockEntity(pos) instanceof VCrusherEntity crusherEntity)
-        {
             player.openMenu(crusherEntity);
-        }
     }
 
     @Override
@@ -151,8 +149,8 @@ public class VCrusherBlock extends BaseEntityBlock
         final var d1 = pos.getY();
         final var d2 = (double)pos.getZ() + 0.5D;
 
-        if (random.nextDouble() < 0.1D)
-            level.playLocalSound(d0, d1, d2, SoundEvents.ANVIL_HIT, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+        if (random.nextDouble() < 0.15D)
+            level.playLocalSound(d0, d1, d2, SoundEvents.ANVIL_DESTROY, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 
         final var direction = state.getValue(FACING);
         final var axis = direction.getAxis();

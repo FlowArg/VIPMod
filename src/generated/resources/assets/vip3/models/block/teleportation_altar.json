@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "vip3:block/teleportation_altar_side",
+    "bottom": "vip3:block/teleportation_altar_bottom",
+    "top": "vip3:block/teleportation_altar_top"
+  }
+}

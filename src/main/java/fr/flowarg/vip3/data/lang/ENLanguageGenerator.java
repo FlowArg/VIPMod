@@ -59,5 +59,14 @@ public class ENLanguageGenerator extends CommonLanguageProvider
         this.add("container.vipium_crusher", "Vipium Crusher");
         this.add("container.vipium_crusher.start", "Start crusher");
         this.add("container.vipium_crusher.stop", "Stop crusher");
+        this.add("container.vipium_crusher.stats", "Obtainable fragments: ");
+        this.add("container.vipium_crusher.stats.total_ingots", "Total of crushed ingots: %d");
+        this.add("container.vipium_crusher.stats.total_fragments", "Total of fragments obtained: %d");
+        this.add("container.vipium_crusher.stats.luck", "Your luck: %s%%");
+        this.add("container.vipium_crusher.stats.average_single", "Average fragments for 1 ingot: %s");
+
+        this.addBlock(VObjects.TELEPORTATION_ALTAR, "Teleportation Altar");
+        this.addItem(VObjects.TELEPORTATION_ATLAS, "Teleportation Atlas");
+        this.addItem(VObjects.HOLY_CHICKEN_BIBLE, "Holy Chicken Bible");
     }
 }

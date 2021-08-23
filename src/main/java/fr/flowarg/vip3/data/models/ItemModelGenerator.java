@@ -19,11 +19,9 @@ import java.util.Objects;
 
 public class ItemModelGenerator extends ItemModelProvider
 {
-    private static final List<String> IGNORED = new ArrayList<>();
-
-    static {
-        IGNORED.add(Objects.requireNonNull(VObjects.AUBIN_SLAYER.get().getRegistryName()).getPath());
-    }
+    private static final List<String> IGNORED = List.of(
+            Objects.requireNonNull(VObjects.AUBIN_SLAYER.get().getRegistryName()).getPath()
+    );
 
     public ItemModelGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper)
     {
@@ -42,7 +40,10 @@ public class ItemModelGenerator extends ItemModelProvider
             {
                 final var modifiers = field.getModifiers();
 
-                if(!Modifier.isStatic(modifiers) || !Modifier.isPublic(modifiers)) continue;
+                if(!Modifier.isStatic(modifiers)) continue;
+
+                if(!field.canAccess(null))
+                    field.setAccessible(true);
 
                 final var object = field.get(null);
                 if(object instanceof final RegistryObject<?> registryObject)

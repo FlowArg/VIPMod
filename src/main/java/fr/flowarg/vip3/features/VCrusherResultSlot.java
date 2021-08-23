@@ -25,12 +25,12 @@ public class VCrusherResultSlot extends Slot
     }
 
     @Override
-    public @NotNull ItemStack remove(int slot)
+    public @NotNull ItemStack remove(int amount)
     {
         if (this.hasItem())
-            this.removeCount += Math.min(slot, this.getItem().getCount());
+            this.removeCount += Math.min(amount, this.getItem().getCount());
 
-        return super.remove(slot);
+        return super.remove(amount);
     }
 
     @Override
@@ -41,9 +41,9 @@ public class VCrusherResultSlot extends Slot
     }
 
     @Override
-    protected void onQuickCraft(@NotNull ItemStack stack, int count)
+    protected void onQuickCraft(@NotNull ItemStack stack, int amount)
     {
-        this.removeCount += count;
+        this.removeCount += amount;
         this.checkTakeAchievements(stack);
     }
 

@@ -16,42 +16,42 @@ import org.jetbrains.annotations.Nullable;
 public class VCrushingRecipeSerializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<VCrushingRecipe>
 {
     @Override
-    public @NotNull VCrushingRecipe fromJson(@NotNull ResourceLocation id, @NotNull JsonObject jsonObject)
+    public @NotNull VCrushingRecipe fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject serializedRecipe)
     {
-        final var ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(jsonObject, "ingredient"));
+        final var ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(serializedRecipe, "ingredient"));
 
-        if (!jsonObject.has("result")) throw new JsonSyntaxException("Missing result, expected to find a string or object");
+        if (!serializedRecipe.has("result")) throw new JsonSyntaxException("Missing result, expected to find a string or object");
 
-        final var itemName = GsonHelper.getAsString(jsonObject, "result");
+        final var itemName = GsonHelper.getAsString(serializedRecipe, "result");
         final var item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemName));
 
         if(item == null) throw new IllegalStateException("Item: " + itemName + " does not exist");
 
         final var result = new ItemStack(item);
-        final var experience = GsonHelper.getAsFloat(jsonObject, "experience");
-        final var crushingTime = GsonHelper.getAsInt(jsonObject, "crushingTime");
+        final var experience = GsonHelper.getAsFloat(serializedRecipe, "experience");
+        final var crushingTime = GsonHelper.getAsInt(serializedRecipe, "crushingTime");
 
-        return new VCrushingRecipe(id, ingredient, result, experience, crushingTime);
+        return new VCrushingRecipe(recipeId, ingredient, result, experience, crushingTime);
     }
 
     @Nullable
     @Override
-    public VCrushingRecipe fromNetwork(@NotNull ResourceLocation id, @NotNull FriendlyByteBuf byteBuf)
+    public VCrushingRecipe fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer)
     {
-        final var ingredient = Ingredient.fromNetwork(byteBuf);
-        final var result = byteBuf.readItem();
-        final var experience = byteBuf.readFloat();
-        final var crushingTime = byteBuf.readInt();
+        final var ingredient = Ingredient.fromNetwork(buffer);
+        final var result = buffer.readItem();
+        final var experience = buffer.readFloat();
+        final var crushingTime = buffer.readInt();
 
-        return new VCrushingRecipe(id, ingredient, result, experience, crushingTime);
+        return new VCrushingRecipe(recipeId, ingredient, result, experience, crushingTime);
     }
 
     @Override
-    public void toNetwork(@NotNull FriendlyByteBuf byteBuf, @NotNull VCrushingRecipe recipe)
+    public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull VCrushingRecipe recipe)
     {
-        recipe.getIngredients().forEach(ingredient -> ingredient.toNetwork(byteBuf));
-        byteBuf.writeItem(recipe.getResultItem());
-        byteBuf.writeFloat(recipe.getExperience());
-        byteBuf.writeInt(recipe.getCrushingTime());
+        recipe.getIngredients().forEach(ingredient -> ingredient.toNetwork(buffer));
+        buffer.writeItem(recipe.getResultItem());
+        buffer.writeFloat(recipe.getExperience());
+        buffer.writeInt(recipe.getCrushingTime());
     }
 }

@@ -77,7 +77,6 @@ public class VIP3
     {
         try {
             final var rangedAttribute = RangedAttribute.class;
-            LOGGER.info(java.util.Arrays.toString(rangedAttribute.getDeclaredFields()));
             final var maxValue = rangedAttribute.getDeclaredField(FMLEnvironment.production ? "f_22308_" : "maxValue");
             maxValue.setAccessible(true);
             maxValue.setDouble(Attributes.ARMOR, 60D);

@@ -10,7 +10,6 @@ import fr.flowarg.vip3.network.VNetwork;
 import fr.flowarg.vip3.network.VResetCrusherDataPacket;
 import fr.flowarg.vip3.network.VStartStopCrusherPacket;
 import fr.flowarg.vip3.network.VSwapSlotCrusherPacket;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
@@ -53,17 +52,17 @@ public class VCrusherScreen extends AbstractContainerScreen<VCrusherMenu>
         this.widthTooNarrow = this.width < 379;
         this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
 
-        this.addRenderableWidget(new Button(this.leftPos - 50, this.topPos, 40, 20, new TextComponent("START"), button -> VNetwork.SYNC_CHANNEL.sendToServer(new VStartStopCrusherPacket(this.blockPos, true))));
-        this.addRenderableWidget(new Button(this.leftPos - 50, this.topPos + 25, 40, 20, new TextComponent("STOP"), button -> VNetwork.SYNC_CHANNEL.sendToServer(new VStartStopCrusherPacket(this.blockPos, false))));
-        this.addRenderableWidget(new Button(this.leftPos - 50, this.topPos + 50, 40, 20, new TextComponent("+"), button ->  {
+        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.PLUS, this.leftPos + 44, this.topPos + 55, button ->  {
             if(!this.container.getItem(VCrusherEntity.SLOT_INPUT).isEmpty())
                 VNetwork.SYNC_CHANNEL.sendToServer(new VSwapSlotCrusherPacket(this.blockPos, VCrusherEntity.SLOT_INPUT, VCrusherEntity.SLOT_LOCKED));
         }));
-        this.addRenderableWidget(new Button(this.leftPos - 50, this.topPos + 75, 40, 20, new TextComponent("-"), button ->  {
+        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.MINUS, this.leftPos + 66, this.topPos + 55, button ->  {
             if(!this.container.getItem(VCrusherEntity.SLOT_LOCKED).isEmpty())
                 VNetwork.SYNC_CHANNEL.sendToServer(new VSwapSlotCrusherPacket(this.blockPos, VCrusherEntity.SLOT_LOCKED, VCrusherEntity.SLOT_INPUT));
         }));
-        this.addRenderableWidget(new Button(this.leftPos - 50, this.topPos + 100, 40, 20, new TextComponent("RESET"), button -> VNetwork.SYNC_CHANNEL.sendToServer(new VResetCrusherDataPacket(this.blockPos))));
+        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.START, this.leftPos + 102, this.topPos + 55, button -> VNetwork.SYNC_CHANNEL.sendToServer(new VStartStopCrusherPacket(this.blockPos, true))));
+        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.STOP, this.leftPos + 124, this.topPos + 55, button -> VNetwork.SYNC_CHANNEL.sendToServer(new VStartStopCrusherPacket(this.blockPos, false))));
+        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.RESET, this.leftPos + 22, this.topPos + 45, button -> VNetwork.SYNC_CHANNEL.sendToServer(new VResetCrusherDataPacket(this.blockPos))));
     }
 
     @Override
@@ -77,7 +76,7 @@ public class VCrusherScreen extends AbstractContainerScreen<VCrusherMenu>
         final var color = "\u00A7" + (lockedItemStack.is(VObjects.VIPIUM_INGOT.get()) ? "b" : lockedItemStack.is(VObjects.PURE_VIPIUM_INGOT.get()) ? "c" : "7");
         final var lockedItems = lockedItemStack.getCount();
 
-        if(mouseX >= 6 + this.leftPos && mouseX <= 36 + this.leftPos && mouseY >= 10 + this.topPos && mouseY <= 40 + this.topPos)
+        if(mouseX >= 4 + this.leftPos && mouseX <= 34 + this.leftPos && mouseY >= 4 + this.topPos && mouseY <= 34 + this.topPos)
         {
             final var shift = hasShiftDown();
             final var mandatoryComponents = List.of(
@@ -114,6 +113,6 @@ public class VCrusherScreen extends AbstractContainerScreen<VCrusherMenu>
         final var j = this.topPos;
 
         this.blit(poseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
-        this.blit(poseStack, i + 95, j + 47, 176, 14, this.menu.getBurnProgress() + 1, 16);
+        this.blit(poseStack, i + 92, j + 35, 176, 14, this.menu.getBurnProgress() + 1, 16);
     }
 }

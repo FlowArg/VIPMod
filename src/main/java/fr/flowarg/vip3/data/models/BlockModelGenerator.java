@@ -4,7 +4,6 @@ import fr.flowarg.vip3.VIP3;
 import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -45,15 +44,15 @@ public class BlockModelGenerator extends BlockStateProvider
 
         final var normal = this.models().orientable(
                 blockName,
-                this.modLoc("block/" + blockName + "_side"),
+                this.mcLoc("block/furnace_side"),
                 this.modLoc("block/" + blockName + "_front"),
                 this.modLoc("block/" + blockName + "_top"));
 
         final var on = this.models().orientable(
                 blockName + "_on",
-                this.modLoc("block/" + blockName + "_side"),
+                this.mcLoc("block/furnace_side"),
                 this.modLoc("block/" + blockName + "_front_on"),
-                this.modLoc("block/" + blockName + "_top"));
+                this.modLoc("block/" + blockName + "_top_on"));
 
         builder.addModels(builder.partialState()
                                   .with(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST)

@@ -68,11 +68,18 @@ public class RPCManager
                             if(serverData.ip.contains("flowarg"))
                             {
                                 this.makeChanges(rpc -> {
-                                    rpc.details = "Playing in VIP 3";
-                                    rpc.state = "Connected";
+                                    rpc.details = "Playing with friends";
+                                    rpc.state = "VIP 3";
                                 });
                             }
                         }
+                    }
+                    else if(mc.level != null && mc.getSingleplayerServer() != null)
+                    {
+                        this.makeChanges(rpc -> {
+                            rpc.details = "Playing in Solo";
+                            rpc.state = "VIP 3";
+                        });
                     }
                     this.rpcLib.Discord_UpdatePresence(rpc);
                     this.rpcLib.Discord_RunCallbacks();

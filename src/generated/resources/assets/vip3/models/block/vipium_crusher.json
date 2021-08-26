@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/orientable",
   "textures": {
-    "side": "vip3:block/vipium_crusher_side",
+    "side": "minecraft:block/furnace_side",
     "front": "vip3:block/vipium_crusher_front",
     "top": "vip3:block/vipium_crusher_top"
   }

@@ -160,6 +160,7 @@ public class VCrusherBlock extends BaseEntityBlock
         final var d7 = axis == Direction.Axis.Z ? direction.getStepZ() * 0.52D : d4;
 
         level.addParticle(ParticleTypes.FLASH, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
-        level.addParticle(ParticleTypes.FLAME, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
+        if (random.nextDouble() < 0.6D)
+            level.addParticle(ParticleTypes.FLAME, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
     }
 }

@@ -43,9 +43,9 @@ public class VCrusherMenu extends AbstractContainerMenu
         checkContainerSize(this.container, SLOT_COUNT);
         checkContainerDataCount(this.data, DATA_COUNT);
 
-        this.addSlot(new Slot(container, VCrusherEntity.SLOT_INPUT, 7, 47));
-        this.addSlot(new VCrusherLockedSlot(container, VCrusherEntity.SLOT_LOCKED, 70, 47));
-        this.addSlot(new VCrusherResultSlot(inventory.player, container, VCrusherEntity.SLOT_OUTPUT, 128, 47));
+        this.addSlot(new Slot(container, VCrusherEntity.SLOT_INPUT, 45, 35));
+        this.addSlot(new VCrusherLockedSlot(container, VCrusherEntity.SLOT_LOCKED, 67, 35));
+        this.addSlot(new VCrusherResultSlot(inventory.player, container, VCrusherEntity.SLOT_OUTPUT, 125, 35));
 
         for(int k = 0; k < 9; ++k)
             this.addSlot(new Slot(inventory, k, 8 + k * 18, 142));
@@ -124,7 +124,7 @@ public class VCrusherMenu extends AbstractContainerMenu
 
         float x = this.getFragmentsResultCount();
         for(int i = 0; i < this.getCrushedIngotCount(); i++)
-            x += -3.5;
+            x -= 3.5;
         return x / (5 * this.getCrushedIngotCount()) * 100 + 50F;
     }
 

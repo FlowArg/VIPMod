@@ -1,15 +1,18 @@
 package fr.flowarg.vip3.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import fr.flowarg.vip3.VIP3;
 import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fmlclient.registry.ClientRegistry;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEventHandler
@@ -31,6 +34,8 @@ public class ClientEventHandler
 
     private void renderBar(RenderGameOverlayEvent.PreLayer event, ForgeIngameGui gui, Minecraft minecraft)
     {
+        if(minecraft.player == null) return;
+
         gui.setupOverlayRenderState(true, false);
 
         RenderSystem.enableBlend();
@@ -63,8 +68,20 @@ public class ClientEventHandler
         RenderSystem.disableBlend();
     }
 
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onKeyInput(final InputEvent.KeyInputEvent event)
+    {
+        if(VIP3.getClientManager() != null && Minecraft.getInstance().level != null)
+        {
+            if(VIP3.getClientManager().getConfigureEffectsKey().isDown())
+                Minecraft.getInstance().setScreen(new ConfigureEffectsScreen());
+        }
+    }
+
     public void clientSetup(FMLClientSetupEvent event)
     {
         MenuScreens.register(VObjects.VIPIUM_CRUSHER_MENU.get(), VCrusherScreen::new);
+        ClientRegistry.registerKeyBinding(VIP3.getClientManager().getConfigureEffectsKey());
     }
 }

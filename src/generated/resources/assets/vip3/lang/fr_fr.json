@@ -44,5 +44,8 @@
   "item.vip3.vipium_pickaxe": "Pioche en Vipium",
   "item.vip3.vipium_shovel": "Pelle en Vipium",
   "item.vip3.vipium_sword": "\u00C9p\u00E9e en Vipium",
-  "itemGroup.vip3": "VIP 3"
+  "itemGroup.vip3": "VIP 3",
+  "key.categories.vip3": "VIP3",
+  "key.configure_effects": "Configurer les effets",
+  "screen.configure_effects": "Configurer les effets"
 }

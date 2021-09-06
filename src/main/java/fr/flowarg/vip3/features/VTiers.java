@@ -1,7 +1,6 @@
 package fr.flowarg.vip3.features;
 
 import fr.flowarg.vip3.VIP3;
-import fr.flowarg.vip3.network.VNetwork;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;

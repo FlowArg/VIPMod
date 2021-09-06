@@ -68,5 +68,8 @@ public class ENLanguageGenerator extends CommonLanguageProvider
         this.addBlock(VObjects.TELEPORTATION_ALTAR, "Teleportation Altar");
         this.addItem(VObjects.TELEPORTATION_ATLAS, "Teleportation Atlas");
         this.addItem(VObjects.HOLY_CHICKEN_BIBLE, "Holy Chicken Bible");
+        this.add("screen.configure_effects", "Configure effects");
+        this.add("key.configure_effects", "Configure effects");
+        this.add("key.categories.vip3", "VIP3 Keymap");
     }
 }

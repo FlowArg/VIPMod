@@ -1,6 +1,7 @@
 package fr.flowarg.vip3.client;
 
 import fr.flowarg.vip3.utils.SidedManager;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 public class ClientManager implements SidedManager
 {
     private RPCManager rpcManager;
+    private KeyMapping pureVipiumArmorKey;
 
     @Override
     public void init()
@@ -25,11 +27,17 @@ public class ClientManager implements SidedManager
             this.rpcManager = new RPCManager();
             this.rpcManager.startRpc(Minecraft.getInstance());
         }
+        this.pureVipiumArmorKey = new KeyMapping("key.configure_effects", 325, "key.categories.vip3");
     }
 
     @Nullable
     public RPCManager getRpcManager()
     {
         return this.rpcManager;
+    }
+
+    public KeyMapping getConfigureEffectsKey()
+    {
+        return this.pureVipiumArmorKey;
     }
 }

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class VNetwork
 {
-    private static final ResourceLocation CHANNEL_NAME = new ResourceLocation(VIP3.MOD_ID, "vipium_crusher_exchange");
+    private static final ResourceLocation CHANNEL_NAME = new ResourceLocation(VIP3.MOD_ID, "vip3_exchange");
     private static final String PROTOCOL_VERSION = "1.0";
     public static final SimpleChannel SYNC_CHANNEL = NetworkRegistry.ChannelBuilder
             .named(CHANNEL_NAME)
@@ -24,5 +24,6 @@ public class VNetwork
         SYNC_CHANNEL.registerMessage(0, VStartStopCrusherPacket.class, VStartStopCrusherPacket::encode, VStartStopCrusherPacket::decode, VStartStopCrusherPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
         SYNC_CHANNEL.registerMessage(1, VSwapSlotCrusherPacket.class, VSwapSlotCrusherPacket::encode, VSwapSlotCrusherPacket::decode, VSwapSlotCrusherPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
         SYNC_CHANNEL.registerMessage(2, VResetCrusherDataPacket.class, VResetCrusherDataPacket::encode, VResetCrusherDataPacket::decode, VResetCrusherDataPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        SYNC_CHANNEL.registerMessage(3, VArmorConfigurationPacket.class, VArmorConfigurationPacket::encode, VArmorConfigurationPacket::decode, VArmorConfigurationPacket::handle);
     }
 }

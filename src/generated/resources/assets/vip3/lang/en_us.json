@@ -44,5 +44,8 @@
   "item.vip3.vipium_pickaxe": "Vipium Pickaxe",
   "item.vip3.vipium_shovel": "Vipium Shovel",
   "item.vip3.vipium_sword": "Vipium Sword",
-  "itemGroup.vip3": "VIP 3"
+  "itemGroup.vip3": "VIP 3",
+  "key.categories.vip3": "VIP3 Keymap",
+  "key.configure_effects": "Configure effects",
+  "screen.configure_effects": "Configure effects"
 }

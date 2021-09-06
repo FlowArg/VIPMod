@@ -4,6 +4,7 @@ import fr.flowarg.vip3.client.ClientManager;
 import fr.flowarg.vip3.features.OreGeneration;
 import fr.flowarg.vip3.features.VObjects;
 import fr.flowarg.vip3.network.VNetwork;
+import fr.flowarg.vip3.network.capabilities.CapabilitiesEventHandler;
 import fr.flowarg.vip3.server.ServerManager;
 import fr.flowarg.vip3.utils.SidedManager;
 import fr.flowarg.vip3.utils.VIPConfig;
@@ -42,6 +43,8 @@ public class VIP3
         final var modBus = FMLJavaModLoadingContext.get().getModEventBus();
         VObjects.register(modBus);
         modBus.addListener(this::setup);
+        MinecraftForge.EVENT_BUS.register(CapabilitiesEventHandler.class);
+        modBus.addListener(CapabilitiesEventHandler::registerCapabilities);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, VIPConfig.CLIENT_SPECS);
         MinecraftForge.EVENT_BUS.register(new OreGeneration());
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> clientManager = new ClientManager());

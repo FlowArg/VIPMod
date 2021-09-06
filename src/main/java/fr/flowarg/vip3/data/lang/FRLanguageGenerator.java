@@ -68,5 +68,8 @@ public class FRLanguageGenerator extends CommonLanguageProvider
         this.addBlock(VObjects.TELEPORTATION_ALTAR, "Altar de téléportation");
         this.addItem(VObjects.TELEPORTATION_ATLAS, "Atlas de téléportation");
         this.addItem(VObjects.HOLY_CHICKEN_BIBLE, "Bible du Saint Poulet");
+        this.add("screen.configure_effects", "Configurer les effets");
+        this.add("key.configure_effects", "Configurer les effets");
+        this.add("key.categories.vip3", "VIP3");
     }
 }

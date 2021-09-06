@@ -109,10 +109,7 @@ public class VCrusherScreen extends AbstractContainerScreen<VCrusherMenu>
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
 
-        final var i = this.leftPos;
-        final var j = this.topPos;
-
-        this.blit(poseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
-        this.blit(poseStack, i + 92, j + 35, 176, 14, this.menu.getBurnProgress() + 1, 16);
+        this.blit(poseStack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        this.blit(poseStack, this.leftPos + 92, this.topPos + 35, 176, 14, this.menu.getBurnProgress() + 1, 16);
     }
 }

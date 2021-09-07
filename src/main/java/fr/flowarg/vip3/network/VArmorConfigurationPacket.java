@@ -10,7 +10,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-import javax.swing.text.PlainDocument;
 import java.util.function.Supplier;
 
 public final class VArmorConfigurationPacket

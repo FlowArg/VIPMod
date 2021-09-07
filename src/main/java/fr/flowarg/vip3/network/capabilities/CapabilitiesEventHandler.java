@@ -56,5 +56,4 @@ public class CapabilitiesEventHandler
             newCapa.deserializeNBT(nbt);
         });
     }
-
 }

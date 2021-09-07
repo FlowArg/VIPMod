@@ -125,4 +125,10 @@ public class ArmorConfigurationWrapper implements ArmorConfiguration
 
     @Override
     public void notifyChange() {}
+
+    @Override
+    public String toString()
+    {
+        return "ArmorConfigurationWrapper{" + "helmetEffect=" + this.helmetEffect + ", chestPlateEffect=" + this.chestPlateEffect + ", leggingsEffect=" + this.leggingsEffect + ", bootsEffect=" + this.bootsEffect + ", fullSet1Effect=" + this.fullSet1Effect + ", fullSet2Effect=" + this.fullSet2Effect + '}';
+    }
 }

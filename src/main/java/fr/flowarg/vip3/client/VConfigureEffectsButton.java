@@ -4,8 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import fr.flowarg.vip3.network.VArmorConfigurationPacket;
 import fr.flowarg.vip3.network.VNetwork;
-import fr.flowarg.vip3.network.capabilities.ArmorConfiguration;
-import fr.flowarg.vip3.network.capabilities.CapabilitiesEventHandler;
+import fr.flowarg.vip3.network.capabilities.ArmorConfigurationCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.renderer.GameRenderer;
@@ -14,18 +13,16 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.BiConsumer;
-
 @OnlyIn(Dist.CLIENT)
 public class VConfigureEffectsButton extends Checkbox implements VWidget
 {
     private final int[] armorIDs;
-    private final BiConsumer<ArmorConfiguration, Boolean> defineConsumer;
+    private final int id;
 
-    public VConfigureEffectsButton(int pX, int pY, boolean pSelected, BiConsumer<ArmorConfiguration, Boolean> defineConsumer, int... armorIDs)
+    public VConfigureEffectsButton(int pX, int pY, boolean pSelected, int id, int... armorIDs)
     {
         super(pX, pY, 19, 19, TextComponent.EMPTY, pSelected);
-        this.defineConsumer = defineConsumer;
+        this.id = id;
         this.armorIDs = armorIDs;
     }
 
@@ -45,10 +42,11 @@ public class VConfigureEffectsButton extends Checkbox implements VWidget
         if(isEquip(this.armorIDs))
         {
             super.onPress();
-            Minecraft.getInstance().player.getCapability(CapabilitiesEventHandler.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> {
-                this.defineConsumer.accept(armorConfiguration, this.selected());
-                armorConfiguration.notifyChange();
-                VNetwork.SYNC_CHANNEL.sendToServer(new VArmorConfigurationPacket(armorConfiguration));
+            Minecraft.getInstance().player.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> {
+                final var array = armorConfiguration.getConfig().clone();
+                array[this.id] = this.selected();
+                armorConfiguration.defineConfig(array);
+                //VNetwork.SYNC_CHANNEL.sendToServer(new VArmorConfigurationPacket(armorConfiguration));
             });
         }
     }

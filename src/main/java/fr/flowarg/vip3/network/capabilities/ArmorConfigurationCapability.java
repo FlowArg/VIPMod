@@ -16,12 +16,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-public class CapabilitiesEventHandler
+public class ArmorConfigurationCapability
 {
+    public static final ResourceLocation ARMOR_CONFIGURATION_CAP_KEY = new ResourceLocation(VIP3.MOD_ID, "armor_configuration");
+
     @CapabilityInject(ArmorConfiguration.class)
     public static final Capability<ArmorConfiguration> ARMOR_CONFIGURATION_CAPABILITY = null;
-
-    public static final ResourceLocation ARMOR_CONFIGURATION_CAP_KEY = new ResourceLocation(VIP3.MOD_ID, "armor_configuration");
     private static final Map<Player, ArmorConfiguration> INVALIDATED_CAPS = new WeakHashMap<>();
 
     public static void registerCapabilities(@NotNull RegisterCapabilitiesEvent event)
@@ -34,13 +34,13 @@ public class CapabilitiesEventHandler
     {
         if(event.getObject() instanceof Player player)
         {
-            ArmorConfigurationWrapper wrapper;
+            ArmorConfiguration holder;
             if(player instanceof ServerPlayer serverPlayer)
-                wrapper = new ServerArmorConfigurationWrapper(serverPlayer);
-            else wrapper = new ArmorConfigurationWrapper();
+                holder = new PlayerArmorConfigurationHolder(serverPlayer);
+            else holder = new ArmorConfigurationHolder();
 
-            event.addCapability(ARMOR_CONFIGURATION_CAP_KEY, wrapper);
-            event.addListener(() -> wrapper.getCapability(ARMOR_CONFIGURATION_CAPABILITY).ifPresent(cap -> INVALIDATED_CAPS.put(player, cap)));
+            event.addCapability(ARMOR_CONFIGURATION_CAP_KEY, new PlayerArmorConfigurationWrapper(holder));
+            event.addListener(() -> event.getObject().getCapability(ARMOR_CONFIGURATION_CAPABILITY).ifPresent(cap -> INVALIDATED_CAPS.put(player, cap)));
         }
     }
 
@@ -51,9 +51,7 @@ public class CapabilitiesEventHandler
 
         event.getPlayer().getCapability(ARMOR_CONFIGURATION_CAPABILITY).ifPresent(newCapa -> {
             if(!INVALIDATED_CAPS.containsKey(event.getOriginal())) return;
-
-            final var nbt = INVALIDATED_CAPS.get(event.getOriginal()).serializeNBT();
-            newCapa.deserializeNBT(nbt);
+            ArmorConfiguration.deserializeNBT(ArmorConfiguration.serializeNBT(INVALIDATED_CAPS.get(event.getOriginal())), newCapa);
         });
     }
 }

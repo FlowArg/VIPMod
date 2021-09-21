@@ -3,8 +3,7 @@ package fr.flowarg.vip3.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import fr.flowarg.vip3.VIP3;
-import fr.flowarg.vip3.network.capabilities.ArmorConfiguration;
-import fr.flowarg.vip3.network.capabilities.CapabilitiesEventHandler;
+import fr.flowarg.vip3.network.capabilities.ArmorConfigurationCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -31,13 +30,13 @@ public class ConfigureEffectsScreen extends Screen
         this.guiLeft = (this.width - 199) / 2;
         this.guiTop = (this.height - 162) / 2;
 
-        Minecraft.getInstance().player.getCapability(CapabilitiesEventHandler.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> {
-            this.addRenderableWidget(new VConfigureEffectsButton(this.guiLeft + 41, this.guiTop + 20, armorConfiguration.chestPlateEffect(), ArmorConfiguration::chestPlateEffect, 2));
-            this.addRenderableWidget(new VConfigureEffectsButton(this.guiLeft + 41, this.guiTop + 73, armorConfiguration.leggingsEffect(), ArmorConfiguration::leggingsEffect, 1));
-            this.addRenderableWidget(new VConfigureEffectsButton(this.guiLeft + 41, this.guiTop + 126, armorConfiguration.fullSet1Effect(), ArmorConfiguration::fullSet1Effect, 0, 1, 2, 3));
-            this.addRenderableWidget(new VConfigureEffectsButton(this.guiLeft + 132, this.guiTop + 20, armorConfiguration.helmetEffect(), ArmorConfiguration::helmetEffect, 3));
-            this.addRenderableWidget(new VConfigureEffectsButton(this.guiLeft + 132, this.guiTop + 73, armorConfiguration.bootsEffect(), ArmorConfiguration::bootsEffect, 0));
-            this.addRenderableWidget(new VConfigureEffectsButton(this.guiLeft + 132, this.guiTop + 126, armorConfiguration.fullSet2Effect(), ArmorConfiguration::fullSet2Effect, 0, 1, 2, 3));
+        Minecraft.getInstance().player.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> {
+            this.addRenderableWidget(new VConfigureEffectsButton(this.guiLeft + 41, this.guiTop + 20, armorConfiguration.chestPlateEffect(), 1, 2));
+            this.addRenderableWidget(new VConfigureEffectsButton(this.guiLeft + 41, this.guiTop + 73, armorConfiguration.leggingsEffect(), 2, 1));
+            this.addRenderableWidget(new VConfigureEffectsButton(this.guiLeft + 41, this.guiTop + 126, armorConfiguration.fullSet1Effect(), 4, 0, 1, 2, 3));
+            this.addRenderableWidget(new VConfigureEffectsButton(this.guiLeft + 132, this.guiTop + 20, armorConfiguration.helmetEffect(), 0, 3));
+            this.addRenderableWidget(new VConfigureEffectsButton(this.guiLeft + 132, this.guiTop + 73, armorConfiguration.bootsEffect(), 3, 0));
+            this.addRenderableWidget(new VConfigureEffectsButton(this.guiLeft + 132, this.guiTop + 126, armorConfiguration.fullSet2Effect(), 5, 0, 1, 2, 3));
         });
     }
 

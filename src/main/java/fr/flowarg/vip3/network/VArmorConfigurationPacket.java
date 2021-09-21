@@ -1,15 +1,17 @@
 package fr.flowarg.vip3.network;
 
 import fr.flowarg.vip3.network.capabilities.ArmorConfiguration;
-import fr.flowarg.vip3.network.capabilities.CapabilitiesEventHandler;
+import fr.flowarg.vip3.network.capabilities.ArmorConfigurationCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public final class VArmorConfigurationPacket
@@ -60,26 +62,25 @@ public final class VArmorConfigurationPacket
     {
         if(ctx.get().getDirection().getReceptionSide() == LogicalSide.CLIENT)
             ctx.get().enqueueWork(() -> handleClientUpdate(pck));
-        else update(ctx.get().getSender(), pck);
+        else handleServerUpdate(pck, Objects.requireNonNull(ctx.get().getSender()));
         ctx.get().setPacketHandled(true);
+    }
+
+    private static void update(VArmorConfigurationPacket pck, Player player)
+    {
+        player.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> armorConfiguration.defineConfig(new boolean[]{pck.helmetEffect, pck.chestPlateEffect, pck.leggingsEffect, pck.bootsEffect, pck.fullSet1Effect, pck.fullSet2Effect}));
+    }
+
+    private static void handleServerUpdate(VArmorConfigurationPacket pck, ServerPlayer serverPlayer)
+    {
+        update(pck, serverPlayer);
     }
 
     @OnlyIn(Dist.CLIENT)
     private static void handleClientUpdate(VArmorConfigurationPacket pck)
     {
-        update(Minecraft.getInstance().player, pck);
-    }
-
-    private static void update(Player player, VArmorConfigurationPacket pck)
-    {
-        player.getCapability(CapabilitiesEventHandler.ARMOR_CONFIGURATION_CAPABILITY)
-                .ifPresent(capa -> {
-                    capa.helmetEffect(pck.helmetEffect);
-                    capa.chestPlateEffect(pck.chestPlateEffect);
-                    capa.leggingsEffect(pck.leggingsEffect);
-                    capa.bootsEffect(pck.bootsEffect);
-                    capa.fullSet1Effect(pck.fullSet1Effect);
-                    capa.fullSet2Effect(pck.fullSet2Effect);
-                });
+        final var player = Minecraft.getInstance().player;
+        assert player != null;
+        update(pck, player);
     }
 }

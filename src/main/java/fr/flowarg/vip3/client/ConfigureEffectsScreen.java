@@ -3,6 +3,8 @@ package fr.flowarg.vip3.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import fr.flowarg.vip3.VIP3;
+import fr.flowarg.vip3.network.VArmorConfigurationPacket;
+import fr.flowarg.vip3.network.VNetwork;
 import fr.flowarg.vip3.network.capabilities.ArmorConfigurationCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;

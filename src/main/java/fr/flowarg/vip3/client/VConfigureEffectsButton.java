@@ -46,7 +46,7 @@ public class VConfigureEffectsButton extends Checkbox implements VWidget
                 final var array = armorConfiguration.getConfig().clone();
                 array[this.id] = this.selected();
                 armorConfiguration.defineConfig(array);
-                //VNetwork.SYNC_CHANNEL.sendToServer(new VArmorConfigurationPacket(armorConfiguration));
+                VNetwork.SYNC_CHANNEL.sendToServer(new VArmorConfigurationPacket(armorConfiguration));
             });
         }
     }

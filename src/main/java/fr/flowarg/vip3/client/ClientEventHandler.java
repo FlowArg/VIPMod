@@ -3,22 +3,28 @@ package fr.flowarg.vip3.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.flowarg.vip3.VIP3;
 import fr.flowarg.vip3.features.VObjects;
+import fr.flowarg.vip3.network.VArmorConfigurationPacket;
+import fr.flowarg.vip3.network.VNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.util.thread.ReentrantBlockableEventLoop;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEventHandler
 {
     @SubscribeEvent
-    public void onPostRenderGameOverlayEvent(RenderGameOverlayEvent.PreLayer event)
+    public void onPostRenderGameOverlayEvent(RenderGameOverlayEvent.@NotNull PreLayer event)
     {
         if(event.getOverlay() == ForgeIngameGui.ARMOR_LEVEL_ELEMENT)
         {
@@ -32,7 +38,7 @@ public class ClientEventHandler
         }
     }
 
-    private void renderBar(RenderGameOverlayEvent.PreLayer event, ForgeIngameGui gui, Minecraft minecraft)
+    private void renderBar(RenderGameOverlayEvent.PreLayer event, ForgeIngameGui gui, @NotNull Minecraft minecraft)
     {
         if(minecraft.player == null) return;
 
@@ -77,6 +83,13 @@ public class ClientEventHandler
             if(VIP3.getClientManager().getConfigureEffectsKey().isDown())
                 Minecraft.getInstance().setScreen(new ConfigureEffectsScreen());
         }
+    }
+
+    @SubscribeEvent
+    public void onTick(TickEvent.PlayerTickEvent event)
+    {
+        if(event.side == LogicalSide.CLIENT)
+            VNetwork.SYNC_CHANNEL.sendToServer(new VArmorConfigurationPacket.VRequestArmorConfiguration());
     }
 
     public void clientSetup(FMLClientSetupEvent event)

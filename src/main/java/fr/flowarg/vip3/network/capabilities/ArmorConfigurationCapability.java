@@ -7,15 +7,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.WeakHashMap;
 
+@Mod.EventBusSubscriber(modid = VIP3.MOD_ID)
 public class ArmorConfigurationCapability
 {
     public static final ResourceLocation ARMOR_CONFIGURATION_CAP_KEY = new ResourceLocation(VIP3.MOD_ID, "armor_configuration");
@@ -23,11 +24,6 @@ public class ArmorConfigurationCapability
     @CapabilityInject(ArmorConfiguration.class)
     public static final Capability<ArmorConfiguration> ARMOR_CONFIGURATION_CAPABILITY = null;
     private static final Map<Player, ArmorConfiguration> INVALIDATED_CAPS = new WeakHashMap<>();
-
-    public static void registerCapabilities(@NotNull RegisterCapabilitiesEvent event)
-    {
-        event.register(ArmorConfiguration.class);
-    }
 
     @SubscribeEvent
     public static void attachToEntities(@NotNull AttachCapabilitiesEvent<Entity> event)
@@ -39,8 +35,9 @@ public class ArmorConfigurationCapability
                 holder = new PlayerArmorConfigurationHolder(serverPlayer);
             else holder = new ArmorConfigurationHolder();
 
-            event.addCapability(ARMOR_CONFIGURATION_CAP_KEY, new PlayerArmorConfigurationWrapper(holder));
-            event.addListener(() -> event.getObject().getCapability(ARMOR_CONFIGURATION_CAPABILITY).ifPresent(cap -> INVALIDATED_CAPS.put(player, cap)));
+            final PlayerArmorConfigurationWrapper wrapper = new PlayerArmorConfigurationWrapper(holder);
+            event.addCapability(ARMOR_CONFIGURATION_CAP_KEY, wrapper);
+            event.addListener(() -> wrapper.getCapability(ARMOR_CONFIGURATION_CAPABILITY).ifPresent(cap -> INVALIDATED_CAPS.put(player, cap)));
         }
     }
 

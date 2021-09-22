@@ -10,8 +10,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 public final class VArmorConfigurationPacket
@@ -33,7 +36,7 @@ public final class VArmorConfigurationPacket
         this.fullSet2Effect = fullSet2Effect;
     }
 
-    public VArmorConfigurationPacket(ArmorConfiguration armorConfiguration)
+    public VArmorConfigurationPacket(@NotNull ArmorConfiguration armorConfiguration)
     {
         this.helmetEffect = armorConfiguration.helmetEffect();
         this.chestPlateEffect = armorConfiguration.chestPlateEffect();
@@ -43,7 +46,7 @@ public final class VArmorConfigurationPacket
         this.fullSet2Effect = armorConfiguration.fullSet2Effect();
     }
 
-    public static void encode(VArmorConfigurationPacket pck, FriendlyByteBuf byteBuf)
+    public static void encode(@NotNull VArmorConfigurationPacket pck, @NotNull FriendlyByteBuf byteBuf)
     {
         byteBuf.writeBoolean(pck.helmetEffect);
         byteBuf.writeBoolean(pck.chestPlateEffect);
@@ -53,20 +56,20 @@ public final class VArmorConfigurationPacket
         byteBuf.writeBoolean(pck.fullSet2Effect);
     }
 
-    public static VArmorConfigurationPacket decode(FriendlyByteBuf byteBuf)
+    public static @NotNull VArmorConfigurationPacket decode(@NotNull FriendlyByteBuf byteBuf)
     {
         return new VArmorConfigurationPacket(byteBuf.readBoolean(), byteBuf.readBoolean(), byteBuf.readBoolean(), byteBuf.readBoolean(), byteBuf.readBoolean(), byteBuf.readBoolean());
     }
 
-    public static void handle(VArmorConfigurationPacket pck, Supplier<NetworkEvent.Context> ctx)
+    public static void handle(VArmorConfigurationPacket pck, @NotNull Supplier<NetworkEvent.Context> ctx)
     {
         if(ctx.get().getDirection().getReceptionSide() == LogicalSide.CLIENT)
             ctx.get().enqueueWork(() -> handleClientUpdate(pck));
-        else handleServerUpdate(pck, Objects.requireNonNull(ctx.get().getSender()));
+        else ctx.get().enqueueWork(() -> handleServerUpdate(pck, Objects.requireNonNull(ctx.get().getSender())));
         ctx.get().setPacketHandled(true);
     }
 
-    private static void update(VArmorConfigurationPacket pck, Player player)
+    private static void update(VArmorConfigurationPacket pck, @NotNull Player player)
     {
         player.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> armorConfiguration.defineConfig(new boolean[]{pck.helmetEffect, pck.chestPlateEffect, pck.leggingsEffect, pck.bootsEffect, pck.fullSet1Effect, pck.fullSet2Effect}));
     }
@@ -82,5 +85,27 @@ public final class VArmorConfigurationPacket
         final var player = Minecraft.getInstance().player;
         assert player != null;
         update(pck, player);
+    }
+
+    public static class VRequestArmorConfiguration
+    {
+        public static void encode(@NotNull VRequestArmorConfiguration pck, @NotNull FriendlyByteBuf byteBuf) {}
+
+        public static @NotNull VRequestArmorConfiguration decode(@NotNull FriendlyByteBuf byteBuf)
+        {
+            return new VRequestArmorConfiguration();
+        }
+
+        public static void handle(VRequestArmorConfiguration pck, @NotNull Supplier<NetworkEvent.Context> ctx)
+        {
+            ctx.get().enqueueWork(() -> {
+                final var player = ctx.get().getSender();
+                AtomicReference<ArmorConfiguration> config = new AtomicReference<>(null);
+                player.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(config::set);
+                if(config.get() != null)
+                    VNetwork.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new VArmorConfigurationPacket(config.get()));
+            });
+            ctx.get().setPacketHandled(true);
+        }
     }
 }

@@ -4,6 +4,7 @@ import fr.flowarg.vip3.client.ClientManager;
 import fr.flowarg.vip3.features.OreGeneration;
 import fr.flowarg.vip3.features.VObjects;
 import fr.flowarg.vip3.network.VNetwork;
+import fr.flowarg.vip3.network.capabilities.ArmorConfiguration;
 import fr.flowarg.vip3.network.capabilities.ArmorConfigurationCapability;
 import fr.flowarg.vip3.server.ServerManager;
 import fr.flowarg.vip3.utils.SidedManager;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -22,6 +24,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 @Mod(VIP3.MOD_ID)
 public class VIP3
@@ -43,8 +46,7 @@ public class VIP3
         final var modBus = FMLJavaModLoadingContext.get().getModEventBus();
         VObjects.register(modBus);
         modBus.addListener(this::setup);
-        MinecraftForge.EVENT_BUS.register(ArmorConfigurationCapability.class);
-        modBus.addListener(ArmorConfigurationCapability::registerCapabilities);
+        modBus.addListener(this::registerCapabilities);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, VIPConfig.CLIENT_SPECS);
         MinecraftForge.EVENT_BUS.register(new OreGeneration());
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> clientManager = new ClientManager());
@@ -58,6 +60,12 @@ public class VIP3
     {
         VNetwork.registerPackets();
     }
+
+    public void registerCapabilities(@NotNull RegisterCapabilitiesEvent event)
+    {
+        event.register(ArmorConfiguration.class);
+    }
+
 
     @OnlyIn(Dist.CLIENT)
     public static ClientManager getClientManager()

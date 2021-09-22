@@ -19,10 +19,13 @@ public class PlayerArmorConfigurationHolder extends ArmorConfigurationHolder
     public void defineConfig(boolean @NotNull [] config)
     {
         super.defineConfig(config);
-        this.serverPlayer.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY)
-                .ifPresent(capa -> VNetwork.SYNC_CHANNEL.send(
-                        PacketDistributor.PLAYER.with(() -> this.serverPlayer),
-                        new VArmorConfigurationPacket(capa))
-                );
+        if(this.serverPlayer.connection != null)
+        {
+            this.serverPlayer.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY)
+                    .ifPresent(capa -> VNetwork.SYNC_CHANNEL.send(
+                            PacketDistributor.PLAYER.with(() -> this.serverPlayer),
+                            new VArmorConfigurationPacket(capa))
+                    );
+        }
     }
 }

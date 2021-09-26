@@ -115,7 +115,7 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.17.1-37.0.70'
     implementation 'org.jetbrains:annotations:22.0.0'
-    serverShade('net.dv8tion:JDA:4.3.0_309') {
+    serverShade('net.dv8tion:JDA:4.3.0_331') {
         exclude module: 'opus-java'
     }
     clientShade('com.github.MinnDevelopment:java-discord-rpc:v2.0.2') {
@@ -147,6 +147,8 @@ task serverJar(type: ShadowJar) {
     classifier 'server'
     exclude 'org/slf4j/**'
     exclude 'javax/annotation/**'
+    relocate 'net.dv8tion', 'vip.libs.net.dv8tion'
+    relocate 'okhttp3', 'vip.libs.net.okhttp3'
 }
 
 task clientJar(type: ShadowJar) {

@@ -16,7 +16,7 @@ public class VCrushingRecipe implements Recipe<Container>
     private final RecipeType<VCrushingRecipe> recipeType;
     private final RecipeSerializer<VCrushingRecipe> recipeSerializer;
     private final ResourceLocation id;
-    private final Ingredient ingredient;
+    protected final Ingredient ingredient;
     private final ItemStack result;
     private final float experience;
     private final int crushingTime;

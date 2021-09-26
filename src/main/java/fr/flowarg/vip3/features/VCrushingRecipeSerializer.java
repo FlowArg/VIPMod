@@ -41,7 +41,7 @@ public class VCrushingRecipeSerializer extends ForgeRegistryEntry<RecipeSerializ
         final var ingredient = Ingredient.fromNetwork(buffer);
         final var result = buffer.readItem();
         final var experience = buffer.readFloat();
-        final var crushingTime = buffer.readInt();
+        final var crushingTime = buffer.readVarInt();
 
         return new VCrushingRecipe(recipeId, ingredient, result, experience, crushingTime);
     }
@@ -49,9 +49,9 @@ public class VCrushingRecipeSerializer extends ForgeRegistryEntry<RecipeSerializ
     @Override
     public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull VCrushingRecipe recipe)
     {
-        recipe.getIngredients().forEach(ingredient -> ingredient.toNetwork(buffer));
+        recipe.ingredient.toNetwork(buffer);
         buffer.writeItem(recipe.getResultItem());
         buffer.writeFloat(recipe.getExperience());
-        buffer.writeInt(recipe.getCrushingTime());
+        buffer.writeVarInt(recipe.getCrushingTime());
     }
 }

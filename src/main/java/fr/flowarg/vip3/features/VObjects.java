@@ -78,7 +78,7 @@ public class VObjects
             {
                 player.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> {
                     if(armorConfiguration.helmetEffect())
-                        player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 30, 4, false, false));
+                        player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 600, 4, false, false));
                 });
             }
         }
@@ -132,7 +132,6 @@ public class VObjects
             }
         }
     });
-    ElytraItem
 
     private static final FoodProperties VIPIUM_APPLE_FOOD = new FoodProperties.Builder()
             .nutrition(10)

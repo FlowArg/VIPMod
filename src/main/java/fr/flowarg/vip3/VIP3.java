@@ -5,7 +5,6 @@ import fr.flowarg.vip3.features.OreGeneration;
 import fr.flowarg.vip3.features.VObjects;
 import fr.flowarg.vip3.network.VNetwork;
 import fr.flowarg.vip3.network.capabilities.ArmorConfiguration;
-import fr.flowarg.vip3.network.capabilities.ArmorConfigurationCapability;
 import fr.flowarg.vip3.server.ServerManager;
 import fr.flowarg.vip3.utils.SidedManager;
 import fr.flowarg.vip3.utils.VIPConfig;

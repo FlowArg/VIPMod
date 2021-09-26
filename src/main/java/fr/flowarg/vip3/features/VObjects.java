@@ -1,16 +1,19 @@
 package fr.flowarg.vip3.features;
 
 import fr.flowarg.vip3.VIP3;
+import fr.flowarg.vip3.network.capabilities.ArmorConfigurationCapability;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -67,10 +70,69 @@ public class VObjects
     public static final RegistryObject<ArmorItem> VIPIUM_LEGGINGS = ITEMS.register("vipium_leggings", () -> new ArmorItem(VArmorMaterials.VIPIUM, EquipmentSlot.LEGS, newVipiumProperties()));
     public static final RegistryObject<ArmorItem> VIPIUM_BOOTS = ITEMS.register("vipium_boots", () -> new ArmorItem(VArmorMaterials.VIPIUM, EquipmentSlot.FEET, newVipiumProperties()));
 
-    public static final RegistryObject<ArmorItem> PURE_VIPIUM_HELMET = ITEMS.register("pure_vipium_helmet", () -> new ArmorItem(VArmorMaterials.PURE_VIPIUM, EquipmentSlot.HEAD, newVipiumPureProperties()));
-    public static final RegistryObject<ArmorItem> PURE_VIPIUM_CHESTPLATE = ITEMS.register("pure_vipium_chestplate", () -> new ArmorItem(VArmorMaterials.PURE_VIPIUM, EquipmentSlot.CHEST, newVipiumPureProperties()));
-    public static final RegistryObject<ArmorItem> PURE_VIPIUM_LEGGINGS = ITEMS.register("pure_vipium_leggings", () -> new ArmorItem(VArmorMaterials.PURE_VIPIUM, EquipmentSlot.LEGS, newVipiumPureProperties()));
-    public static final RegistryObject<ArmorItem> PURE_VIPIUM_BOOTS = ITEMS.register("pure_vipium_boots", () -> new ArmorItem(VArmorMaterials.PURE_VIPIUM, EquipmentSlot.FEET, newVipiumPureProperties()));
+    public static final RegistryObject<ArmorItem> PURE_VIPIUM_HELMET = ITEMS.register("pure_vipium_helmet", () -> new ArmorItem(VArmorMaterials.PURE_VIPIUM, EquipmentSlot.HEAD, newVipiumPureProperties()) {
+        @Override
+        public void onArmorTick(ItemStack stack, Level world, Player player)
+        {
+            if(!world.isClientSide)
+            {
+                player.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> {
+                    if(armorConfiguration.helmetEffect())
+                        player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 30, 4, false, false));
+                });
+            }
+        }
+    });
+    public static final RegistryObject<ArmorItem> PURE_VIPIUM_CHESTPLATE = ITEMS.register("pure_vipium_chestplate", () -> new ArmorItem(VArmorMaterials.PURE_VIPIUM, EquipmentSlot.CHEST, newVipiumPureProperties()) {
+        @Override
+        public void onArmorTick(ItemStack stack, Level world, Player player)
+        {
+            if(!world.isClientSide)
+            {
+                player.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> {
+                    if(armorConfiguration.chestPlateEffect())
+                        player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 30, 2, false, false));
+
+                    final var valid = player.getInventory().getArmor(0).getItem() == PURE_VIPIUM_BOOTS.get()
+                            && player.getInventory().getArmor(1).getItem() == PURE_VIPIUM_LEGGINGS.get()
+                            && player.getInventory().getArmor(3).getItem() == PURE_VIPIUM_HELMET.get();
+
+                    if(armorConfiguration.fullSet1Effect() && valid)
+                        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 30, 2, false, false));
+
+                    if(armorConfiguration.fullSet2Effect() && valid)
+                        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 30, 2, false, false));
+                });
+            }
+        }
+    });
+    public static final RegistryObject<ArmorItem> PURE_VIPIUM_LEGGINGS = ITEMS.register("pure_vipium_leggings", () -> new ArmorItem(VArmorMaterials.PURE_VIPIUM, EquipmentSlot.LEGS, newVipiumPureProperties()) {
+        @Override
+        public void onArmorTick(ItemStack stack, Level world, Player player)
+        {
+            if(!world.isClientSide)
+            {
+                player.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> {
+                    if(armorConfiguration.leggingsEffect())
+                        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 30, 2, false, false));
+                });
+            }
+        }
+    });
+    public static final RegistryObject<ArmorItem> PURE_VIPIUM_BOOTS = ITEMS.register("pure_vipium_boots", () -> new ArmorItem(VArmorMaterials.PURE_VIPIUM, EquipmentSlot.FEET, newVipiumPureProperties()) {
+        @Override
+        public void onArmorTick(ItemStack stack, Level world, Player player)
+        {
+            if(!world.isClientSide)
+            {
+                player.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> {
+                    if(armorConfiguration.bootsEffect())
+                        player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 30, 4, false, false));
+                });
+            }
+        }
+    });
+    ElytraItem
 
     private static final FoodProperties VIPIUM_APPLE_FOOD = new FoodProperties.Builder()
             .nutrition(10)

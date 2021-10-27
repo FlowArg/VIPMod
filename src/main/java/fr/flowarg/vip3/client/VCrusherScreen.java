@@ -96,7 +96,7 @@ public class VCrusherScreen extends AbstractContainerScreen<VCrusherMenu>
                 total.addAll(optional);
             }
             else total.add(new TextComponent("\u00A77\u00A7o" + "Shift for details"));
-            this.renderComponentToolTip(poseStack, total, mouseX, mouseY, this.font);
+            this.renderComponentTooltip(poseStack, total, mouseX, mouseY, this.font);
         }
 
         this.renderTooltip(poseStack, mouseX, mouseY);

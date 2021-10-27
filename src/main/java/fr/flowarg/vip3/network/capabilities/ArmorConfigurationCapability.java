@@ -6,7 +6,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,8 +22,7 @@ public class ArmorConfigurationCapability
 {
     public static final ResourceLocation ARMOR_CONFIGURATION_CAP_KEY = new ResourceLocation(VIP3.MOD_ID, "armor_configuration");
 
-    @CapabilityInject(ArmorConfiguration.class)
-    public static final Capability<ArmorConfiguration> ARMOR_CONFIGURATION_CAPABILITY = null;
+    public static final Capability<ArmorConfiguration> ARMOR_CONFIGURATION_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     private static final Map<Player, ArmorConfiguration> INVALIDATED_CAPS = new WeakHashMap<>();
 
     @SubscribeEvent

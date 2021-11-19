@@ -140,7 +140,7 @@ public class VObjects
             .effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 6100, 1), 1.0f)
             .effect(() -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 6100, 0), 1.0f)
             .effect(() -> new MobEffectInstance(MobEffects.ABSORPTION, 2500, 2), 1.0f)
-            .effect(() -> new MobEffectInstance(MobEffects.HEALTH_BOOST, 4000, 3), 0.4f)
+            .effect(() -> new MobEffectInstance(MobEffects.HEALTH_BOOST, 4000, 2), 0.4f)
             .alwaysEat()
             .build();
 
@@ -198,12 +198,12 @@ public class VObjects
 
     public static final RegistryObject<VCrushingRecipeSerializer> CRUSHING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crushing", VCrushingRecipeSerializer::new);
 
-    private static Item.Properties newVipiumProperties()
+    private static Item.@NotNull Properties newVipiumProperties()
     {
         return new Item.Properties().tab(VIP_TAB).rarity(Rarity.RARE);
     }
 
-    private static Item.Properties newVipiumPureProperties()
+    private static Item.@NotNull Properties newVipiumPureProperties()
     {
         return new Item.Properties().tab(VIP_TAB).rarity(Rarity.EPIC);
     }

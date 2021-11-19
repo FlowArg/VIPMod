@@ -64,17 +64,17 @@ public class RecipeGenerator extends RecipeProvider
         this.buildCrush(VObjects.PURE_VIPIUM_INGOT.get(), VObjects.PURE_VIPIUM_FRAGMENT.get(), 26f, 400, consumer);
     }
 
-    private void build(Item item, Function<ShapedRecipeBuilder, ShapedRecipeBuilder> function, Consumer<FinishedRecipe> consumer)
+    private void build(Item item, @NotNull Function<ShapedRecipeBuilder, ShapedRecipeBuilder> function, Consumer<FinishedRecipe> consumer)
     {
         function.apply(ShapedRecipeBuilder.shaped(item)).save(consumer);
     }
 
-    private void buildShapelessFromBlock(Item item, Function<ShapelessRecipeBuilder, ShapelessRecipeBuilder> function, Consumer<FinishedRecipe> consumer)
+    private void buildShapelessFromBlock(Item item, @NotNull Function<ShapelessRecipeBuilder, ShapelessRecipeBuilder> function, Consumer<FinishedRecipe> consumer)
     {
         function.apply(ShapelessRecipeBuilder.shapeless(item, 9)).save(consumer, new ResourceLocation(VIP3.MOD_ID, item.getRegistryName().getPath() + "_from_block"));
     }
 
-    private void buildOreCook(OreBlock ore, Item result, Consumer<FinishedRecipe> consumer)
+    private void buildOreCook(@NotNull OreBlock ore, @NotNull Item result, Consumer<FinishedRecipe> consumer)
     {
         final var name = result.getRegistryName().getPath().replace("deepslate_", "");
         final var base = name + "_from_" + ore.getRegistryName().getPath();

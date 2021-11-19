@@ -11,7 +11,7 @@ import net.minecraftforge.common.ForgeMod;
 
 import java.util.UUID;
 
-public class AubinSlayer extends SwordItem
+public class AubinSlayer extends SwordItem implements ManualModel
 {
     private static final UUID REACH_UUID = UUID.fromString("D951EE8E-60CF-4E80-BCF1-1F61AE429590");
 
@@ -24,7 +24,6 @@ public class AubinSlayer extends SwordItem
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack)
     {
         final var builder = ImmutableMultimap.<Attribute, AttributeModifier>builder();
-        //builder.putAll(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(REACH_UUID, () -> "AUBIN_SLAYER_REACH", localPlayer.isCreative() ? 1 : 1.5, AttributeModifier.Operation.ADDITION));
         builder.putAll(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(REACH_UUID, () -> "AUBIN_SLAYER_REACH", 1.5, AttributeModifier.Operation.ADDITION));
         builder.putAll(super.getAttributeModifiers(slot, stack));
         return slot == EquipmentSlot.MAINHAND ? builder.build() : super.getAttributeModifiers(slot, stack);

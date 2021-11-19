@@ -13,7 +13,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -31,7 +31,7 @@ println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getPro
 
 minecraft {
     //mappings channel: 'official', version: '1.17.1'
-    mappings channel: 'parchment', version: '2021.10.24-1.17.1'
+    mappings channel: 'parchment', version: '2021.10.31-1.17.1'
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -113,9 +113,9 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.103'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.108'
     implementation 'org.jetbrains:annotations:22.0.0'
-    serverShade('net.dv8tion:JDA:4.3.0_339') {
+    serverShade('net.dv8tion:JDA:4.3.0_346') {
         exclude module: 'opus-java'
     }
     clientShade('com.github.MinnDevelopment:java-discord-rpc:v2.0.2') {

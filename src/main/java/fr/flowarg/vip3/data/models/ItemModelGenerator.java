@@ -1,6 +1,7 @@
 package fr.flowarg.vip3.data.models;
 
 import fr.flowarg.vip3.VIP3;
+import fr.flowarg.vip3.features.ManualModel;
 import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.BlockItem;
@@ -13,15 +14,10 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fmllegacy.RegistryObject;
 
 import java.lang.reflect.Modifier;
-import java.util.List;
 import java.util.Objects;
 
 public class ItemModelGenerator extends ItemModelProvider
 {
-    private static final List<String> IGNORED = List.of(
-            Objects.requireNonNull(VObjects.AUBIN_SLAYER.get().getRegistryName()).getPath()
-    );
-
     public ItemModelGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper)
     {
         super(generator, VIP3.MOD_ID, existingFileHelper);
@@ -49,9 +45,7 @@ public class ItemModelGenerator extends ItemModelProvider
                 {
                     final var obj = registryObject.get();
 
-                    if(IGNORED.contains(Objects.requireNonNull(obj.getRegistryName()).getPath())) continue;
-
-                    if((!(obj instanceof Item)) || obj instanceof BlockItem) continue;
+                    if((!(obj instanceof Item)) || obj instanceof BlockItem || obj instanceof ManualModel) continue;
 
                     if (obj instanceof DiggerItem || obj instanceof SwordItem) this.buildSimpleItem(itemHandheld, Objects.requireNonNull(obj.getRegistryName()).getPath());
                     else this.buildSimpleItem(itemGenerated, Objects.requireNonNull(obj.getRegistryName()).getPath());

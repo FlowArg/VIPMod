@@ -1,4 +1,4 @@
-package fr.flowarg.vip3.features;
+package fr.flowarg.vip3.features.crusher;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;

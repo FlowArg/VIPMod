@@ -1,5 +1,6 @@
-package fr.flowarg.vip3.features;
+package fr.flowarg.vip3.features.crusher;
 
+import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;

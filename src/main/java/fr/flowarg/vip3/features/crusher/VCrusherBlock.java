@@ -1,5 +1,6 @@
-package fr.flowarg.vip3.features;
+package fr.flowarg.vip3.features.crusher;
 
+import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;

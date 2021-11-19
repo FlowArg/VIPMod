@@ -1,5 +1,6 @@
-package fr.flowarg.vip3.features;
+package fr.flowarg.vip3.features.crusher;
 
+import fr.flowarg.vip3.features.VObjects;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;

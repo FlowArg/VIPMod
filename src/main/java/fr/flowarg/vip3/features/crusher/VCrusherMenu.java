@@ -1,5 +1,6 @@
-package fr.flowarg.vip3.features;
+package fr.flowarg.vip3.features.crusher;
 
+import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;

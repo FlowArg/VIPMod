@@ -1,6 +1,7 @@
 package fr.flowarg.vip3.features;
 
 import fr.flowarg.vip3.VIP3;
+import fr.flowarg.vip3.features.crusher.*;
 import fr.flowarg.vip3.network.capabilities.ArmorConfigurationCapability;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;

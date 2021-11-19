@@ -1,4 +1,4 @@
-package fr.flowarg.vip3.features;
+package fr.flowarg.vip3.features.crusher;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;

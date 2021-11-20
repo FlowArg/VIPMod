@@ -1,4 +1,4 @@
-package fr.flowarg.vip3.network.capabilities;
+package fr.flowarg.vip3.features.capabilities.playeratlas;
 
 import fr.flowarg.vip3.VIP3;
 import net.minecraft.resources.ResourceLocation;
@@ -18,26 +18,25 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 @Mod.EventBusSubscriber(modid = VIP3.MOD_ID)
-public class ArmorConfigurationCapability
+public class PlayerAtlasCapability
 {
-    public static final ResourceLocation ARMOR_CONFIGURATION_CAP_KEY = new ResourceLocation(VIP3.MOD_ID, "armor_configuration");
-
-    public static final Capability<ArmorConfiguration> ARMOR_CONFIGURATION_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final Map<Player, ArmorConfiguration> INVALIDATED_CAPS = new WeakHashMap<>();
+    public static final ResourceLocation PLAYER_ATLAS_CAP_KEY = new ResourceLocation(VIP3.MOD_ID, "player_atlas");
+    public static final Capability<PlayerAtlas> PLAYER_ATLAS_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Map<Player, PlayerAtlas> INVALIDATED_CAPS = new WeakHashMap<>();
 
     @SubscribeEvent
     public static void attachToEntities(@NotNull AttachCapabilitiesEvent<Entity> event)
     {
         if(event.getObject() instanceof Player player)
         {
-            ArmorConfiguration holder;
+            PlayerAtlas holder;
             if(player instanceof ServerPlayer serverPlayer)
-                holder = new PlayerArmorConfigurationHolder(serverPlayer);
-            else holder = new ArmorConfigurationHolder();
+                holder = new PlayerPlayerAtlasHolder(serverPlayer);
+            else holder = new PlayerAtlasHolder();
 
-            final PlayerArmorConfigurationWrapper wrapper = new PlayerArmorConfigurationWrapper(holder);
-            event.addCapability(ARMOR_CONFIGURATION_CAP_KEY, wrapper);
-            event.addListener(() -> wrapper.getCapability(ARMOR_CONFIGURATION_CAPABILITY).ifPresent(cap -> INVALIDATED_CAPS.put(player, cap)));
+            final PlayerPlayerAtlasWrapper wrapper = new PlayerPlayerAtlasWrapper(holder);
+            event.addCapability(PLAYER_ATLAS_CAP_KEY, wrapper);
+            event.addListener(() -> wrapper.getCapability(PLAYER_ATLAS_CAPABILITY).ifPresent(cap -> INVALIDATED_CAPS.put(player, cap)));
         }
     }
 
@@ -46,9 +45,9 @@ public class ArmorConfigurationCapability
     {
         if(!event.isWasDeath()) return;
 
-        event.getPlayer().getCapability(ARMOR_CONFIGURATION_CAPABILITY).ifPresent(newCapa -> {
+        event.getPlayer().getCapability(PLAYER_ATLAS_CAPABILITY).ifPresent(newCapa -> {
             if(!INVALIDATED_CAPS.containsKey(event.getOriginal())) return;
-            ArmorConfiguration.deserializeNBT(ArmorConfiguration.serializeNBT(INVALIDATED_CAPS.get(event.getOriginal())), newCapa);
+            PlayerAtlas.deserializeNBT(PlayerAtlas.serializeNBT(INVALIDATED_CAPS.get(event.getOriginal())), newCapa);
         });
     }
 }

@@ -1,8 +1,8 @@
 package fr.flowarg.vip3.data.builders;
 
 import com.google.gson.JsonObject;
-import fr.flowarg.vip3.features.crusher.VCrushingRecipeSerializer;
 import fr.flowarg.vip3.features.VObjects;
+import fr.flowarg.vip3.features.crusher.VCrushingRecipeSerializer;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;

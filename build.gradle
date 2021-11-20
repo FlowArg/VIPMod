@@ -124,9 +124,6 @@ dependencies {
     clientShade 'com.github.MinnDevelopment:discord-rpc-release:v3.3.0'
 }
 
-//println configurations.serverShade.copyRecursive().resolve().collect { it.absolutePath }.join('\n')
-//println configurations.clientShade.copyRecursive().resolve().collect { it.absolutePath }.join('\n')
-
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 jar {

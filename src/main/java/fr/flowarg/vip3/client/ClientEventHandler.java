@@ -3,6 +3,7 @@ package fr.flowarg.vip3.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.flowarg.vip3.VIP3;
 import fr.flowarg.vip3.features.VObjects;
+import fr.flowarg.vip3.network.PlayerAtlasPacket;
 import fr.flowarg.vip3.network.VArmorConfigurationPacket;
 import fr.flowarg.vip3.network.VNetwork;
 import net.minecraft.client.Minecraft;
@@ -77,18 +78,20 @@ public class ClientEventHandler
     @OnlyIn(Dist.CLIENT)
     public void onKeyInput(final InputEvent.KeyInputEvent event)
     {
-        if(VIP3.getClientManager() != null && Minecraft.getInstance().level != null)
-        {
-            if(VIP3.getClientManager().getConfigureEffectsKey().isDown())
-                Minecraft.getInstance().setScreen(new ConfigureEffectsScreen());
-        }
+        if(VIP3.getClientManager() == null || Minecraft.getInstance().level != null) return;
+
+        if(VIP3.getClientManager().getConfigureEffectsKey().isDown())
+            Minecraft.getInstance().setScreen(new ConfigureEffectsScreen());
     }
 
     @SubscribeEvent
-    public void onTick(TickEvent.PlayerTickEvent event)
+    public void onTick(TickEvent.@NotNull PlayerTickEvent event)
     {
         if(event.side == LogicalSide.CLIENT)
+        {
             VNetwork.SYNC_CHANNEL.sendToServer(new VArmorConfigurationPacket.VRequestArmorConfiguration());
+            VNetwork.SYNC_CHANNEL.sendToServer(new PlayerAtlasPacket.RequestPlayerAtlas());
+        }
     }
 
     public void clientSetup(FMLClientSetupEvent event)

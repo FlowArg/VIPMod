@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import fr.flowarg.vip3.network.VArmorConfigurationPacket;
 import fr.flowarg.vip3.network.VNetwork;
-import fr.flowarg.vip3.network.capabilities.ArmorConfigurationCapability;
+import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfigurationCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.renderer.GameRenderer;

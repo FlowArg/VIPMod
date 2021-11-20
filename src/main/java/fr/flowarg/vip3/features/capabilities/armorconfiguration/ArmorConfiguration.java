@@ -1,7 +1,8 @@
-package fr.flowarg.vip3.network.capabilities;
+package fr.flowarg.vip3.features.capabilities.armorconfiguration;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import org.jetbrains.annotations.NotNull;
 
 public interface ArmorConfiguration
 {
@@ -15,7 +16,7 @@ public interface ArmorConfiguration
     void defineConfig(boolean[] config);
     boolean[] getConfig();
 
-    static Tag serializeNBT(ArmorConfiguration holder)
+    static @NotNull CompoundTag serializeNBT(@NotNull ArmorConfiguration holder)
     {
         final var tag = new CompoundTag();
         tag.putBoolean("Helmet", holder.helmetEffect());
@@ -27,7 +28,7 @@ public interface ArmorConfiguration
         return tag;
     }
 
-    static void deserializeNBT(Tag nbt, ArmorConfiguration holder)
+    static void deserializeNBT(Tag nbt, @NotNull ArmorConfiguration holder)
     {
         final var tag = (CompoundTag)nbt;
         holder.defineConfig(new boolean[]{tag.getBoolean("Helmet"), tag.getBoolean("ChestPlate"), tag.getBoolean("Leggings"), tag.getBoolean("Boots"), tag.getBoolean("Set1"), tag.getBoolean("Set2")});

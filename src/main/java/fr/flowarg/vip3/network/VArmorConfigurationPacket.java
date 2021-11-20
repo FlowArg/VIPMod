@@ -1,7 +1,7 @@
 package fr.flowarg.vip3.network;
 
-import fr.flowarg.vip3.network.capabilities.ArmorConfiguration;
-import fr.flowarg.vip3.network.capabilities.ArmorConfigurationCapability;
+import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfiguration;
+import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfigurationCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;

@@ -1,4 +1,4 @@
-package fr.flowarg.vip3.network.capabilities;
+package fr.flowarg.vip3.features.capabilities.armorconfiguration;
 
 import fr.flowarg.vip3.network.VArmorConfigurationPacket;
 import fr.flowarg.vip3.network.VNetwork;

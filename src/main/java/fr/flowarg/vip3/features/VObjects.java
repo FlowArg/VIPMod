@@ -1,8 +1,10 @@
 package fr.flowarg.vip3.features;
 
 import fr.flowarg.vip3.VIP3;
+import fr.flowarg.vip3.features.altar.AltarBlock;
+import fr.flowarg.vip3.features.altar.AltarEntity;
 import fr.flowarg.vip3.features.crusher.*;
-import fr.flowarg.vip3.network.capabilities.ArmorConfigurationCapability;
+import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfigurationCapability;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -176,7 +178,7 @@ public class VObjects
     public static final RegistryObject<VipiumOre> VIPIUM_ORE = BLOCKS.register("vipium_ore", VipiumOre::new);
     public static final RegistryObject<VipiumOre> DEEPSLATE_VIPIUM_ORE = BLOCKS.register("deepslate_vipium_ore", VipiumOre::new);
     public static final RegistryObject<VCrusherBlock> VIPIUM_CRUSHER = BLOCKS.register("vipium_crusher", () -> new VCrusherBlock(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(9.5F).lightLevel(value -> value.getValue(BlockStateProperties.LIT) ? 13 : 0)));
-    public static final RegistryObject<Block> TELEPORTATION_ALTAR = BLOCKS.register("teleportation_altar", () -> new Block(BlockBehaviour.Properties.of(Material.METAL).lightLevel(value -> 15)));
+    public static final RegistryObject<AltarBlock> TELEPORTATION_ALTAR = BLOCKS.register("teleportation_altar", () -> new AltarBlock(BlockBehaviour.Properties.of(Material.METAL).lightLevel(value -> 15)));
 
     public static final RegistryObject<BlockItem> VIPIUM_BLOCK_ITEM = ITEMS.register("vipium_block", () -> new BlockItem(VIPIUM_BLOCK.get(), newVipiumProperties()));
     public static final RegistryObject<BlockItem> PURE_VIPIUM_BLOCK_ITEM = ITEMS.register("pure_vipium_block", () -> new BlockItem(PURE_VIPIUM_BLOCK.get(), newVipiumPureProperties()));
@@ -186,6 +188,7 @@ public class VObjects
     public static final RegistryObject<BlockItem> TELEPORTATION_ALTAR_ITEM = ITEMS.register("teleportation_altar", () -> new BlockItem(TELEPORTATION_ALTAR.get(), newVipiumProperties()));
 
     public static final RegistryObject<BlockEntityType<VCrusherEntity>> VIPIUM_CRUSHER_ENTITY = BLOCK_ENTITIES.register("vipium_crusher", () -> BlockEntityType.Builder.of(VCrusherEntity::new, VIPIUM_CRUSHER.get()).build(null));
+    public static final RegistryObject<BlockEntityType<AltarEntity>> TELEPORTATION_ALTAR_ENTITY = BLOCK_ENTITIES.register("teleportation_altar", () -> BlockEntityType.Builder.of(AltarEntity::new, TELEPORTATION_ALTAR.get()).build(null));
 
     public static final RegistryObject<MenuType<VCrusherMenu>> VIPIUM_CRUSHER_MENU = CONTAINERS.register("vipium_crusher", () -> IForgeContainerType.create(VCrusherMenu::new));
 

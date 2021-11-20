@@ -44,7 +44,7 @@ public class VCrusherBlock extends BaseEntityBlock
     }
 
     @Override
-    public @NotNull InteractionResult use(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand interactionHand, @NotNull BlockHitResult blockHitResult)
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand interactionHand, @NotNull BlockHitResult blockHitResult)
     {
         if (level.isClientSide) return InteractionResult.SUCCESS;
 
@@ -53,13 +53,13 @@ public class VCrusherBlock extends BaseEntityBlock
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context)
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext context)
     {
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public void setPlacedBy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, LivingEntity entity, ItemStack stack)
+    public void setPlacedBy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, LivingEntity entity, @NotNull ItemStack stack)
     {
         if (!stack.hasCustomHoverName()) return;
 
@@ -68,7 +68,7 @@ public class VCrusherBlock extends BaseEntityBlock
     }
 
     @Override
-    public void onRemove(BlockState oldState, @NotNull Level level, @NotNull BlockPos pos, BlockState newState, boolean unused)
+    public void onRemove(@NotNull BlockState oldState, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean unused)
     {
         if (oldState.is(newState.getBlock())) return;
 
@@ -93,7 +93,7 @@ public class VCrusherBlock extends BaseEntityBlock
     }
 
     @Override
-    public int getAnalogOutputSignal(@NotNull BlockState state, Level level, @NotNull BlockPos pos)
+    public int getAnalogOutputSignal(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos)
     {
         return VCrusherMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
@@ -105,19 +105,19 @@ public class VCrusherBlock extends BaseEntityBlock
     }
 
     @Override
-    public @NotNull BlockState rotate(BlockState state, Rotation rotation)
+    public @NotNull BlockState rotate(@NotNull BlockState state, @NotNull Rotation rotation)
     {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
-    public @NotNull BlockState mirror(BlockState state, Mirror mirror)
+    public @NotNull BlockState mirror(@NotNull BlockState state, @NotNull Mirror mirror)
     {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder)
+    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> stateBuilder)
     {
         stateBuilder.add(FACING, LIT);
     }
@@ -135,14 +135,14 @@ public class VCrusherBlock extends BaseEntityBlock
         return level.isClientSide ? null : createTickerHelper(entityType, VObjects.VIPIUM_CRUSHER_ENTITY.get(), VCrusherEntity::serverTick);
     }
 
-    protected void openContainer(Level level, BlockPos pos, Player player)
+    protected void openContainer(@NotNull Level level, BlockPos pos, Player player)
     {
         if(level.getBlockEntity(pos) instanceof VCrusherEntity crusherEntity)
             player.openMenu(crusherEntity);
     }
 
     @Override
-    public void animateTick(BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Random random)
+    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Random random)
     {
         if (!state.getValue(LIT)) return;
 

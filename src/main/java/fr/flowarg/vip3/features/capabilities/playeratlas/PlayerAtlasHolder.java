@@ -5,6 +5,7 @@ import fr.flowarg.vip3.features.altar.data.AtlasData;
 public class PlayerAtlasHolder implements PlayerAtlas
 {
     private AtlasData atlasData;
+    private boolean enabled;
 
     @Override
     public AtlasData atlasData()
@@ -13,9 +14,21 @@ public class PlayerAtlasHolder implements PlayerAtlas
     }
 
     @Override
+    public boolean enabled()
+    {
+        return this.enabled;
+    }
+
+    @Override
     public void setAtlasData(AtlasData data)
     {
         this.atlasData = data;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
     }
 
     @Override

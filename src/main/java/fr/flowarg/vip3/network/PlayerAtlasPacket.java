@@ -12,8 +12,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,19 +21,39 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-public record PlayerAtlasPacket(AtlasData data)
+public class PlayerAtlasPacket
 {
+    private final AtlasData data;
+    private final boolean enabled;
+
+    public PlayerAtlasPacket(AtlasData data, boolean enabled)
+    {
+        this.data = data;
+        this.enabled = enabled;
+    }
+
+    public PlayerAtlasPacket(@NotNull PlayerAtlas atlas)
+    {
+        this.data = atlas.atlasData();
+        this.enabled = atlas.enabled();
+    }
+
     public static void encode(@NotNull PlayerAtlasPacket packet, @NotNull FriendlyByteBuf buffer)
     {
+        buffer.writeBoolean(packet.enabled);
         final var tag = new CompoundTag();
-        Serialization.serializeAtlas(packet.data, tag);
+        if(packet.enabled)
+            Serialization.serializeAtlas(packet.data, tag);
         buffer.writeNbt(tag);
     }
 
     @Contract("_ -> new")
     public static @NotNull PlayerAtlasPacket decode(@NotNull FriendlyByteBuf buffer)
     {
-        return new PlayerAtlasPacket(Serialization.deserializeAtlas(buffer.readAnySizeNbt()));
+        final var enabled = buffer.readBoolean();
+        final var atlasData = enabled ? Serialization.deserializeAtlas(buffer.readAnySizeNbt()) : PlayerAtlas.EMPTY;
+
+        return new PlayerAtlasPacket(atlasData, enabled);
     }
 
     public static void handle(PlayerAtlasPacket pck, @NotNull Supplier<NetworkEvent.Context> ctx)
@@ -46,7 +66,10 @@ public record PlayerAtlasPacket(AtlasData data)
 
     private static void update(PlayerAtlasPacket pck, @NotNull Player player)
     {
-        player.getCapability(PlayerAtlasCapability.PLAYER_ATLAS_CAPABILITY).ifPresent(playerAtlas -> playerAtlas.setAtlasData(pck.data));
+        player.getCapability(PlayerAtlasCapability.PLAYER_ATLAS_CAPABILITY).ifPresent(playerAtlas -> {
+            playerAtlas.setAtlasData(pck.data);
+            playerAtlas.setEnabled(pck.enabled);
+        });
     }
 
     private static void handleServerUpdate(PlayerAtlasPacket pck, ServerPlayer serverPlayer)
@@ -77,8 +100,10 @@ public record PlayerAtlasPacket(AtlasData data)
                 final var player = ctx.get().getSender();
                 AtomicReference<PlayerAtlas> atlas = new AtomicReference<>(null);
                 player.getCapability(PlayerAtlasCapability.PLAYER_ATLAS_CAPABILITY).ifPresent(atlas::set);
-                if(atlas.get() != null)
-                    VNetwork.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PlayerAtlasPacket(atlas.get().atlasData()));
+                final var get = atlas.get();
+
+                if(get != null)
+                    VNetwork.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PlayerAtlasPacket(get));
             });
             ctx.get().setPacketHandled(true);
         }

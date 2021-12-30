@@ -47,5 +47,7 @@
   "itemGroup.vip3": "VIP 3",
   "key.categories.vip3": "VIP3 Keymap",
   "key.configure_effects": "Configure effects",
+  "screen.altar": "Teleportation altar",
+  "screen.atlas": "Teleportation atlas",
   "screen.configure_effects": "Configure effects"
 }

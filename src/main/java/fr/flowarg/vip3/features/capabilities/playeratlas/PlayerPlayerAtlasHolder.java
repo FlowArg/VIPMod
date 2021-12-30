@@ -4,7 +4,7 @@ import fr.flowarg.vip3.features.altar.data.AtlasData;
 import fr.flowarg.vip3.network.PlayerAtlasPacket;
 import fr.flowarg.vip3.network.VNetwork;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 public class PlayerPlayerAtlasHolder extends PlayerAtlasHolder
 {
@@ -24,7 +24,7 @@ public class PlayerPlayerAtlasHolder extends PlayerAtlasHolder
             this.serverPlayer.getCapability(PlayerAtlasCapability.PLAYER_ATLAS_CAPABILITY)
                     .ifPresent(capa -> VNetwork.SYNC_CHANNEL.send(
                             PacketDistributor.PLAYER.with(() -> this.serverPlayer),
-                            new PlayerAtlasPacket(capa.atlasData()))
+                            new PlayerAtlasPacket(capa))
                     );
         }
     }

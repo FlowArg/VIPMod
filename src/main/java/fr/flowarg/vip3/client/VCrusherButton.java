@@ -24,7 +24,7 @@ public class VCrusherButton extends Button implements VWidget
         RenderSystem.setShaderTexture(0, WIDGETS);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        this.blit(poseStack, this.x, this.y, this.buttonType.type, this.isHovered() ? 18 : 0, this.width, this.height);
+        this.blit(poseStack, this.x, this.y, this.buttonType.type, this.isHoveredOrFocused() ? 18 : 0, this.width, this.height);
     }
 
     public enum ButtonType {

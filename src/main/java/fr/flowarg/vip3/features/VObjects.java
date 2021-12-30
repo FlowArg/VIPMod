@@ -3,10 +3,12 @@ package fr.flowarg.vip3.features;
 import fr.flowarg.vip3.VIP3;
 import fr.flowarg.vip3.features.altar.AltarBlock;
 import fr.flowarg.vip3.features.altar.AltarEntity;
+import fr.flowarg.vip3.features.altar.AtlasItem;
 import fr.flowarg.vip3.features.crusher.*;
 import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfigurationCapability;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -23,11 +25,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 public class VObjects
@@ -169,7 +171,7 @@ public class VObjects
     public static final RegistryObject<Item> FRENCH_BAGUETTE = ITEMS.register("french_baguette", () -> new Item(new Item.Properties().tab(VIP_TAB).rarity(Rarity.UNCOMMON).food(FRENCH_BAGUETTE_FOOD).setNoRepair()));
 
     public static final RegistryObject<Item> HOLY_CHICKEN_BIBLE = ITEMS.register("holy_chicken_bible", () -> new Item(newVipiumPureProperties()));
-    public static final RegistryObject<Item> TELEPORTATION_ATLAS = ITEMS.register("teleportation_atlas", () -> new Item(newVipiumProperties()));
+    public static final RegistryObject<Item> TELEPORTATION_ATLAS = ITEMS.register("teleportation_atlas", () -> new AtlasItem(newVipiumProperties()));
 
     public static final RegistryObject<SwordItem> AUBIN_SLAYER = ITEMS.register("aubin_slayer", () -> new AubinSlayer(newVipiumPureProperties()));
 
@@ -190,7 +192,7 @@ public class VObjects
     public static final RegistryObject<BlockEntityType<VCrusherEntity>> VIPIUM_CRUSHER_ENTITY = BLOCK_ENTITIES.register("vipium_crusher", () -> BlockEntityType.Builder.of(VCrusherEntity::new, VIPIUM_CRUSHER.get()).build(null));
     public static final RegistryObject<BlockEntityType<AltarEntity>> TELEPORTATION_ALTAR_ENTITY = BLOCK_ENTITIES.register("teleportation_altar", () -> BlockEntityType.Builder.of(AltarEntity::new, TELEPORTATION_ALTAR.get()).build(null));
 
-    public static final RegistryObject<MenuType<VCrusherMenu>> VIPIUM_CRUSHER_MENU = CONTAINERS.register("vipium_crusher", () -> IForgeContainerType.create(VCrusherMenu::new));
+    public static final RegistryObject<MenuType<VCrusherMenu>> VIPIUM_CRUSHER_MENU = CONTAINERS.register("vipium_crusher", () -> IForgeMenuType.create(VCrusherMenu::new));
 
     public static final RecipeType<VCrushingRecipe> CRUSHING_RECIPE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(VIP3.MOD_ID, "crushing"), new RecipeType<VCrushingRecipe>() {
         @Override

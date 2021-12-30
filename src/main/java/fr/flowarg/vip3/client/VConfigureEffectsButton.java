@@ -33,7 +33,7 @@ public class VConfigureEffectsButton extends Checkbox implements VWidget
         RenderSystem.setShaderTexture(0, WIDGETS);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        this.blit(pMatrixStack, this.x, this.y, !isEquip(this.armorIDs) ? 38 : this.isHovered() ? 19 : 0, this.selected() ? 55 : 36, this.width, this.height);
+        this.blit(pMatrixStack, this.x, this.y, !isEquip(this.armorIDs) ? 38 : this.isHoveredOrFocused() ? 19 : 0, this.selected() ? 55 : 36, this.width, this.height);
     }
 
     @Override

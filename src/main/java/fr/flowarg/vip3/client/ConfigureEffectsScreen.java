@@ -75,7 +75,7 @@ public class ConfigureEffectsScreen extends Screen
             if (collection.size() > 5)
                 j = 132 / (collection.size() - 1);
 
-            final var iterable = collection.stream().filter(ForgeHooksClient::shouldRender).sorted().collect(Collectors.toList());
+            final var iterable = collection.stream().filter(ForgeHooksClient::shouldRenderEffect).sorted().collect(Collectors.toList());
 
             this.renderBackgrounds(pPoseStack, i, j, iterable);
             this.renderIcons(pPoseStack, i, j, iterable);

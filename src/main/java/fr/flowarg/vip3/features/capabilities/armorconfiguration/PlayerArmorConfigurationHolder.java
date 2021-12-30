@@ -3,7 +3,7 @@ package fr.flowarg.vip3.features.capabilities.armorconfiguration;
 import fr.flowarg.vip3.network.VArmorConfigurationPacket;
 import fr.flowarg.vip3.network.VNetwork;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerArmorConfigurationHolder extends ArmorConfigurationHolder

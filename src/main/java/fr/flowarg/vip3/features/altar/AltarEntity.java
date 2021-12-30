@@ -10,9 +10,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+
 public class AltarEntity extends BlockEntity
 {
-    private AltarData data;
+    private static final AltarData EMPTY = new AltarData(Map.of(), "", Map.of(), "");
+    private AltarData data = EMPTY;
 
     public AltarEntity(BlockPos pWorldPosition, BlockState pBlockState)
     {

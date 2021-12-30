@@ -1,6 +1,8 @@
 package fr.flowarg.vip3.features.altar;
 
+import fr.flowarg.vip3.client.AltarScreen;
 import fr.flowarg.vip3.features.VObjects;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -36,9 +38,7 @@ public class AltarBlock extends BaseEntityBlock
         if (!level.isClientSide) return InteractionResult.SUCCESS;
 
         if(level.getBlockEntity(pos) instanceof AltarEntity)
-        {
-            //Minecraft.getInstance().setScreen(new AltarScreen(player.inventory, level, pos));
-        }
+            Minecraft.getInstance().setScreen(new AltarScreen());
         return InteractionResult.CONSUME;
     }
 

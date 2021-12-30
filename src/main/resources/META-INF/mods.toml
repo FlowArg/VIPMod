@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[37,)"
+loaderVersion="[39,)"
 license="All rights reserved, (c) Flow (FlowArg) Arg 2021"
 [[mods]]
 modId="vip3"
@@ -18,13 +18,13 @@ Mod officiel du serveur V.I.P V3.
 [[dependencies.vip3]]
     modId="forge"
     mandatory=true
-    versionRange="[37,)"
+    versionRange="[39,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.vip3]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.17.1,1.18)"
+    versionRange="[1.18.1,1.19)"
     ordering="NONE"
     side="BOTH"

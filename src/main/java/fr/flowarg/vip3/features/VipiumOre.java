@@ -3,6 +3,7 @@ package fr.flowarg.vip3.features;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.OreBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -12,7 +13,7 @@ public class VipiumOre extends OreBlock
 {
     public VipiumOre()
     {
-        super(Properties.of(Material.STONE).strength(25f, 24f));
+        super(Properties.of(Material.STONE).lightLevel(value -> 8).strength(25f, 24f));
     }
 
     @Override

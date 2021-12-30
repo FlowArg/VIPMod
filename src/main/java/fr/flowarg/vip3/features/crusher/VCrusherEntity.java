@@ -28,10 +28,10 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -443,7 +443,7 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
         {
             changed = true;
             state = state.setValue(VCrusherBlock.LIT, entity.isLit() && entity.isStarted());
-            level.setBlock(pos, state, Constants.BlockFlags.DEFAULT);
+            level.setBlock(pos, state, 3);
         }
 
         if(changed)

@@ -18,9 +18,9 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStoppingEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
@@ -41,7 +41,7 @@ public class DiscordHandler extends ListenerAdapter
     private final List<DHMTimestamp> eatTimeStamps = new ArrayList<>();
 
     @SubscribeEvent
-    public void onServerStart(@NotNull FMLServerStartingEvent event)
+    public void onServerStart(@NotNull ServerStartingEvent event)
     {
         this.server = event.getServer();
 
@@ -158,7 +158,7 @@ public class DiscordHandler extends ListenerAdapter
     }
 
     @SubscribeEvent
-    public void onServerStop(FMLServerStoppingEvent event)
+    public void onServerStop(ServerStoppingEvent event)
     {
         if(!this.started) return;
         this.initNullableVars();

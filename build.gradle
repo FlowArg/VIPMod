@@ -31,7 +31,7 @@ println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getPro
 
 minecraft {
     //mappings channel: 'official', version: '1.17.1'
-    mappings channel: 'parchment', version: '2021.12.19-1.18.1'
+    mappings channel: 'parchment', version: '2022.02.13-1.18.1'
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -113,8 +113,8 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.9'
-    implementation 'org.jetbrains:annotations:22.0.0'
+    minecraft 'net.minecraftforge:forge:1.18.1-39.0.79'
+    implementation 'org.jetbrains:annotations:23.0.0'
     serverShade('net.dv8tion:JDA:4.4.0_352') {
         exclude module: 'opus-java'
     }

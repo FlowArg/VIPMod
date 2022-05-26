@@ -8,12 +8,13 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PlayerPlayerAtlasWrapper implements ICapabilitySerializable<Tag>
+@Deprecated
+public class OLDPlayerPlayerAtlasWrapper implements ICapabilitySerializable<Tag>
 {
-    private PlayerAtlas holder;
-    private final LazyOptional<PlayerAtlas> lazyOptional = LazyOptional.of(() -> this.holder);
+    private OLDPlayerAtlas holder;
+    private final LazyOptional<OLDPlayerAtlas> lazyOptional = LazyOptional.of(() -> this.holder);
 
-    public PlayerPlayerAtlasWrapper(PlayerAtlas holder)
+    public OLDPlayerPlayerAtlasWrapper(OLDPlayerAtlas holder)
     {
         this.holder = holder;
     }
@@ -22,18 +23,18 @@ public class PlayerPlayerAtlasWrapper implements ICapabilitySerializable<Tag>
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
     {
-        return PlayerAtlasCapability.PLAYER_ATLAS_CAPABILITY.orEmpty(cap, this.lazyOptional);
+        return OLDPlayerAtlasCapability.PLAYER_ATLAS_CAPABILITY.orEmpty(cap, this.lazyOptional);
     }
 
     @Override
     public Tag serializeNBT()
     {
-        return PlayerAtlas.serializeNBT(this.holder);
+        return OLDPlayerAtlas.serializeNBT(this.holder);
     }
 
     @Override
     public void deserializeNBT(Tag nbt)
     {
-        PlayerAtlas.deserializeNBT(nbt, this.holder);
+        OLDPlayerAtlas.deserializeNBT(nbt, this.holder);
     }
 }

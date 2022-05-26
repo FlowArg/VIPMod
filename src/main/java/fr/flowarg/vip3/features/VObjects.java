@@ -4,11 +4,10 @@ import fr.flowarg.vip3.VIP3;
 import fr.flowarg.vip3.features.altar.AltarBlock;
 import fr.flowarg.vip3.features.altar.AltarEntity;
 import fr.flowarg.vip3.features.altar.AtlasItem;
-import fr.flowarg.vip3.features.crusher.*;
 import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfigurationCapability;
+import fr.flowarg.vip3.features.crusher.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -194,13 +193,14 @@ public class VObjects
 
     public static final RegistryObject<MenuType<VCrusherMenu>> VIPIUM_CRUSHER_MENU = CONTAINERS.register("vipium_crusher", () -> IForgeMenuType.create(VCrusherMenu::new));
 
-    public static final RecipeType<VCrushingRecipe> CRUSHING_RECIPE = Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(VIP3.MOD_ID, "crushing"), new RecipeType<VCrushingRecipe>() {
+    public static final RecipeType<VCrushingRecipe> CRUSHING_RECIPE = new RecipeType<>()
+    {
         @Override
         public String toString()
         {
             return VIP3.MOD_ID + ':' + "crushing";
         }
-    });
+    };
 
     public static final RegistryObject<VCrushingRecipeSerializer> CRUSHING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crushing", VCrushingRecipeSerializer::new);
 

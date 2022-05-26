@@ -123,9 +123,10 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
     }
 
     @Override
-    public @NotNull CompoundTag save(@NotNull CompoundTag compound)
+    protected void saveAdditional(CompoundTag compound)
     {
-        super.save(compound);
+        super.saveAdditional(compound);
+
         compound.putInt("CrushTime", this.crushingProgress);
         compound.putInt("CrushTimeTotal", this.crushingTotalTime);
         compound.putInt("Started", this.started);
@@ -138,7 +139,6 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
         this.recipesUsed.forEach((id, count) -> recipesUsed.putInt(id.toString(), count));
 
         compound.put("RecipesUsed", recipesUsed);
-        return compound;
     }
 
     @Override

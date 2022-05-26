@@ -1,14 +1,15 @@
 package fr.flowarg.vip3.features.capabilities.playeratlas;
 
-import fr.flowarg.vip3.features.altar.data.AtlasData;
+import fr.flowarg.vip3.features.altar.data.OLDAtlasData;
 
-public class PlayerAtlasHolder implements PlayerAtlas
+@Deprecated
+public class OLDPlayerAtlasHolder implements OLDPlayerAtlas
 {
-    private AtlasData atlasData;
+    private OLDAtlasData atlasData;
     private boolean enabled;
 
     @Override
-    public AtlasData atlasData()
+    public OLDAtlasData atlasData()
     {
         return this.atlasData;
     }
@@ -20,7 +21,7 @@ public class PlayerAtlasHolder implements PlayerAtlas
     }
 
     @Override
-    public void setAtlasData(AtlasData data)
+    public void setAtlasData(OLDAtlasData data)
     {
         this.atlasData = data;
     }

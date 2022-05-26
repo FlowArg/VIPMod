@@ -47,8 +47,8 @@ public class ItemModelGenerator extends ItemModelProvider
 
                     if((!(obj instanceof Item)) || obj instanceof BlockItem || obj instanceof ManualModel) continue;
 
-                    if (obj instanceof DiggerItem || obj instanceof SwordItem) this.buildSimpleItem(itemHandheld, Objects.requireNonNull(obj.getRegistryName()).getPath());
-                    else this.buildSimpleItem(itemGenerated, Objects.requireNonNull(obj.getRegistryName()).getPath());
+                    if (obj instanceof DiggerItem || obj instanceof SwordItem) this.buildSimpleItem(itemHandheld, Objects.requireNonNull(registryObject.getId()).getPath());
+                    else this.buildSimpleItem(itemGenerated, Objects.requireNonNull(registryObject.getId()).getPath());
                 }
             }
         }

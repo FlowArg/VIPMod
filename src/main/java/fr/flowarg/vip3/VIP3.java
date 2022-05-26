@@ -3,9 +3,8 @@ package fr.flowarg.vip3;
 import fr.flowarg.vip3.client.ClientManager;
 import fr.flowarg.vip3.features.OreGeneration;
 import fr.flowarg.vip3.features.VObjects;
-import fr.flowarg.vip3.network.VNetwork;
 import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfiguration;
-import fr.flowarg.vip3.features.capabilities.playeratlas.PlayerAtlas;
+import fr.flowarg.vip3.network.VNetwork;
 import fr.flowarg.vip3.server.ServerManager;
 import fr.flowarg.vip3.utils.SidedManager;
 import fr.flowarg.vip3.utils.VIPConfig;
@@ -64,7 +63,7 @@ public class VIP3
     public void registerCapabilities(@NotNull RegisterCapabilitiesEvent event)
     {
         event.register(ArmorConfiguration.class);
-        event.register(PlayerAtlas.class);
+        //event.register(OLDPlayerAtlas.class);
     }
 
     @OnlyIn(Dist.CLIENT)

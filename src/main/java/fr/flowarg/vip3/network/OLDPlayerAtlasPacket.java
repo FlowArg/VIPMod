@@ -1,9 +1,9 @@
 package fr.flowarg.vip3.network;
 
-import fr.flowarg.vip3.features.altar.data.AtlasData;
-import fr.flowarg.vip3.features.altar.data.Serialization;
-import fr.flowarg.vip3.features.capabilities.playeratlas.PlayerAtlas;
-import fr.flowarg.vip3.features.capabilities.playeratlas.PlayerAtlasCapability;
+import fr.flowarg.vip3.features.altar.data.OLDAtlasData;
+import fr.flowarg.vip3.features.altar.data.OLDSerialization;
+import fr.flowarg.vip3.features.capabilities.playeratlas.OLDPlayerAtlas;
+import fr.flowarg.vip3.features.capabilities.playeratlas.OLDPlayerAtlasCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -21,42 +21,43 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-public class PlayerAtlasPacket
+@Deprecated
+public class OLDPlayerAtlasPacket
 {
-    private final AtlasData data;
+    private final OLDAtlasData data;
     private final boolean enabled;
 
-    public PlayerAtlasPacket(AtlasData data, boolean enabled)
+    public OLDPlayerAtlasPacket(OLDAtlasData data, boolean enabled)
     {
         this.data = data;
         this.enabled = enabled;
     }
 
-    public PlayerAtlasPacket(@NotNull PlayerAtlas atlas)
+    public OLDPlayerAtlasPacket(@NotNull OLDPlayerAtlas atlas)
     {
         this.data = atlas.atlasData();
         this.enabled = atlas.enabled();
     }
 
-    public static void encode(@NotNull PlayerAtlasPacket packet, @NotNull FriendlyByteBuf buffer)
+    public static void encode(@NotNull OLDPlayerAtlasPacket packet, @NotNull FriendlyByteBuf buffer)
     {
         buffer.writeBoolean(packet.enabled);
         final var tag = new CompoundTag();
         if(packet.enabled)
-            Serialization.serializeAtlas(packet.data, tag);
+            OLDSerialization.serializeAtlas(packet.data, tag);
         buffer.writeNbt(tag);
     }
 
     @Contract("_ -> new")
-    public static @NotNull PlayerAtlasPacket decode(@NotNull FriendlyByteBuf buffer)
+    public static @NotNull OLDPlayerAtlasPacket decode(@NotNull FriendlyByteBuf buffer)
     {
         final var enabled = buffer.readBoolean();
-        final var atlasData = enabled ? Serialization.deserializeAtlas(buffer.readAnySizeNbt()) : PlayerAtlas.EMPTY;
+        final var atlasData = enabled ? OLDSerialization.deserializeAtlas(buffer.readAnySizeNbt()) : OLDPlayerAtlas.EMPTY;
 
-        return new PlayerAtlasPacket(atlasData, enabled);
+        return new OLDPlayerAtlasPacket(atlasData, enabled);
     }
 
-    public static void handle(PlayerAtlasPacket pck, @NotNull Supplier<NetworkEvent.Context> ctx)
+    public static void handle(OLDPlayerAtlasPacket pck, @NotNull Supplier<NetworkEvent.Context> ctx)
     {
         if(ctx.get().getDirection().getReceptionSide() == LogicalSide.CLIENT)
             ctx.get().enqueueWork(() -> handleClientUpdate(pck));
@@ -64,21 +65,21 @@ public class PlayerAtlasPacket
         ctx.get().setPacketHandled(true);
     }
 
-    private static void update(PlayerAtlasPacket pck, @NotNull Player player)
+    private static void update(OLDPlayerAtlasPacket pck, @NotNull Player player)
     {
-        player.getCapability(PlayerAtlasCapability.PLAYER_ATLAS_CAPABILITY).ifPresent(playerAtlas -> {
+        player.getCapability(OLDPlayerAtlasCapability.PLAYER_ATLAS_CAPABILITY).ifPresent(playerAtlas -> {
             playerAtlas.setAtlasData(pck.data);
             playerAtlas.setEnabled(pck.enabled);
         });
     }
 
-    private static void handleServerUpdate(PlayerAtlasPacket pck, ServerPlayer serverPlayer)
+    private static void handleServerUpdate(OLDPlayerAtlasPacket pck, ServerPlayer serverPlayer)
     {
         update(pck, serverPlayer);
     }
 
     @OnlyIn(Dist.CLIENT)
-    private static void handleClientUpdate(PlayerAtlasPacket pck)
+    private static void handleClientUpdate(OLDPlayerAtlasPacket pck)
     {
         final var player = Minecraft.getInstance().player;
         assert player != null;
@@ -98,12 +99,12 @@ public class PlayerAtlasPacket
         {
             ctx.get().enqueueWork(() -> {
                 final var player = ctx.get().getSender();
-                AtomicReference<PlayerAtlas> atlas = new AtomicReference<>(null);
-                player.getCapability(PlayerAtlasCapability.PLAYER_ATLAS_CAPABILITY).ifPresent(atlas::set);
+                AtomicReference<OLDPlayerAtlas> atlas = new AtomicReference<>(null);
+                player.getCapability(OLDPlayerAtlasCapability.PLAYER_ATLAS_CAPABILITY).ifPresent(atlas::set);
                 final var get = atlas.get();
 
                 if(get != null)
-                    VNetwork.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PlayerAtlasPacket(get));
+                    VNetwork.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new OLDPlayerAtlasPacket(get));
             });
             ctx.get().setPacketHandled(true);
         }

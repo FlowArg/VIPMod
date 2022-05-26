@@ -3,7 +3,6 @@ package fr.flowarg.vip3.client;
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.flowarg.vip3.VIP3;
 import fr.flowarg.vip3.features.VObjects;
-import fr.flowarg.vip3.network.PlayerAtlasPacket;
 import fr.flowarg.vip3.network.VArmorConfigurationPacket;
 import fr.flowarg.vip3.network.VNetwork;
 import net.minecraft.client.Minecraft;
@@ -26,16 +25,16 @@ public class ClientEventHandler
     @SubscribeEvent
     public void onPostRenderGameOverlayEvent(RenderGameOverlayEvent.@NotNull PreLayer event)
     {
-        if(event.getOverlay() == ForgeIngameGui.ARMOR_LEVEL_ELEMENT)
-        {
-            final var minecraft = Minecraft.getInstance();
-            final var gui = (ForgeIngameGui)minecraft.gui;
+        if(event.getOverlay() != ForgeIngameGui.ARMOR_LEVEL_ELEMENT)
+            return;
 
-            if(minecraft.options.hideGui || !gui.shouldDrawSurvivalElements()) return;
+        final var minecraft = Minecraft.getInstance();
+        final var gui = (ForgeIngameGui)minecraft.gui;
 
-            this.renderBar(event, gui, minecraft);
-            event.setCanceled(true);
-        }
+        if(minecraft.options.hideGui || !gui.shouldDrawSurvivalElements()) return;
+
+        this.renderBar(event, gui, minecraft);
+        event.setCanceled(true);
     }
 
     private void renderBar(RenderGameOverlayEvent.PreLayer event, ForgeIngameGui gui, @NotNull Minecraft minecraft)
@@ -78,7 +77,7 @@ public class ClientEventHandler
     @OnlyIn(Dist.CLIENT)
     public void onKeyInput(final InputEvent.KeyInputEvent event)
     {
-        if(VIP3.getClientManager() == null || Minecraft.getInstance().level != null) return;
+        if(VIP3.getClientManager() == null || Minecraft.getInstance().level == null) return;
 
         if(VIP3.getClientManager().getConfigureEffectsKey().isDown())
             Minecraft.getInstance().setScreen(new ConfigureEffectsScreen());
@@ -89,8 +88,8 @@ public class ClientEventHandler
     {
         if(event.side == LogicalSide.CLIENT)
         {
-            VNetwork.SYNC_CHANNEL.sendToServer(new VArmorConfigurationPacket.VRequestArmorConfiguration());
-            VNetwork.SYNC_CHANNEL.sendToServer(new PlayerAtlasPacket.RequestPlayerAtlas());
+            VNetwork.SYNC_CHANNEL.sendToServer(VArmorConfigurationPacket.REQUEST_PACKET_INSTANCE);
+            //VNetwork.SYNC_CHANNEL.sendToServer(new OLDPlayerAtlasPacket.RequestPlayerAtlas());
         }
     }
 

@@ -52,17 +52,17 @@ public class VCrusherScreen extends AbstractContainerScreen<VCrusherMenu>
         this.widthTooNarrow = this.width < 379;
         this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
 
-        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.PLUS, this.leftPos + 44, this.topPos + 55, button ->  {
-            if(!this.container.getItem(VCrusherEntity.SLOT_INPUT).isEmpty())
-                VNetwork.SYNC_CHANNEL.sendToServer(new VSwapSlotCrusherPacket(this.blockPos, VCrusherEntity.SLOT_INPUT, VCrusherEntity.SLOT_LOCKED));
-        }));
+        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.STOP, this.leftPos + 124, this.topPos + 55, button -> VNetwork.SYNC_CHANNEL.sendToServer(new VStartStopCrusherPacket(this.blockPos, false)), new VCrusherButton.CustomTooltip(this, "Éteindre le crusher")));
+        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.START, this.leftPos + 102, this.topPos + 55, button -> VNetwork.SYNC_CHANNEL.sendToServer(new VStartStopCrusherPacket(this.blockPos, true)), new VCrusherButton.CustomTooltip(this, "Démarrer le crusher")));
         this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.MINUS, this.leftPos + 66, this.topPos + 55, button ->  {
             if(!this.container.getItem(VCrusherEntity.SLOT_LOCKED).isEmpty())
                 VNetwork.SYNC_CHANNEL.sendToServer(new VSwapSlotCrusherPacket(this.blockPos, VCrusherEntity.SLOT_LOCKED, VCrusherEntity.SLOT_INPUT));
-        }));
-        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.START, this.leftPos + 102, this.topPos + 55, button -> VNetwork.SYNC_CHANNEL.sendToServer(new VStartStopCrusherPacket(this.blockPos, true))));
-        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.STOP, this.leftPos + 124, this.topPos + 55, button -> VNetwork.SYNC_CHANNEL.sendToServer(new VStartStopCrusherPacket(this.blockPos, false))));
-        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.RESET, this.leftPos + 22, this.topPos + 45, button -> VNetwork.SYNC_CHANNEL.sendToServer(new VResetCrusherDataPacket(this.blockPos))));
+        }, new VCrusherButton.CustomTooltip(this, "Retirer un item")));
+        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.PLUS, this.leftPos + 44, this.topPos + 55, button ->  {
+            if(!this.container.getItem(VCrusherEntity.SLOT_INPUT).isEmpty())
+                VNetwork.SYNC_CHANNEL.sendToServer(new VSwapSlotCrusherPacket(this.blockPos, VCrusherEntity.SLOT_INPUT, VCrusherEntity.SLOT_LOCKED));
+        }, new VCrusherButton.CustomTooltip(this, "Ajouter un item")));
+        this.addRenderableWidget(new VCrusherButton(VCrusherButton.ButtonType.RESET, this.leftPos + 22, this.topPos + 45, button -> VNetwork.SYNC_CHANNEL.sendToServer(new VResetCrusherDataPacket(this.blockPos)), new VCrusherButton.CustomTooltip(this, "Réinitialiser les statistiques")));
     }
 
     @Override

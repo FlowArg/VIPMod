@@ -23,7 +23,7 @@ public class AubinSlayer extends SwordItem implements ManualModel
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack)
     {
-        final var builder = ImmutableMultimap.<Attribute, AttributeModifier>builder();
+        final ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.putAll(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(REACH_UUID, () -> "AUBIN_SLAYER_REACH", 1.5, AttributeModifier.Operation.ADDITION));
         builder.putAll(super.getAttributeModifiers(slot, stack));
         return slot == EquipmentSlot.MAINHAND ? builder.build() : super.getAttributeModifiers(slot, stack);

@@ -1,8 +1,6 @@
 package fr.flowarg.vip3.features.altar;
 
 import fr.flowarg.vip3.features.VObjects;
-import fr.flowarg.vip3.features.altar.data.AltarData;
-import fr.flowarg.vip3.features.altar.data.Serialization;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
@@ -10,12 +8,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
-
 public class AltarEntity extends BlockEntity
 {
-    private static final AltarData EMPTY = new AltarData(Map.of(), "", Map.of(), "");
-    private AltarData data = EMPTY;
+    //private static final OLDAltarData EMPTY = new OLDAltarData(Map.of(), "", Map.of(), "");
+    //private OLDAltarData data = EMPTY;
 
     public AltarEntity(BlockPos pWorldPosition, BlockState pBlockState)
     {
@@ -26,15 +22,14 @@ public class AltarEntity extends BlockEntity
     public void load(@NotNull CompoundTag tag)
     {
         super.load(tag);
-        this.data = Serialization.deserializeAltar(tag);
+        //this.data = OLDSerialization.deserializeAltar(tag);
     }
 
     @Override
-    public @NotNull CompoundTag save(@NotNull CompoundTag tag)
+    protected void saveAdditional(CompoundTag tag)
     {
-        super.save(tag);
-        Serialization.serializeAltar(this.data, tag);
-        return tag;
+        super.saveAdditional(tag);
+        //OLDSerialization.serializeAltar(this.data, tag);
     }
 
     static void serverTick(Level level, BlockPos pos, BlockState state, @NotNull AltarEntity entity)

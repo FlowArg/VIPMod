@@ -17,24 +17,25 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-@Mod.EventBusSubscriber(modid = VIP3.MOD_ID)
-public class PlayerAtlasCapability
+@Deprecated
+//@Mod.EventBusSubscriber(modid = VIP3.MOD_ID)
+public class OLDPlayerAtlasCapability
 {
     public static final ResourceLocation PLAYER_ATLAS_CAP_KEY = new ResourceLocation(VIP3.MOD_ID, "player_atlas");
-    public static final Capability<PlayerAtlas> PLAYER_ATLAS_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
-    private static final Map<Player, PlayerAtlas> INVALIDATED_CAPS = new WeakHashMap<>();
+    public static final Capability<OLDPlayerAtlas> PLAYER_ATLAS_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+    private static final Map<Player, OLDPlayerAtlas> INVALIDATED_CAPS = new WeakHashMap<>();
 
     @SubscribeEvent
     public static void attachToEntities(@NotNull AttachCapabilitiesEvent<Entity> event)
     {
         if(event.getObject() instanceof Player player)
         {
-            PlayerAtlas holder;
+            OLDPlayerAtlas holder;
             if(player instanceof ServerPlayer serverPlayer)
-                holder = new PlayerPlayerAtlasHolder(serverPlayer);
-            else holder = new PlayerAtlasHolder();
+                holder = new OLDPlayerPlayerAtlasHolder(serverPlayer);
+            else holder = new OLDPlayerAtlasHolder();
 
-            final PlayerPlayerAtlasWrapper wrapper = new PlayerPlayerAtlasWrapper(holder);
+            final OLDPlayerPlayerAtlasWrapper wrapper = new OLDPlayerPlayerAtlasWrapper(holder);
             event.addCapability(PLAYER_ATLAS_CAP_KEY, wrapper);
             event.addListener(() -> wrapper.getCapability(PLAYER_ATLAS_CAPABILITY).ifPresent(cap -> INVALIDATED_CAPS.put(player, cap)));
         }
@@ -47,7 +48,7 @@ public class PlayerAtlasCapability
 
         event.getPlayer().getCapability(PLAYER_ATLAS_CAPABILITY).ifPresent(newCapa -> {
             if(!INVALIDATED_CAPS.containsKey(event.getOriginal())) return;
-            PlayerAtlas.deserializeNBT(PlayerAtlas.serializeNBT(INVALIDATED_CAPS.get(event.getOriginal())), newCapa);
+            OLDPlayerAtlas.deserializeNBT(OLDPlayerAtlas.serializeNBT(INVALIDATED_CAPS.get(event.getOriginal())), newCapa);
         });
     }
 }

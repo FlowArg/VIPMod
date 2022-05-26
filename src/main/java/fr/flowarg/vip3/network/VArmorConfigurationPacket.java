@@ -87,15 +87,10 @@ public final class VArmorConfigurationPacket
         update(pck, player);
     }
 
+    public static final VRequestArmorConfiguration REQUEST_PACKET_INSTANCE = new VRequestArmorConfiguration();
+
     public static class VRequestArmorConfiguration
     {
-        public static void encode(@NotNull VRequestArmorConfiguration pck, @NotNull FriendlyByteBuf byteBuf) {}
-
-        public static @NotNull VRequestArmorConfiguration decode(@NotNull FriendlyByteBuf byteBuf)
-        {
-            return new VRequestArmorConfiguration();
-        }
-
         public static void handle(VRequestArmorConfiguration pck, @NotNull Supplier<NetworkEvent.Context> ctx)
         {
             ctx.get().enqueueWork(() -> {

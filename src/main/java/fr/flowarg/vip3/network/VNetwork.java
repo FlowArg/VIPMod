@@ -26,8 +26,8 @@ public class VNetwork
         SYNC_CHANNEL.registerMessage(++index, VSwapSlotCrusherPacket.class, VSwapSlotCrusherPacket::encode, VSwapSlotCrusherPacket::decode, VSwapSlotCrusherPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
         SYNC_CHANNEL.registerMessage(++index, VResetCrusherDataPacket.class, VResetCrusherDataPacket::encode, VResetCrusherDataPacket::decode, VResetCrusherDataPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
         SYNC_CHANNEL.registerMessage(++index, VArmorConfigurationPacket.class, VArmorConfigurationPacket::encode, VArmorConfigurationPacket::decode, VArmorConfigurationPacket::handle);
-        SYNC_CHANNEL.registerMessage(++index, VArmorConfigurationPacket.VRequestArmorConfiguration.class, VArmorConfigurationPacket.VRequestArmorConfiguration::encode, VArmorConfigurationPacket.VRequestArmorConfiguration::decode, VArmorConfigurationPacket.VRequestArmorConfiguration::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-        SYNC_CHANNEL.registerMessage(++index, PlayerAtlasPacket.class, PlayerAtlasPacket::encode, PlayerAtlasPacket::decode, PlayerAtlasPacket::handle);
-        SYNC_CHANNEL.registerMessage(++index, PlayerAtlasPacket.RequestPlayerAtlas.class, PlayerAtlasPacket.RequestPlayerAtlas::encode, PlayerAtlasPacket.RequestPlayerAtlas::decode, PlayerAtlasPacket.RequestPlayerAtlas::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        SYNC_CHANNEL.registerMessage(++index, VArmorConfigurationPacket.VRequestArmorConfiguration.class, (unused, _0) -> {}, unused -> VArmorConfigurationPacket.REQUEST_PACKET_INSTANCE, VArmorConfigurationPacket.VRequestArmorConfiguration::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        //SYNC_CHANNEL.registerMessage(++index, OLDPlayerAtlasPacket.class, OLDPlayerAtlasPacket::encode, OLDPlayerAtlasPacket::decode, OLDPlayerAtlasPacket::handle);
+        //SYNC_CHANNEL.registerMessage(++index, OLDPlayerAtlasPacket.RequestPlayerAtlas.class, OLDPlayerAtlasPacket.RequestPlayerAtlas::encode, OLDPlayerAtlasPacket.RequestPlayerAtlas::decode, OLDPlayerAtlasPacket.RequestPlayerAtlas::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
     }
 }

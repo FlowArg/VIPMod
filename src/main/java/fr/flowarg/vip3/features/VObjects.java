@@ -2,12 +2,11 @@ package fr.flowarg.vip3.features;
 
 import fr.flowarg.vip3.VIP3;
 import fr.flowarg.vip3.features.altar.AltarBlock;
-import fr.flowarg.vip3.features.altar.AltarEntity;
 import fr.flowarg.vip3.features.altar.AtlasItem;
 import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfigurationCapability;
 import fr.flowarg.vip3.features.crusher.*;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -40,6 +39,7 @@ public class VObjects
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, VIP3.MOD_ID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, VIP3.MOD_ID);
     private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, VIP3.MOD_ID);
+    private static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, VIP3.MOD_ID);
 
     private static final CreativeModeTab VIP_TAB = new CreativeModeTab("vip3") {
         @Override
@@ -48,6 +48,8 @@ public class VObjects
             return PURE_VIPIUM_SWORD.get().getDefaultInstance();
         }
     };
+
+    public static final RegistryObject<VBowItem> VIPIUM_BOW = ITEMS.register("vipium_bow", () -> new VBowItem(newVipiumPureProperties().durability(666)));
 
     public static final RegistryObject<PickaxeItem> VIPIUM_PICKAXE = ITEMS.register("vipium_pickaxe", () -> new PickaxeItem(VTiers.VIPIUM, 1, 2, newVipiumProperties()));
     public static final RegistryObject<AxeItem> VIPIUM_AXE = ITEMS.register("vipium_axe", () -> new AxeItem(VTiers.VIPIUM, 1, 2, newVipiumProperties()));
@@ -102,7 +104,7 @@ public class VObjects
                             && player.getInventory().getArmor(3).getItem() == PURE_VIPIUM_HELMET.get();
 
                     if(armorConfiguration.fullSet1Effect() && valid)
-                        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 30, 2, false, false));
+                        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1, false, false));
 
                     if(armorConfiguration.fullSet2Effect() && valid)
                         player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 30, 2, false, false));
@@ -179,7 +181,7 @@ public class VObjects
     public static final RegistryObject<VipiumOre> VIPIUM_ORE = BLOCKS.register("vipium_ore", VipiumOre::new);
     public static final RegistryObject<VipiumOre> DEEPSLATE_VIPIUM_ORE = BLOCKS.register("deepslate_vipium_ore", VipiumOre::new);
     public static final RegistryObject<VCrusherBlock> VIPIUM_CRUSHER = BLOCKS.register("vipium_crusher", () -> new VCrusherBlock(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(9.5F).lightLevel(value -> value.getValue(BlockStateProperties.LIT) ? 13 : 0)));
-    public static final RegistryObject<AltarBlock> TELEPORTATION_ALTAR = BLOCKS.register("teleportation_altar", () -> new AltarBlock(BlockBehaviour.Properties.of(Material.METAL).lightLevel(value -> 15)));
+    public static final RegistryObject<AltarBlock> TELEPORTATION_ALTAR = BLOCKS.register("teleportation_altar", () -> new AltarBlock(BlockBehaviour.Properties.of(Material.METAL).strength(26F, 40F).requiresCorrectToolForDrops().lightLevel(value -> 15)));
 
     public static final RegistryObject<BlockItem> VIPIUM_BLOCK_ITEM = ITEMS.register("vipium_block", () -> new BlockItem(VIPIUM_BLOCK.get(), newVipiumProperties()));
     public static final RegistryObject<BlockItem> PURE_VIPIUM_BLOCK_ITEM = ITEMS.register("pure_vipium_block", () -> new BlockItem(PURE_VIPIUM_BLOCK.get(), newVipiumPureProperties()));
@@ -189,7 +191,6 @@ public class VObjects
     public static final RegistryObject<BlockItem> TELEPORTATION_ALTAR_ITEM = ITEMS.register("teleportation_altar", () -> new BlockItem(TELEPORTATION_ALTAR.get(), newVipiumProperties()));
 
     public static final RegistryObject<BlockEntityType<VCrusherEntity>> VIPIUM_CRUSHER_ENTITY = BLOCK_ENTITIES.register("vipium_crusher", () -> BlockEntityType.Builder.of(VCrusherEntity::new, VIPIUM_CRUSHER.get()).build(null));
-    public static final RegistryObject<BlockEntityType<AltarEntity>> TELEPORTATION_ALTAR_ENTITY = BLOCK_ENTITIES.register("teleportation_altar", () -> BlockEntityType.Builder.of(AltarEntity::new, TELEPORTATION_ALTAR.get()).build(null));
 
     public static final RegistryObject<MenuType<VCrusherMenu>> VIPIUM_CRUSHER_MENU = CONTAINERS.register("vipium_crusher", () -> IForgeMenuType.create(VCrusherMenu::new));
 
@@ -204,6 +205,8 @@ public class VObjects
 
     public static final RegistryObject<VCrushingRecipeSerializer> CRUSHING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crushing", VCrushingRecipeSerializer::new);
 
+    public static final RegistryObject<SoundEvent> BUCHERON_SOUND_EVENT = SOUND_EVENTS.register("bucheron", () -> new SoundEvent(new ResourceLocation(VIP3.MOD_ID, "bucheron")));
+
     private static Item.@NotNull Properties newVipiumProperties()
     {
         return new Item.Properties().tab(VIP_TAB).rarity(Rarity.RARE);
@@ -217,8 +220,6 @@ public class VObjects
     public static void register(IEventBus bus) {
         if(registered) return;
 
-        VTiers.init();
-
         VIP3.LOGGER.info("Registering blocks...");
         BLOCKS.register(bus);
         VIP3.LOGGER.info("Registering items...");
@@ -229,6 +230,8 @@ public class VObjects
         BLOCK_ENTITIES.register(bus);
         VIP3.LOGGER.info("Registering containers...");
         CONTAINERS.register(bus);
+        VIP3.LOGGER.info("Registering sounds...");
+        SOUND_EVENTS.register(bus);
 
         registered = true;
     }

@@ -2,18 +2,27 @@ package fr.flowarg.vip3.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.flowarg.vip3.VIP3;
+import fr.flowarg.vip3.client.ass.ASSSound;
 import fr.flowarg.vip3.features.VObjects;
+import fr.flowarg.vip3.network.AtlasPacket;
 import fr.flowarg.vip3.network.VArmorConfigurationPacket;
 import fr.flowarg.vip3.network.VNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -89,13 +98,63 @@ public class ClientEventHandler
         if(event.side == LogicalSide.CLIENT)
         {
             VNetwork.SYNC_CHANNEL.sendToServer(VArmorConfigurationPacket.REQUEST_PACKET_INSTANCE);
-            //VNetwork.SYNC_CHANNEL.sendToServer(new OLDPlayerAtlasPacket.RequestPlayerAtlas());
+            VNetwork.SYNC_CHANNEL.sendToServer(AtlasPacket.CLIENT_REQUEST_ATLAS);
         }
     }
 
     public void clientSetup(FMLClientSetupEvent event)
     {
+        ItemProperties.register(VObjects.VIPIUM_BOW.get(), new ResourceLocation(VIP3.MOD_ID, "pull"), (p_174635_, p_174636_, p_174637_, p_174638_) -> {
+            if (p_174637_ == null) return 0.0F;
+            else return p_174637_.getUseItem() != p_174635_ ? 0.0F : (float)(p_174635_.getUseDuration() - p_174637_.getUseItemRemainingTicks()) / 20.0F;
+        });
+        ItemProperties.register(VObjects.VIPIUM_BOW.get(), new ResourceLocation(VIP3.MOD_ID, "pulling"), (p_174630_, p_174631_, p_174632_, p_174633_) -> p_174632_ != null && p_174632_.isUsingItem() && p_174632_.getUseItem() == p_174630_ ? 1.0F : 0.0F);
         MenuScreens.register(VObjects.VIPIUM_CRUSHER_MENU.get(), VCrusherScreen::new);
         ClientRegistry.registerKeyBinding(VIP3.getClientManager().getConfigureEffectsKey());
+    }
+
+    @SubscribeEvent
+    public void editFov(FOVModifierEvent event)
+    {
+        final var player = event.getEntity();
+        float f = 1.0F;
+
+        if (player.getAbilities().flying)
+            f *= 1.1F;
+
+        f *= ((float)player.getAttributeValue(Attributes.MOVEMENT_SPEED) / player.getAbilities().getWalkingSpeed() + 1.0F) / 2.0F;
+
+        if (player.getAbilities().getWalkingSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f))
+            f = 1.0F;
+
+        final var itemStack = player.getUseItem();
+
+        if (!player.isUsingItem())
+        {
+            event.setNewfov(f);
+            return;
+        }
+
+        if (itemStack.is(Items.BOW) || itemStack.is(VObjects.VIPIUM_BOW.get()))
+        {
+            int i = player.getTicksUsingItem();
+            float f1 = (float)i / 20.0F;
+            if (f1 > 1.0F) {
+                f1 = 1.0F;
+            } else {
+                f1 *= f1;
+            }
+
+            f *= 1.0F - f1 * 0.15F;
+            event.setNewfov(f);
+            return;
+        }
+        else if (Minecraft.getInstance().options.getCameraType().isFirstPerson() && player.isScoping())
+        {
+            event.setNewfov(0.1F);
+            return;
+        }
+
+        event.setNewfov(f);
     }
 }

@@ -27,7 +27,7 @@ public class VNetwork
         SYNC_CHANNEL.registerMessage(++index, VResetCrusherDataPacket.class, VResetCrusherDataPacket::encode, VResetCrusherDataPacket::decode, VResetCrusherDataPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
         SYNC_CHANNEL.registerMessage(++index, VArmorConfigurationPacket.class, VArmorConfigurationPacket::encode, VArmorConfigurationPacket::decode, VArmorConfigurationPacket::handle);
         SYNC_CHANNEL.registerMessage(++index, VArmorConfigurationPacket.VRequestArmorConfiguration.class, (unused, _0) -> {}, unused -> VArmorConfigurationPacket.REQUEST_PACKET_INSTANCE, VArmorConfigurationPacket.VRequestArmorConfiguration::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-        //SYNC_CHANNEL.registerMessage(++index, OLDPlayerAtlasPacket.class, OLDPlayerAtlasPacket::encode, OLDPlayerAtlasPacket::decode, OLDPlayerAtlasPacket::handle);
-        //SYNC_CHANNEL.registerMessage(++index, OLDPlayerAtlasPacket.RequestPlayerAtlas.class, OLDPlayerAtlasPacket.RequestPlayerAtlas::encode, OLDPlayerAtlasPacket.RequestPlayerAtlas::decode, OLDPlayerAtlasPacket.RequestPlayerAtlas::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        SYNC_CHANNEL.registerMessage(++index, AtlasPacket.class, AtlasPacket::encode, AtlasPacket::decode, AtlasPacket::handle);
+        SYNC_CHANNEL.registerMessage(++index, AtlasPacket.RequestAtlas.class, AtlasPacket.RequestAtlas::encode, AtlasPacket.RequestAtlas::decode, AtlasPacket.RequestAtlas::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
     }
 }

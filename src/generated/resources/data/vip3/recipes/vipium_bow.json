@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XYZ",
+    "YXZ",
+    "XYZ"
+  ],
+  "key": {
+    "X": {
+      "item": "vip3:pure_vipium_ingot"
+    },
+    "Y": {
+      "item": "minecraft:stick"
+    },
+    "Z": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "vip3:vipium_bow"
+  }
+}

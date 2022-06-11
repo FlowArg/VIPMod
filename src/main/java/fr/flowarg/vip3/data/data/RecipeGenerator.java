@@ -26,6 +26,7 @@ public class RecipeGenerator extends RecipeProvider
     @Override
     protected void buildCraftingRecipes(@NotNull Consumer<FinishedRecipe> consumer)
     {
+        this.build(VObjects.VIPIUM_BOW.get(), builder -> builder.pattern("XYZ").pattern("YXZ").pattern("XYZ").define('X', VObjects.PURE_VIPIUM_INGOT.get()).define('Y', Items.STICK).define('Z', Items.STRING).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.PURE_VIPIUM_INGOT.get())), consumer);
         this.build(VObjects.VIPIUM_PICKAXE.get(), builder -> builder.pattern("XXX").pattern(" Y ").pattern(" Y ").define('X', VObjects.VIPIUM_INGOT.get()).define('Y', Items.STICK).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.VIPIUM_INGOT.get())), consumer);
         this.build(VObjects.VIPIUM_AXE.get(), builder -> builder.pattern(" XX").pattern(" YX").pattern(" Y ").define('X', VObjects.VIPIUM_INGOT.get()).define('Y', Items.STICK).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.VIPIUM_INGOT.get())), consumer);
         this.build(VObjects.VIPIUM_SHOVEL.get(), builder -> builder.pattern(" X ").pattern(" Y ").pattern(" Y ").define('X', VObjects.VIPIUM_INGOT.get()).define('Y', Items.STICK).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.VIPIUM_INGOT.get())), consumer);

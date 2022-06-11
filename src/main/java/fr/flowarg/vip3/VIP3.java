@@ -1,19 +1,23 @@
 package fr.flowarg.vip3;
 
 import fr.flowarg.vip3.client.ClientManager;
+import fr.flowarg.vip3.features.FTGCommand;
 import fr.flowarg.vip3.features.OreGeneration;
 import fr.flowarg.vip3.features.VObjects;
 import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfiguration;
+import fr.flowarg.vip3.features.capabilities.atlas.Atlas;
 import fr.flowarg.vip3.network.VNetwork;
 import fr.flowarg.vip3.server.ServerManager;
 import fr.flowarg.vip3.utils.SidedManager;
 import fr.flowarg.vip3.utils.VIPConfig;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.minecraft.world.item.AxeItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -26,7 +30,7 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 @Mod(VIP3.MOD_ID)
-public class VIP3
+public final class VIP3
 {
     public static final String MOD_ID = "vip3";
     public static final Logger LOGGER = LogManager.getLogger();
@@ -42,17 +46,35 @@ public class VIP3
     public VIP3()
     {
         LOGGER.info("Loading VIP 3...");
+        this.loadFMlStuff();
+        this.loadForgeStuff();
+        this.setupManager();
+        this.editArmor();
+    }
+
+    private void loadFMlStuff()
+    {
         final var modBus = FMLJavaModLoadingContext.get().getModEventBus();
         VObjects.register(modBus);
         modBus.addListener(this::setup);
         modBus.addListener(this::registerCapabilities);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, VIPConfig.CLIENT_SPECS);
-        MinecraftForge.EVENT_BUS.register(new OreGeneration());
+    }
+
+    private void loadForgeStuff()
+    {
+        final var forgeBus = MinecraftForge.EVENT_BUS;
+        forgeBus.register(new OreGeneration());
+        forgeBus.addListener(FTGCommand::registerCommands);
+        forgeBus.addListener(this::onAxeCrafted);
+    }
+
+    private void setupManager()
+    {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> clientManager = new ClientManager());
         DistExecutor.unsafeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> serverManager = new ServerManager());
         currentManager = DistExecutor.unsafeRunForDist(() -> VIP3::getClientManager, () -> VIP3::getServerManager);
         getCurrentManager().init();
-        this.editArmor();
     }
 
     public void setup(FMLCommonSetupEvent event)
@@ -63,7 +85,13 @@ public class VIP3
     public void registerCapabilities(@NotNull RegisterCapabilitiesEvent event)
     {
         event.register(ArmorConfiguration.class);
-        //event.register(OLDPlayerAtlas.class);
+        event.register(Atlas.class);
+    }
+
+    public void onAxeCrafted(@NotNull PlayerEvent.ItemCraftedEvent event)
+    {
+        if (event.getCrafting().getItem() instanceof AxeItem)
+            event.getPlayer().playSound(VObjects.BUCHERON_SOUND_EVENT.get(), 1F, 1F);
     }
 
     @OnlyIn(Dist.CLIENT)

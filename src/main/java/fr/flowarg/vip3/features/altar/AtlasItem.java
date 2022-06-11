@@ -1,7 +1,5 @@
 package fr.flowarg.vip3.features.altar;
 
-import fr.flowarg.vip3.client.AtlasScreen;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +20,7 @@ public class AtlasItem extends Item
     {
         if(!pLevel.isClientSide) return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
 
-        Minecraft.getInstance().setScreen(new AtlasScreen());
+        GuiHack.openAtlasScreen();
 
         return InteractionResultHolder.consume(pPlayer.getItemInHand(pUsedHand));
     }

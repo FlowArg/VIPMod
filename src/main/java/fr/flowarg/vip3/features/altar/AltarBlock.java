@@ -1,8 +1,5 @@
 package fr.flowarg.vip3.features.altar;
 
-import fr.flowarg.vip3.client.AltarScreen;
-import fr.flowarg.vip3.features.VObjects;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -11,9 +8,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -22,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class AltarBlock extends BaseEntityBlock
+public class AltarBlock extends Block
 {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
@@ -37,8 +31,7 @@ public class AltarBlock extends BaseEntityBlock
     {
         if (!level.isClientSide) return InteractionResult.SUCCESS;
 
-        if(level.getBlockEntity(pos) instanceof AltarEntity)
-            Minecraft.getInstance().setScreen(new AltarScreen());
+        GuiHack.openAltarScreen();
         return InteractionResult.CONSUME;
     }
 
@@ -71,19 +64,5 @@ public class AltarBlock extends BaseEntityBlock
     protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> stateBuilder)
     {
         stateBuilder.add(FACING);
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState)
-    {
-        return new AltarEntity(pPos, pState);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState pState, @NotNull BlockEntityType<T> entityType)
-    {
-        return level.isClientSide ? null : createTickerHelper(entityType, VObjects.TELEPORTATION_ALTAR_ENTITY.get(), AltarEntity::serverTick);
     }
 }

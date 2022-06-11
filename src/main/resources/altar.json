@@ -1,0 +1,21 @@
+{
+  "id": "68bbbc33-80ae-42cb-b9f5-2197f43d714c",
+  "owner": "27ee4fa0-adfd-46f5-8851-5928497b46f5",
+  "name": "Altar of the Red Dragon",
+  "pos": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "connectedAtlases": {
+    "85833a5e-fa11-47f5-89b0-a875fb805d31": {
+      "id": "85833a5e-fa11-47f5-89b0-a875fb805d31",
+      "permissions": {
+        "canTeleport": true,
+        "canEditPermissions": false,
+        "canAddAtlases": false
+      }
+    }
+  },
+  "canLink": true
+}

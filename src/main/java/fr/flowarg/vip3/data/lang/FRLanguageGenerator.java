@@ -14,6 +14,7 @@ public class FRLanguageGenerator extends CommonLanguageProvider
     protected void addTranslations()
     {
         super.addTranslations();
+        this.addItem(VObjects.VIPIUM_BOW, "Arc en vipium");
         this.addItem(VObjects.VIPIUM_PICKAXE, "Pioche en Vipium");
         this.addItem(VObjects.VIPIUM_AXE, "Hache en Vipium");
         this.addItem(VObjects.VIPIUM_SHOVEL, "Pelle en Vipium");

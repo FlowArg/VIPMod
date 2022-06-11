@@ -1,0 +1,6 @@
+{
+    "parent": "vip3:item/vipium_bow",
+    "textures": {
+        "layer0": "vip3:item/vipium_bow_pulling_1"
+    }
+}

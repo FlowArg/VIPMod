@@ -1,0 +1,10 @@
+{
+  "bucheron": {
+    "sounds": [
+      {
+        "name": "vip3:bucheron",
+        "stream": false
+      }
+    ]
+  }
+}

@@ -14,6 +14,7 @@ public class ENLanguageGenerator extends CommonLanguageProvider
     protected void addTranslations()
     {
         super.addTranslations();
+        this.addItem(VObjects.VIPIUM_BOW, "Vipium Bow");
         this.addItem(VObjects.VIPIUM_PICKAXE, "Vipium Pickaxe");
         this.addItem(VObjects.VIPIUM_AXE, "Vipium Axe");
         this.addItem(VObjects.VIPIUM_SHOVEL, "Vipium Shovel");

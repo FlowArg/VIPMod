@@ -32,15 +32,7 @@ public class OreGeneration
         }
 
         if(event.getCategory() != Biome.BiomeCategory.THEEND && event.getCategory() != Biome.BiomeCategory.NETHER)
-        {
-            this.generateVipiumOre(event);
             event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES).add(this.vipiumOreGeneration.vipiumOrePlaced);
-        }
-    }
-
-    private void generateVipiumOre(@NotNull BiomeLoadingEvent event)
-    {
-
     }
 
     private static class VipiumOreGeneration

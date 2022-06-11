@@ -162,6 +162,6 @@ public class VCrusherBlock extends BaseEntityBlock
 
         level.addParticle(ParticleTypes.FLASH, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
         if (random.nextDouble() < 0.6D)
-            level.addParticle(ParticleTypes.FLAME, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
+            level.addParticle(ParticleTypes.FLAME, d0 + d5, d1 + d6 + 0.3D, d2 + d7, 0.0D, 0.0D, 0.0D);
     }
 }

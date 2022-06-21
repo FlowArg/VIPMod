@@ -1,30 +1,32 @@
 package fr.flowarg.vip3.client.ass;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonWriter;
 import fr.flowarg.vip3.VIP3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.StringWriter;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 
 @OnlyIn(Dist.CLIENT)
 public class ASSConfig
 {
+    public static final String MINECRAFT_DEFAULT_CONFIG_KEY = "MC_DEFAULT";
+    private static final ASSConfigSound MINECRAFT_DEFAULT_CONFIG = new ASSConfigSound(MINECRAFT_DEFAULT_CONFIG_KEY, 1.0F);
+
     public static final ASSConfig CONFIG = new ASSConfig();
 
-    private final List<String> menuMusic = new ArrayList<>();
-    private final List<String> gameMusic = new ArrayList<>();
-    private final Path configPath = Path.of("config/ass.json");
+    private final Map<String, ASSConfigSound> menuMusics = new ConcurrentHashMap<>();
+    private final Map<String, ASSConfigSound> gameMusics = new ConcurrentHashMap<>();
+    private final Path configPath = FMLPaths.CONFIGDIR.get().resolve("ass.json");
 
     private ASSConfig()
     {
@@ -47,7 +49,8 @@ public class ASSConfig
                     {
                         for (WatchEvent<?> event : key.pollEvents())
                         {
-                            if(event.context().toString().equals("ass.json"))
+                            if(event.context().toString().equals("ass.json") &&
+                                    Files.size(this.configPath) > 0)
                                 this.load();
                         }
                         key.reset();
@@ -69,16 +72,15 @@ public class ASSConfig
     {
         VIP3.LOGGER.info("Reloading ASS config");
 
-        ASSEngine.SOUND_MUSIC_MAP.clear();
-        ASSEngine.MUSIC_MAP.clear();
-
         if(Files.notExists(this.configPath))
         {
-            this.menuMusic.clear();
-            this.gameMusic.clear();
-            this.menuMusic.add("MC_DEFAULT");
-            this.gameMusic.add("MC_DEFAULT");
+            this.menuMusics.clear();
+            this.gameMusics.clear();
+
+            this.menuMusics.put(MINECRAFT_DEFAULT_CONFIG_KEY, MINECRAFT_DEFAULT_CONFIG);
+            this.gameMusics.put(MINECRAFT_DEFAULT_CONFIG_KEY, MINECRAFT_DEFAULT_CONFIG);
             this.save();
+            ASSConfigScreen.reload();
             return;
         }
 
@@ -88,10 +90,58 @@ public class ASSConfig
             final JsonArray menu = json.getAsJsonArray("menu");
             final JsonArray game = json.getAsJsonArray("game");
 
-            this.menuMusic.clear();
-            menu.forEach(jsonElement -> this.menuMusic.add(jsonElement.getAsString()));
-            this.gameMusic.clear();
-            game.forEach(jsonElement -> this.gameMusic.add(jsonElement.getAsString()));
+            ASSEngine.SOUND_MUSIC_MAP.clear();
+            ASSEngine.MUSIC_MAP.clear();
+            this.menuMusics.clear();
+            this.gameMusics.clear();
+
+            final BiPredicate<String, Map<String, ASSConfigSound>> checkFileExisting = (name, list) -> {
+                if(name.equals("MC_DEFAULT"))
+                    return true;
+
+                final var path = Path.of("vipsounds").resolve(name + ".ogg");
+                if(Files.notExists(path))
+                {
+                    VIP3.LOGGER.warn("File " + path + " does not exist! Removing from config...");
+                    return false;
+                }
+                return true;
+            };
+
+            menu.forEach(jsonElement -> {
+                if(jsonElement instanceof JsonPrimitive)
+                {
+                    final var name = jsonElement.getAsString();
+                    if(checkFileExisting.test(name, this.menuMusics))
+                        this.menuMusics.put(name, new ASSConfigSound(name, 1.0F));
+                    return;
+                }
+
+                final var volumeElement = jsonElement.getAsJsonObject().get("volume");
+                final float volume = volumeElement instanceof JsonNull ? 1.0F : volumeElement.getAsFloat();
+
+                final var name = jsonElement.getAsJsonObject().get("name").getAsString();
+                if(checkFileExisting.test(name, this.menuMusics))
+                    this.menuMusics.put(name, new ASSConfigSound(name, volume));
+            });
+
+            game.forEach(jsonElement -> {
+                if(jsonElement instanceof JsonPrimitive)
+                {
+                    final var name = jsonElement.getAsString();
+                    if(checkFileExisting.test(name, this.gameMusics))
+                        this.gameMusics.put(name, new ASSConfigSound(name, 1.0F));
+                    return;
+                }
+
+                final var volumeElement = jsonElement.getAsJsonObject().get("volume");
+                final float volume = volumeElement instanceof JsonNull ? 1.0F : volumeElement.getAsFloat();
+
+                final var name = jsonElement.getAsJsonObject().get("name").getAsString();
+                if(checkFileExisting.test(name, this.gameMusics))
+                    this.gameMusics.put(name, new ASSConfigSound(name, volume));
+            });
+            ASSConfigScreen.reload();
         } catch (Exception e)
         {
             throw new RuntimeException(e);
@@ -102,12 +152,28 @@ public class ASSConfig
     {
         final JsonObject json = new JsonObject();
         final JsonArray menu = new JsonArray();
-        this.menuMusic.forEach(menu::add);
+        this.menuMusics.forEach((key, assConfigSound) -> this.serializeSound(menu).accept(assConfigSound));
         final JsonArray game = new JsonArray();
-        this.gameMusic.forEach(game::add);
+        this.gameMusics.forEach((key, assConfigSound) -> this.serializeSound(game).accept(assConfigSound));
         json.add("menu", menu);
         json.add("game", game);
         return json;
+    }
+
+    private Consumer<ASSConfigSound> serializeSound(JsonArray array)
+    {
+        return assConfigSound -> {
+            if(assConfigSound.volume() == 1.0f)
+            {
+                array.add(assConfigSound.name());
+                return;
+            }
+
+            final JsonObject object = new JsonObject();
+            object.addProperty("name", assConfigSound.name());
+            object.addProperty("volume", assConfigSound.volume());
+            array.add(object);
+        };
     }
 
     public void save()
@@ -130,13 +196,13 @@ public class ASSConfig
         }
     }
 
-    public List<String> getGameMusic()
+    public Map<String, ASSConfigSound> getGameMusics()
     {
-        return this.gameMusic;
+        return this.gameMusics;
     }
 
-    public List<String> getMenuMusic()
+    public Map<String, ASSConfigSound> getMenuMusics()
     {
-        return this.menuMusic;
+        return this.menuMusics;
     }
 }

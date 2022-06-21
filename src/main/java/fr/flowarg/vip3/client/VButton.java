@@ -2,6 +2,7 @@ package fr.flowarg.vip3.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -21,6 +22,18 @@ public class VButton extends Button implements VWidget
     public VButton(int pX, int pY, VWidgets type, OnPress pOnPress)
     {
         super(pX, pY, type.pos().width, type.pos().height, TextComponent.EMPTY, pOnPress);
+        this.buttonType = type;
+    }
+
+    public VButton(int pX, int pY, VWidgets type, Component component, OnPress pOnPress, VToolTip toolTip)
+    {
+        super(pX, pY, type.pos().width, type.pos().height, component, pOnPress, toolTip);
+        this.buttonType = type;
+    }
+
+    public VButton(int pX, int pY, VWidgets type, Component component, OnPress pOnPress)
+    {
+        super(pX, pY, type.pos().width, type.pos().height, component, pOnPress);
         this.buttonType = type;
     }
 

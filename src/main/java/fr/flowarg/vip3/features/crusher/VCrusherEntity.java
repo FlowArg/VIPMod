@@ -1,7 +1,6 @@
 package fr.flowarg.vip3.features.crusher;
 
 import fr.flowarg.vip3.features.VObjects;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -122,7 +121,7 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound)
+    protected void saveAdditional(@NotNull CompoundTag compound)
     {
         super.saveAdditional(compound);
 
@@ -368,9 +367,9 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
 
     public List<Recipe<?>> getRecipesToAwardAndPopExperience(ServerLevel level, Vec3 position)
     {
-        final var list = new ArrayList<Recipe<?>>();
+        final List<Recipe<?>> list = new ArrayList<>();
 
-        for(Object2IntMap.Entry<ResourceLocation> entry : this.recipesUsed.object2IntEntrySet())
+        for(var entry : this.recipesUsed.object2IntEntrySet())
         {
             level.getRecipeManager().byKey(entry.getKey()).ifPresent((recipe) -> {
                 list.add(recipe);

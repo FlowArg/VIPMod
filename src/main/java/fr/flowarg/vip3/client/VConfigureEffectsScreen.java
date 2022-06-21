@@ -20,14 +20,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.stream.Collectors;
 
 @OnlyIn(Dist.CLIENT)
-public class ConfigureEffectsScreen extends Screen
+public class VConfigureEffectsScreen extends Screen
 {
     private static final ResourceLocation TEXTURE = new ResourceLocation(VIP3.MOD_ID, "textures/gui/configure_effects.png");
     private int guiLeft;
     private int guiTop;
-    protected boolean doRenderEffects;
+    private boolean doRenderEffects;
+    private final int imageWidth = 199, imageHeight = 162;
 
-    public ConfigureEffectsScreen()
+    public VConfigureEffectsScreen()
     {
         super(new TranslatableComponent("screen.configure_effects"));
     }
@@ -35,8 +36,8 @@ public class ConfigureEffectsScreen extends Screen
     @Override
     protected void init()
     {
-        this.guiLeft = (this.width - 199) / 2;
-        this.guiTop = (this.height - 162) / 2;
+        this.guiLeft = (this.width - this.imageWidth) / 2;
+        this.guiTop = (this.height - this.imageHeight) / 2;
 
         Minecraft.getInstance().player.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> {
             final int firstColumn = this.guiLeft + 41;
@@ -59,7 +60,7 @@ public class ConfigureEffectsScreen extends Screen
         this.renderBackground(pMatrixStack);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        this.blit(pMatrixStack, this.guiLeft, this.guiTop, 0, 0, 199, 162);
+        this.blit(pMatrixStack, this.guiLeft, this.guiTop, 0, 0, this.imageWidth, this.imageHeight);
         drawCenteredString(pMatrixStack, this.font, this.title, this.width / 2, 7, 16777215);
         super.render(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
 

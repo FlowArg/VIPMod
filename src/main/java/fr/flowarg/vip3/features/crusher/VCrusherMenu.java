@@ -25,7 +25,7 @@ public class VCrusherMenu extends AbstractContainerMenu
     private final ContainerData data;
     private final Level level;
 
-    public VCrusherMenu(int id, Inventory inventory, FriendlyByteBuf buffer)
+    public VCrusherMenu(int id, Inventory inventory, FriendlyByteBuf ignored)
     {
         this(id, inventory);
     }
@@ -47,7 +47,7 @@ public class VCrusherMenu extends AbstractContainerMenu
         checkContainerSize(this.container, SLOT_COUNT);
         checkContainerDataCount(this.data, DATA_COUNT);
 
-        this.addSlot(new Slot(container, VCrusherEntity.SLOT_INPUT, 45, 35));
+        this.addSlot(new VCrusherInputSlot(container, VCrusherEntity.SLOT_INPUT, 45, 35));
         this.addSlot(new VCrusherLockedSlot(container, VCrusherEntity.SLOT_LOCKED, 67, 35));
         this.addSlot(new VCrusherResultSlot(inventory.player, container, VCrusherEntity.SLOT_OUTPUT, 125, 35));
 

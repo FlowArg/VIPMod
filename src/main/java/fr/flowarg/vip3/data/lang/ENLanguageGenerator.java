@@ -73,6 +73,34 @@ public class ENLanguageGenerator extends CommonLanguageProvider
         this.add("screen.atlas", "Teleportation atlas");
         this.add("screen.altar", "Teleportation altar");
         this.add("key.configure_effects", "Configure effects");
-        this.add("key.categories.vip3", "VIP3 Keymap");
+        this.add("vip3.setup", "First launch of VIP3");
+        this.add("vip3.setup.previous", "Previous");
+        this.add("vip3.setup.next", "Next");
+        this.add("vip3.setup.done", "Configuration done!");
+        this.add("vip3.setup.message.1", "Welcome to the VIP3 configuration page!");
+        this.add("vip3.setup.message.2", "This new season brings new features");
+        this.add("vip3.setup.message.3", "some of which require manual configuration.");
+        this.add("vip3.setup.message.4", "Don't worry, it's very simple!");
+        this.add("vip3.setup.message.5", "Let the configuration wizard guide you and");
+        this.add("vip3.setup.message.6", "and everything will be fine.");
+        this.add("vip3.setup.message.7", "Guaranteed bug free!");
+        this.add("vip3.setup.message.8", "NOTE: some parameters defined here are not reversible.");
+        this.add("vip3.setup.ass.intro", "Configure here ASS keys (pause & resume / stop)");
+        this.add("vip3.setup.ass.hint.1", "If the keys do not set, make sure to close the applications");
+        this.add("vip3.setup.ass.hint.2", "that might interfere with the game (Spotify, YouTube, etc.)");
+        this.add("vip3.setup.ass.pause_resume_key", "Pause/Resume");
+        this.add("vip3.setup.ass.skip_key", "Skip");
+        this.add("vip3.ass.title", "ASS Configuration");
+        this.add("vip3.ass.menu", "Menu Music");
+        this.add("vip3.ass.game", "Game Music");
+        this.add("vip3.ass.default", "Default");
+        this.add("vip3.ass.error_title", "Error when loading sounds");
+        this.add("vip3.ass.error_message.1", "Some files in the vipsounds directory are not");
+        this.add("vip3.ass.error_message.2", "in the right format. It might be an extension problem");
+        this.add("vip3.ass.error_message.3", "or simply a name problem. Pour rappel, les fichiers");
+        this.add("vip3.ass.error_message.4", "As a reminder, files must respect a naming convention:");
+        this.add("vip3.ass.error_message.5", "Only numbers, lower case letters, ' . ', ' _ ' and ' - ' are allowed. ");
+        this.add("vip3.ass.error_message.6", "The file name must not exceed 24 characters.");
+        this.add("vip3.undefined", "Undefined");
     }
 }

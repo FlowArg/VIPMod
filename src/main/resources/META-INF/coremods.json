@@ -1,10 +1,9 @@
 {
   "title": "coremods/title.js",
   "unload_chunk": "coremods/unload_chunk.js",
-  "server_main": "coremods/server_main.js",
-  "client_main": "coremods/client_main.js",
-  "integrated_server_main": "coremods/integrated_server_main.js",
-  "util": "coremods/util.js",
+  "fastboot": "coremods/fastboot.js",
   "custom_sound_engine": "coremods/custom_sound_engine.js",
-  "redirect_situational_music": "coremods/redirect_situational_music.js"
+  "redstone": "coremods/redstone.js",
+  "blocks_redstone": "coremods/blocks_redstone.js",
+  "language_manager": "coremods/language_manager.js"
 }

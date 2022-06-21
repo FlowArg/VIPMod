@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
  * The annotated element will be called at runtime by a core mod. This avoids useless warnings in the IDE.
  */
 @Retention(RetentionPolicy.CLASS)
-@Target(ElementType.TYPE_USE)
+@Target({ElementType.TYPE_USE, ElementType.METHOD})
 public @interface CalledAtRuntime {}

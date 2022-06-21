@@ -22,20 +22,58 @@ public class VIPConfig {
     }
 
     public static class Client {
+        private final ForgeConfigSpec.BooleanValue firstLaunch;
         private final ForgeConfigSpec.BooleanValue enableRPC;
+        private final ForgeConfigSpec.IntValue pauseMediaKey;
+        private final ForgeConfigSpec.IntValue stopMediaKey;
+        private final ForgeConfigSpec.IntValue skipMediaKey;
 
-        private Client(@NotNull ForgeConfigSpec.Builder builder) {
+        private Client(@NotNull ForgeConfigSpec.Builder builder)
+        {
             builder.comment(" Welcome to the VIP 3 Configuration !")
                     .push("client");
+
+            this.firstLaunch = builder.comment(" Set to true if this is the first time you launch the client (will be set to false after the first launch).")
+                    .define("firstLaunch", true);
 
             this.enableRPC = builder.comment(" Enable/Disable the VIP's Discord Rich Presence.")
                     .define("enableRPC", true);
 
+            this.pauseMediaKey = builder.comment(" The key's scancode used to pause the background music.")
+                    .defineInRange("pauseMediaKey", -1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+            this.stopMediaKey = builder.comment(" The key's scancode used to stop the background music.")
+                    .defineInRange("stopMediaKey", -1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+            this.skipMediaKey = builder.comment(" The key's scancode used to skip the background music.")
+                    .defineInRange("skipMediaKey", -1, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
             builder.pop();
         }
 
-        public ForgeConfigSpec.BooleanValue getEnableRPC() {
-            return this.enableRPC;
+        public ForgeConfigSpec.BooleanValue getFirstLaunch()
+        {
+            return this.firstLaunch;
+        }
+
+        public boolean getEnableRPC()
+        {
+            return this.enableRPC.get();
+        }
+
+        public ForgeConfigSpec.IntValue getPauseMediaKey()
+        {
+            return this.pauseMediaKey;
+        }
+
+        public ForgeConfigSpec.IntValue getStopMediaKey()
+        {
+            return this.stopMediaKey;
+        }
+
+        public ForgeConfigSpec.IntValue getSkipMediaKey()
+        {
+            return this.skipMediaKey;
         }
     }
 

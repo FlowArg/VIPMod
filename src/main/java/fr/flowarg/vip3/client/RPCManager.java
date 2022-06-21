@@ -29,7 +29,7 @@ public class RPCManager
 
     void startRpc(Minecraft mc)
     {
-        if (!VIPConfig.CLIENT.getEnableRPC().get() || this.started) return;
+        if (!VIPConfig.CLIENT.getEnableRPC() || this.started) return;
 
         final var applicationID = "668415343340814336";
         VIP3.LOGGER.info("Starting Discord RPC for app " + applicationID);

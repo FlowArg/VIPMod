@@ -2,16 +2,17 @@ package fr.flowarg.vip3.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.flowarg.vip3.VIP3;
-import fr.flowarg.vip3.client.ass.ASSSound;
 import fr.flowarg.vip3.features.VObjects;
 import fr.flowarg.vip3.network.AtlasPacket;
 import fr.flowarg.vip3.network.VArmorConfigurationPacket;
 import fr.flowarg.vip3.network.VNetwork;
+import fr.flowarg.vip3.utils.VIPConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.SoundOptionsScreen;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,19 +21,27 @@ import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.ScreenOpenEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEventHandler
 {
+    public static boolean musicState = false;
+    public static final List<String> SOUND_FILE_ERROR = new ArrayList<>();
+
     @SubscribeEvent
-    public void onPostRenderGameOverlayEvent(RenderGameOverlayEvent.@NotNull PreLayer event)
+    public void onPreRenderGameOverlayEvent(@NotNull RenderGameOverlayEvent.PreLayer event)
     {
         if(event.getOverlay() != ForgeIngameGui.ARMOR_LEVEL_ELEMENT)
             return;
@@ -84,12 +93,51 @@ public class ClientEventHandler
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onKeyInput(final InputEvent.KeyInputEvent event)
+    public void onKeyInput(final InputEvent.@NotNull KeyInputEvent event)
     {
-        if(VIP3.getClientManager() == null || Minecraft.getInstance().level == null) return;
+        final var minecraft = Minecraft.getInstance();
 
-        if(VIP3.getClientManager().getConfigureEffectsKey().isDown())
-            Minecraft.getInstance().setScreen(new ConfigureEffectsScreen());
+        if(minecraft.player == null &&
+                event.getAction() == GLFW.GLFW_PRESS &&
+                event.getModifiers() == 7 &&
+                event.getKey() == GLFW.GLFW_KEY_S)
+            minecraft.setScreen(new VSetupScreen());
+
+        if(event.getAction() == GLFW.GLFW_RELEASE)
+        {
+            if(event.getScanCode() == -1)
+                return;
+
+            if(event.getScanCode() == VIPConfig.CLIENT.getPauseMediaKey().get())
+            {
+                if (!musicState) minecraft.getSoundManager().pause();
+                else minecraft.getSoundManager().resume();
+
+                musicState = !musicState;
+                return;
+            }
+
+            if(event.getScanCode() == VIPConfig.CLIENT.getStopMediaKey().get())
+            {
+                minecraft.getSoundManager().stop();
+                musicState = true;
+                return;
+            }
+
+            if(event.getScanCode() == VIPConfig.CLIENT.getSkipMediaKey().get())
+            {
+                minecraft.getSoundManager().stop();
+                return;
+            }
+        }
+
+        final var clientManager = VIP3.getClientManager();
+
+        if(clientManager == null) return;
+        if(minecraft.level == null) return;
+
+        if(clientManager.getConfigureEffectsKey().isDown())
+            minecraft.setScreen(new VConfigureEffectsScreen());
     }
 
     @SubscribeEvent
@@ -102,19 +150,19 @@ public class ClientEventHandler
         }
     }
 
-    public void clientSetup(FMLClientSetupEvent event)
+    public void clientSetup(FMLClientSetupEvent ignored)
     {
-        ItemProperties.register(VObjects.VIPIUM_BOW.get(), new ResourceLocation(VIP3.MOD_ID, "pull"), (p_174635_, p_174636_, p_174637_, p_174638_) -> {
-            if (p_174637_ == null) return 0.0F;
-            else return p_174637_.getUseItem() != p_174635_ ? 0.0F : (float)(p_174635_.getUseDuration() - p_174637_.getUseItemRemainingTicks()) / 20.0F;
+        ItemProperties.register(VObjects.VIPIUM_BOW.get(), new ResourceLocation(VIP3.MOD_ID, "pull"), (stack, level, entity, seed) -> {
+            if (entity == null) return 0.0F;
+            else return entity.getUseItem() != stack ? 0.0F : (float)(stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
         });
-        ItemProperties.register(VObjects.VIPIUM_BOW.get(), new ResourceLocation(VIP3.MOD_ID, "pulling"), (p_174630_, p_174631_, p_174632_, p_174633_) -> p_174632_ != null && p_174632_.isUsingItem() && p_174632_.getUseItem() == p_174630_ ? 1.0F : 0.0F);
+        ItemProperties.register(VObjects.VIPIUM_BOW.get(), new ResourceLocation(VIP3.MOD_ID, "pulling"), (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
         MenuScreens.register(VObjects.VIPIUM_CRUSHER_MENU.get(), VCrusherScreen::new);
         ClientRegistry.registerKeyBinding(VIP3.getClientManager().getConfigureEffectsKey());
     }
 
     @SubscribeEvent
-    public void editFov(FOVModifierEvent event)
+    public void editFov(@NotNull FOVModifierEvent event)
     {
         final var player = event.getEntity();
         float f = 1.0F;
@@ -156,5 +204,37 @@ public class ClientEventHandler
         }
 
         event.setNewfov(f);
+    }
+
+    @SubscribeEvent
+    public void replaceScreens(@NotNull ScreenOpenEvent event)
+    {
+        if(event.getScreen() == null)
+            return;
+
+        if(event.getScreen() instanceof TitleScreen)
+        {
+            if(VIPConfig.CLIENT.getFirstLaunch().get())
+                event.setScreen(new VSetupScreen());
+            else
+            {
+                try
+                {
+                    VIP3.getClientManager().checkVIPSoundsDir();
+                    if (!ClientEventHandler.SOUND_FILE_ERROR.isEmpty())
+                        event.setScreen(new VErrorScreen());
+                } catch (IOException e)
+                {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }
+
+        if(event.getScreen().getClass() == SoundOptionsScreen.class)
+        {
+            final var screen = (SoundOptionsScreen)event.getScreen();
+            event.setScreen(new VSoundOptionsScreen(screen.lastScreen, screen.options));
+        }
     }
 }

@@ -17,5 +17,7 @@ public abstract class CommonLanguageProvider extends LanguageProvider
     {
         this.addItem(VObjects.AUBIN_SLAYER, "Aubin Slayer");
         this.add("itemGroup.vip3", "VIP 3");
+        this.add("key.categories.vip3", "VIP3");
+        this.add("vip3.setup.ass.stop_key", "Stop");
     }
 }

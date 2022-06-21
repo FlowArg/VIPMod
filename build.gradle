@@ -30,7 +30,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 minecraft {
-    mappings channel: 'parchment', version: '2022.06.05-1.18.2'
+    mappings channel: 'parchment', version: '2022.06.19-1.18.2'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -137,7 +137,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.31'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.52'
     implementation 'org.jetbrains:annotations:23.0.0'
     serverShade('net.dv8tion:JDA:4.4.0_352') {
         exclude module: 'opus-java'

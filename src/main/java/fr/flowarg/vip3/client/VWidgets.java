@@ -10,7 +10,7 @@ public enum VWidgets
     CRUSHER_MINUS(new VMutableWidgetPos(18, 0, 18, 18, VWidgetOrientation.VERTICAL)),
     CRUSHER_START(new VMutableWidgetPos(36, 0, 18, 18, VWidgetOrientation.VERTICAL)),
     CRUSHER_STOP(new VMutableWidgetPos(54, 0, 18, 18, VWidgetOrientation.VERTICAL)),
-    CRUSHER_RESET(new VMutableWidgetPos(72, 0, 18, 18, VWidgetOrientation.VERTICAL)),
+    STATS_RESET(new VMutableWidgetPos(72, 0, 18, 18, VWidgetOrientation.VERTICAL)),
     NO_19_19(new VMutableWidgetPos(0, 36, 19, 19, VWidgetOrientation.HORIZONTAL)),
     YES_19_19(new VMutableWidgetPos(0, 55, 19, 19, VWidgetOrientation.HORIZONTAL)),
     NO_19_18(new VMutableWidgetPos(0, 74, 19, 18, VWidgetOrientation.HORIZONTAL)),

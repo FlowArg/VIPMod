@@ -5,5 +5,6 @@
   "custom_sound_engine": "coremods/custom_sound_engine.js",
   "redstone": "coremods/redstone.js",
   "blocks_redstone": "coremods/blocks_redstone.js",
-  "language_manager": "coremods/language_manager.js"
+  "language_manager": "coremods/language_manager.js",
+  "block_entity_opti": "coremods/block_entity_opti.js"
 }

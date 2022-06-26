@@ -40,6 +40,7 @@ public class ASSEngine extends SoundEngine
     public static final Map<String, ASSMusic> MUSIC_MAP = new HashMap<>();
     public static final Map<String, ASSSound> SOUND_MUSIC_MAP = new HashMap<>();
     private final ASSSoundBufferLibrary soundBuffers;
+    private final Options options;
 
     static ASSEngine unsafeInstance;
 
@@ -47,6 +48,7 @@ public class ASSEngine extends SoundEngine
     public ASSEngine(SoundManager soundManager, Options options, ResourceManager resourceManager)
     {
         super(soundManager, options, resourceManager);
+        this.options = options;
         this.soundBuffers = new ASSSoundBufferLibrary();
         LOGGER.info("Loaded ASS Engine!");
         unsafeInstance = this;
@@ -127,6 +129,7 @@ public class ASSEngine extends SoundEngine
 
     private float calculateVolume(ASSSound assSound)
     {
+
         if(assSound.isMusic())
         {
             float volume = 1.0f;
@@ -137,7 +140,7 @@ public class ASSEngine extends SoundEngine
             else if(assSound.getSoundEvent() == SoundEvents.MUSIC_GAME && ASSConfig.CONFIG.getGameMusics().containsKey(path))
                 volume = ASSConfig.CONFIG.getGameMusics().get(path).volume();
 
-            assSound.setVolume(volume);
+            assSound.setVolume(volume * this.options.getSoundSourceVolume(SoundSource.MUSIC));
         }
         return assSound.getVolume();
     }

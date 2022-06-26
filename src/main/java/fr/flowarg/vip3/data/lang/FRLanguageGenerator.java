@@ -53,18 +53,21 @@ public class FRLanguageGenerator extends CommonLanguageProvider
         this.addBlock(VObjects.PURE_VIPIUM_BLOCK, "Block de Vipium Pur");
         this.addBlock(VObjects.VIPIUM_ORE, "Minerai de Vipium");
         this.addBlock(VObjects.DEEPSLATE_VIPIUM_ORE, "Minerai de Vipium des Abîmes");
-        //this.addBlock(VObjects.VIPIUM_PURIFIER, "Purificateur de Vipium");
+        this.addBlock(VObjects.VIPIUM_PURIFIER, "Purificateur de Vipium");
         this.addBlock(VObjects.VIPIUM_CRUSHER, "Concasseur de Vipium");
 
         this.add("container.vipium_purifier", "Purificateur de Vipium");
+        this.add("container.vipium_purifier.stats.total_ingots", "Total des lingots purifiés: %d");
+
         this.add("container.vipium_crusher", "Concasseur de Vipium");
         this.add("container.vipium_crusher.start", "Démarrer le concasseur");
         this.add("container.vipium_crusher.stop", "Stopper le concasseur");
-        this.add("container.vipium_crusher.stats", "Fragments obtenables: ");
         this.add("container.vipium_crusher.stats.total_ingots", "Total des lingots concassés: %d");
-        this.add("container.vipium_crusher.stats.total_fragments", "Total des fragments obtenus: %d");
-        this.add("container.vipium_crusher.stats.luck", "Votre chance: %s%%");
-        this.add("container.vipium_crusher.stats.average_single", "Moyenne des fragments pour 1 lingot: %s");
+
+        this.add("container.common.stats", "Fragments obtenables: ");
+        this.add("container.common.stats.total_fragments", "Total des fragments obtenus: %d");
+        this.add("container.common.stats.luck", "Votre chance: %s%%");
+        this.add("container.common.stats.average_single", "Moyenne des fragments pour 1 lingot: %s");
 
         this.addBlock(VObjects.TELEPORTATION_ALTAR, "Altar de téléportation");
         this.addItem(VObjects.TELEPORTATION_ATLAS, "Atlas de téléportation");

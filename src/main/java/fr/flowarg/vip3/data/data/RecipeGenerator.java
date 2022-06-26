@@ -2,6 +2,7 @@ package fr.flowarg.vip3.data.data;
 
 import fr.flowarg.vip3.VIP3;
 import fr.flowarg.vip3.data.builders.CrushingRecipeBuilder;
+import fr.flowarg.vip3.data.builders.PurifyingRecipeBuilder;
 import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.DataGenerator;
@@ -54,6 +55,8 @@ public class RecipeGenerator extends RecipeProvider
         this.build(VObjects.FRENCH_BAGUETTE.get(), builder -> builder.pattern(" X ").pattern("YXY").pattern(" X ").define('X', Items.WHEAT).define('Y', Items.PAPER).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(Items.PAPER, Items.WHEAT)), consumer);
         this.build(VObjects.VIPIUM_BLOCK_ITEM.get(), builder -> builder.pattern("XXX").pattern("XXX").pattern("XXX").define('X', VObjects.VIPIUM_INGOT.get()).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.VIPIUM_INGOT.get())), consumer);
         this.build(VObjects.PURE_VIPIUM_BLOCK_ITEM.get(), builder -> builder.pattern("XXX").pattern("XXX").pattern("XXX").define('X', VObjects.PURE_VIPIUM_INGOT.get()).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.PURE_VIPIUM_INGOT.get())), consumer);
+        this.build(VObjects.VIPIUM_CRUSHER_ITEM.get(), builder -> builder.pattern("XXX").pattern("XYZ").pattern("ZZZ").define('X', Items.POLISHED_ANDESITE).define('Y', VObjects.VIPIUM_MULTI_TOOL.get()).define('Z', Items.POLISHED_DIORITE).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.VIPIUM_MULTI_TOOL.get(), Items.POLISHED_ANDESITE, Items.POLISHED_DIORITE)), consumer);
+        this.build(VObjects.VIPIUM_PURIFIER_ITEM.get(), builder -> builder.pattern("XXX").pattern("XYZ").pattern("ZZZ").define('X', Items.POLISHED_ANDESITE).define('Y', VObjects.VIPIUM_PICKAXE.get()).define('Z', Items.POLISHED_DIORITE).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.VIPIUM_PICKAXE.get(), Items.POLISHED_ANDESITE, Items.POLISHED_DIORITE)), consumer);
 
         this.buildShapelessFromBlock(VObjects.VIPIUM_INGOT.get(), builder -> builder.requires(VObjects.VIPIUM_BLOCK_ITEM.get()).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.VIPIUM_BLOCK_ITEM.get())), consumer);
         this.buildShapelessFromBlock(VObjects.PURE_VIPIUM_INGOT.get(), builder -> builder.requires(VObjects.PURE_VIPIUM_BLOCK_ITEM.get()).unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.PURE_VIPIUM_BLOCK_ITEM.get())), consumer);
@@ -63,6 +66,15 @@ public class RecipeGenerator extends RecipeProvider
 
         this.buildCrush(VObjects.VIPIUM_INGOT.get(), VObjects.VIPIUM_FRAGMENT.get(), 13f, 200, consumer);
         this.buildCrush(VObjects.PURE_VIPIUM_INGOT.get(), VObjects.PURE_VIPIUM_FRAGMENT.get(), 26f, 400, consumer);
+
+        this.buildPurification(VObjects.VIPIUM_INGOT.get(), VObjects.PURE_VIPIUM_FRAGMENT.get(), 12f, 10, consumer);
+    }
+
+    private void buildPurification(Item ingredient, Item result, float experience, int times, Consumer<FinishedRecipe> consumer)
+    {
+        PurifyingRecipeBuilder.purifying(Ingredient.of(ingredient), result, experience, times)
+                .unlockedBy("unlock", InventoryChangeTrigger.TriggerInstance.hasItems(VObjects.VIPIUM_PURIFIER_ITEM.get()))
+                .save(consumer, new ResourceLocation(VIP3.MOD_ID, result.getRegistryName().getPath() + "_from_" + ingredient.getRegistryName().getPath() + "_purify"));
     }
 
     private void build(Item item, @NotNull Function<ShapedRecipeBuilder, ShapedRecipeBuilder> function, Consumer<FinishedRecipe> consumer)

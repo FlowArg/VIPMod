@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XYZ",
+    "ZZZ"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:polished_andesite"
+    },
+    "Y": {
+      "item": "vip3:vipium_pickaxe"
+    },
+    "Z": {
+      "item": "minecraft:polished_diorite"
+    }
+  },
+  "result": {
+    "item": "vip3:vipium_purifier"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "vip3:purifying",
+  "ingredient": {
+    "item": "vip3:vipium_ingot"
+  },
+  "result": "vip3:pure_vipium_fragment",
+  "experience": 12.0,
+  "times": 10
+}

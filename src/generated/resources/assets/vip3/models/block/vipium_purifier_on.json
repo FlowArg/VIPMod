@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "vip3:block/vipium_purifier_bottom",
+    "up": "vip3:block/vipium_purifier_top",
+    "north": "vip3:block/vipium_purifier_front_on",
+    "south": "vip3:block/vipium_purifier_back",
+    "east": "vip3:block/vipium_purifier_side",
+    "west": "vip3:block/vipium_purifier_side",
+    "particle": "vip3:block/vipium_purifier_front_on"
+  }
+}

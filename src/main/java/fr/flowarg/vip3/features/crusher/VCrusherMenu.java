@@ -51,12 +51,12 @@ public class VCrusherMenu extends AbstractContainerMenu
         this.addSlot(new VCrusherLockedSlot(container, VCrusherEntity.SLOT_LOCKED, 67, 35));
         this.addSlot(new VCrusherResultSlot(inventory.player, container, VCrusherEntity.SLOT_OUTPUT, 125, 35));
 
-        for(int k = 0; k < 9; ++k)
-            this.addSlot(new Slot(inventory, k, 8 + k * 18, 142));
-
         for(int i = 0; i < 3; ++i)
             for(int j = 0; j < 9; ++j)
                 this.addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+
+        for(int k = 0; k < 9; ++k)
+            this.addSlot(new Slot(inventory, k, 8 + k * 18, 142));
 
         this.addDataSlots(this.data);
     }
@@ -85,7 +85,7 @@ public class VCrusherMenu extends AbstractContainerMenu
             }
             else if (slotIndex != 1 && slotIndex != 0)
             {
-                if (this.canSmelt(slotItem))
+                if (this.canCrush(slotItem))
                 {
                     if (!this.moveItemStackTo(slotItem, 0, 1, false))
                         return ItemStack.EMPTY;
@@ -126,9 +126,15 @@ public class VCrusherMenu extends AbstractContainerMenu
     {
         if(this.getCrushedIngotCount() == 0 || this.getFragmentsResultCount() == 0) return 0;
 
+        // possibilities : 1, 2, 3, 4, 5, 6
+        // mid-value of the series : 3.5
+
         float x = this.getFragmentsResultCount();
         for(int i = 0; i < this.getCrushedIngotCount(); i++)
+            // we remove the mid-value of the series
             x -= 3.5;
+        //          5 because (1, 2, 3, 4, 5, 6) = 4 ; 6 - 1 = 5
+        //                                           and then we made some weird things to get the good percent.
         return x / (5 * this.getCrushedIngotCount()) * 100 + 50F;
     }
 
@@ -150,7 +156,7 @@ public class VCrusherMenu extends AbstractContainerMenu
         return this.container.getItem(slot);
     }
 
-    private boolean canSmelt(ItemStack stack)
+    private boolean canCrush(ItemStack stack)
     {
         return this.level.getRecipeManager().getRecipeFor(this.recipeType, new SimpleContainer(stack), this.level).isPresent();
     }

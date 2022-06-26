@@ -5,6 +5,7 @@ import fr.flowarg.vip3.features.altar.AltarBlock;
 import fr.flowarg.vip3.features.altar.AtlasItem;
 import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfigurationCapability;
 import fr.flowarg.vip3.features.crusher.*;
+import fr.flowarg.vip3.features.purifier.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -28,6 +29,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 public class VObjects
@@ -181,6 +183,7 @@ public class VObjects
     public static final RegistryObject<VipiumOre> VIPIUM_ORE = BLOCKS.register("vipium_ore", VipiumOre::new);
     public static final RegistryObject<VipiumOre> DEEPSLATE_VIPIUM_ORE = BLOCKS.register("deepslate_vipium_ore", VipiumOre::new);
     public static final RegistryObject<VCrusherBlock> VIPIUM_CRUSHER = BLOCKS.register("vipium_crusher", () -> new VCrusherBlock(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(9.5F).lightLevel(value -> value.getValue(BlockStateProperties.LIT) ? 13 : 0)));
+    public static final RegistryObject<VPurifierBlock> VIPIUM_PURIFIER = BLOCKS.register("vipium_purifier", () -> new VPurifierBlock(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(9.5F).lightLevel(value -> value.getValue(BlockStateProperties.LIT) ? 13 : 0)));
     public static final RegistryObject<AltarBlock> TELEPORTATION_ALTAR = BLOCKS.register("teleportation_altar", () -> new AltarBlock(BlockBehaviour.Properties.of(Material.METAL).strength(26F, 40F).requiresCorrectToolForDrops().lightLevel(value -> 15)));
 
     public static final RegistryObject<BlockItem> VIPIUM_BLOCK_ITEM = ITEMS.register("vipium_block", () -> new BlockItem(VIPIUM_BLOCK.get(), newVipiumProperties()));
@@ -188,24 +191,39 @@ public class VObjects
     public static final RegistryObject<BlockItem> VIPIUM_ORE_ITEM = ITEMS.register("vipium_ore", () -> new BlockItem(VIPIUM_ORE.get(), new Item.Properties().tab(VIP_TAB)));
     public static final RegistryObject<BlockItem> DEEPSLATE_VIPIUM_ORE_ITEM = ITEMS.register("deepslate_vipium_ore", () -> new BlockItem(DEEPSLATE_VIPIUM_ORE.get(), new Item.Properties().tab(VIP_TAB)));
     public static final RegistryObject<BlockItem> VIPIUM_CRUSHER_ITEM = ITEMS.register("vipium_crusher", () -> new BlockItem(VIPIUM_CRUSHER.get(), newVipiumProperties()));
+    public static final RegistryObject<BlockItem> VIPIUM_PURIFIER_ITEM = ITEMS.register("vipium_purifier", () -> new BlockItem(VIPIUM_PURIFIER.get(), newVipiumProperties()));
     public static final RegistryObject<BlockItem> TELEPORTATION_ALTAR_ITEM = ITEMS.register("teleportation_altar", () -> new BlockItem(TELEPORTATION_ALTAR.get(), newVipiumProperties()));
 
     public static final RegistryObject<BlockEntityType<VCrusherEntity>> VIPIUM_CRUSHER_ENTITY = BLOCK_ENTITIES.register("vipium_crusher", () -> BlockEntityType.Builder.of(VCrusherEntity::new, VIPIUM_CRUSHER.get()).build(null));
+    public static final RegistryObject<BlockEntityType<VPurifierEntity>> VIPIUM_PURIFIER_ENTITY = BLOCK_ENTITIES.register("vipium_purifier", () -> BlockEntityType.Builder.of(VPurifierEntity::new, VIPIUM_PURIFIER.get()).build(null));
 
     public static final RegistryObject<MenuType<VCrusherMenu>> VIPIUM_CRUSHER_MENU = CONTAINERS.register("vipium_crusher", () -> IForgeMenuType.create(VCrusherMenu::new));
+    public static final RegistryObject<MenuType<VPurifierMenu>> VIPIUM_PURIFIER_MENU = CONTAINERS.register("vipium_purifier", () -> IForgeMenuType.create(VPurifierMenu::new));
 
     public static final RecipeType<VCrushingRecipe> CRUSHING_RECIPE = new RecipeType<>()
     {
+        @Contract(pure = true)
         @Override
-        public String toString()
+        public @NotNull String toString()
         {
             return VIP3.MOD_ID + ':' + "crushing";
         }
     };
 
+    public static final RecipeType<VPurifyingRecipe> PURIFYING_RECIPE = new RecipeType<VPurifyingRecipe>() {
+        @Contract(pure = true)
+        @Override
+        public @NotNull String toString()
+        {
+            return VIP3.MOD_ID + ':' + "purifying";
+        }
+    };
+
     public static final RegistryObject<VCrushingRecipeSerializer> CRUSHING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("crushing", VCrushingRecipeSerializer::new);
+    public static final RegistryObject<VPurifyingRecipeSerializer> PURIFYING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("purifying", VPurifyingRecipeSerializer::new);
 
     public static final RegistryObject<SoundEvent> BUCHERON_SOUND_EVENT = SOUND_EVENTS.register("bucheron", () -> new SoundEvent(new ResourceLocation(VIP3.MOD_ID, "bucheron")));
+    public static final RegistryObject<SoundEvent> SUICIDE_SOUND_EVENT = SOUND_EVENTS.register("suicide", () -> new SoundEvent(new ResourceLocation(VIP3.MOD_ID, "suicide")));
 
     private static Item.@NotNull Properties newVipiumProperties()
     {

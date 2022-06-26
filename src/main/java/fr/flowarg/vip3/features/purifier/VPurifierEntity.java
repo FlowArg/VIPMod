@@ -1,4 +1,4 @@
-package fr.flowarg.vip3.features.crusher;
+package fr.flowarg.vip3.features.purifier;
 
 import fr.flowarg.vip3.features.VObjects;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -41,33 +41,31 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyContainer, StackedContentsCompatible, RecipeHolder
+public class VPurifierEntity extends BaseContainerBlockEntity implements WorldlyContainer, StackedContentsCompatible, RecipeHolder
 {
     public static final int SLOT_INPUT = 0;
-    public static final int SLOT_LOCKED = 1;
-    public static final int SLOT_OUTPUT = 2;
+    public static final int SLOT_OUTPUT = 1;
 
     private static final int[] SLOTS_FOR_UP = {SLOT_INPUT};
     private static final int[] SLOTS_FOR_DOWN = {SLOT_OUTPUT};
     private static final int[] SLOTS_FOR_SIDES = {SLOT_INPUT, SLOT_OUTPUT};
 
-    private NonNullList<ItemStack> items = NonNullList.withSize(3, ItemStack.EMPTY);
+    private NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
 
-    private int crushingProgress;
-    private int crushingTotalTime;
-    private int started;
-    private int crushedIngots;
-    private int fragmentsResult;
+    private int purificationProgress;
+    private int totalTimes;
+    private int purifiedVipium;
+    private int vipiumResult;
 
     private final ContainerData dataAccess = new ContainerData() {
         @Override
         public int get(int index)
         {
             return switch (index) {
-                case 0 -> VCrusherEntity.this.crushingProgress;
-                case 1 -> VCrusherEntity.this.crushingTotalTime;
-                case 2 -> VCrusherEntity.this.crushedIngots;
-                case 3 -> VCrusherEntity.this.fragmentsResult;
+                case 0 -> VPurifierEntity.this.purificationProgress;
+                case 1 -> VPurifierEntity.this.totalTimes;
+                case 2 -> VPurifierEntity.this.purifiedVipium;
+                case 3 -> VPurifierEntity.this.vipiumResult;
                 default -> 0;
             };
         }
@@ -77,10 +75,10 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
         {
             switch (index)
             {
-                case 0 -> VCrusherEntity.this.crushingProgress = val;
-                case 1 -> VCrusherEntity.this.crushingTotalTime = val;
-                case 2 -> VCrusherEntity.this.crushedIngots = val;
-                case 3 -> VCrusherEntity.this.fragmentsResult = val;
+                case 0 -> VPurifierEntity.this.purificationProgress = val;
+                case 1 -> VPurifierEntity.this.totalTimes = val;
+                case 2 -> VPurifierEntity.this.purifiedVipium = val;
+                case 3 -> VPurifierEntity.this.vipiumResult = val;
             }
         }
 
@@ -92,15 +90,15 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
     };
 
     private final Object2IntOpenHashMap<ResourceLocation> recipesUsed = new Object2IntOpenHashMap<>();
-    private final RecipeType<VCrushingRecipe> recipeType;
+    private final RecipeType<VPurifyingRecipe> recipeType;
     private final SecureRandom random = new SecureRandom();
-    private final Component name = new TranslatableComponent("container.vipium_crusher");
+    private final Component name = new TranslatableComponent("container.vipium_purifier");
     private LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
 
-    public VCrusherEntity(BlockPos pos, BlockState state)
+    public VPurifierEntity(BlockPos worldPosition, BlockState blockState)
     {
-        super(VObjects.VIPIUM_CRUSHER_ENTITY.get(), pos, state);
-        this.recipeType = VObjects.CRUSHING_RECIPE;
+        super(VObjects.VIPIUM_PURIFIER_ENTITY.get(), worldPosition, blockState);
+        this.recipeType = VObjects.PURIFYING_RECIPE;
     }
 
     @Override
@@ -111,11 +109,10 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, this.items);
 
-        this.crushingProgress = tag.getInt("CrushTime");
-        this.crushingTotalTime = tag.getInt("CrushTimeTotal");
-        this.started = tag.getInt("Started");
-        this.crushedIngots = tag.getInt("CrushedIngots");
-        this.fragmentsResult = tag.getInt("FragmentsResult");
+        this.purificationProgress = tag.getInt("PurifyingProgress");
+        this.totalTimes = tag.getInt("TotalTimes");
+        this.purifiedVipium = tag.getInt("PurifiedVipium");
+        this.vipiumResult = tag.getInt("VipiumResult");
         final var recipesUsed = tag.getCompound("RecipesUsed");
 
         recipesUsed.getAllKeys().forEach(s -> this.recipesUsed.put(new ResourceLocation(s), recipesUsed.getInt(s)));
@@ -126,11 +123,10 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
     {
         super.saveAdditional(compound);
 
-        compound.putInt("CrushTime", this.crushingProgress);
-        compound.putInt("CrushTimeTotal", this.crushingTotalTime);
-        compound.putInt("Started", this.started);
-        compound.putInt("CrushedIngots", this.crushedIngots);
-        compound.putInt("FragmentsResult", this.fragmentsResult);
+        compound.putInt("PurifyingProgress", this.purificationProgress);
+        compound.putInt("TotalTimes", this.totalTimes);
+        compound.putInt("PurifiedVipium", this.purifiedVipium);
+        compound.putInt("VipiumResult", this.vipiumResult);
 
         ContainerHelper.saveAllItems(compound, this.items);
 
@@ -155,7 +151,7 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
     @Override
     public boolean canTakeItemThroughFace(int index, @NotNull ItemStack stack, @NotNull Direction direction)
     {
-        return index != SLOT_LOCKED;
+        return true;
     }
 
     @Override
@@ -165,9 +161,9 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
     }
 
     @Override
-    protected @NotNull AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory)
+    protected @NotNull AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inventory)
     {
-        return new VCrusherMenu(id, inventory, this, this.dataAccess);
+        return new VPurifierMenu(containerId, inventory, this, this.dataAccess);
     }
 
     @Override
@@ -201,22 +197,22 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
     }
 
     @Override
-    public void setItem(int slot, @NotNull ItemStack stack)
+    public void setItem(int index, @NotNull ItemStack stack)
     {
         assert this.level != null;
 
-        final var currentStack = this.items.get(slot);
+        final var currentStack = this.items.get(index);
         final var flag = !stack.isEmpty() && stack.sameItem(currentStack) && ItemStack.tagMatches(stack, currentStack);
 
-        this.items.set(slot, stack);
+        this.items.set(index, stack);
 
         if (stack.getCount() > this.getMaxStackSize())
             stack.setCount(this.getMaxStackSize());
 
-        if (slot == SLOT_LOCKED && !flag)
+        if (index == SLOT_INPUT && !flag)
         {
-            this.crushingTotalTime = getTotalCrushTime(this.level, this);
-            this.crushingProgress = 0;
+            this.totalTimes = getTotalTimes(this.level, this);
+            this.purificationProgress = 0;
             this.setChanged();
         }
     }
@@ -244,9 +240,9 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
     }
 
     @Override
-    public void fillStackedContents(@NotNull StackedContents contents)
+    public void fillStackedContents(@NotNull StackedContents helper)
     {
-        this.items.forEach(contents::accountStack);
+        this.items.forEach(helper::accountStack);
     }
 
     @Override
@@ -256,15 +252,15 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
             this.recipesUsed.addTo(recipe.getId(), 1);
     }
 
-    @Override
-    public void awardUsedRecipes(@NotNull Player player) {}
-
     @Nullable
     @Override
     public Recipe<?> getRecipeUsed()
     {
         return null;
     }
+
+    @Override
+    public void awardUsedRecipes(@NotNull Player player) {}
 
     @Override
     public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> capability, Direction facing)
@@ -291,34 +287,34 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
         this.handlers = SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
     }
 
-    public boolean isStarted()
+    private static int getTotalTimes(@NotNull Level level, VPurifierEntity container)
     {
-        return this.started == 1;
-    }
-
-    public void setStarted(boolean started)
-    {
-        this.started = started ? 1 : 0;
+        return level.getRecipeManager().getRecipeFor(container.recipeType, container, level).map(VPurifyingRecipe::getTimes).orElse(0);
     }
 
     private boolean isLit()
     {
-        return this.crushingProgress > 0;
+        return this.purificationProgress > 0;
     }
 
-    public void setCrushedIngots(int crushedIngots)
+    public void setPurifiedVipium(int purifiedVipium)
     {
-        this.crushedIngots = crushedIngots;
+        this.purifiedVipium = purifiedVipium;
     }
 
-    public void setFragmentsResult(int fragmentsResult)
+    public void setVipiumResult(int fragmentsResult)
     {
-        this.fragmentsResult = fragmentsResult;
+        this.vipiumResult = fragmentsResult;
     }
 
-    private boolean canCrush(VCrushingRecipe recipe, @NotNull NonNullList<ItemStack> items)
+    public void increaseProgress()
     {
-        if(items.get(SLOT_LOCKED).isEmpty() || recipe == null) return false;
+        this.purificationProgress++;
+    }
+
+    private boolean canPurify(VPurifyingRecipe recipe, @NotNull NonNullList<ItemStack> items)
+    {
+        if(items.get(SLOT_INPUT).isEmpty() || recipe == null) return false;
 
         final var recipeResult = recipe.assemble(this);
 
@@ -337,25 +333,26 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
         return count <= recipeResult.getMaxStackSize();
     }
 
-    private boolean crush(VCrushingRecipe recipe, NonNullList<ItemStack> items)
+    private boolean purify(VPurifyingRecipe recipe, NonNullList<ItemStack> items)
     {
-        if(recipe == null || !this.canCrush(recipe, items)) return false;
+        if(recipe == null || !this.canPurify(recipe, items)) return false;
 
-        final var lockedStack = items.get(SLOT_LOCKED);
+        final var inputStack = items.get(SLOT_INPUT);
         final var recipeResult = recipe.assemble(this);
         final var currentOutputItem = items.get(SLOT_OUTPUT);
 
-        final var newCount = this.random.nextInt(6) + 1;
+        final var newCount = this.random.nextInt(4) + 1;
+
         recipeResult.setCount(newCount);
 
-        this.fragmentsResult += newCount;
+        this.vipiumResult += newCount;
 
         if(currentOutputItem.isEmpty()) items.set(SLOT_OUTPUT, recipeResult.copy());
         else if(currentOutputItem.is(recipeResult.getItem())) currentOutputItem.grow(recipeResult.getCount());
 
-        lockedStack.shrink(1);
+        inputStack.shrink(1);
 
-        this.crushedIngots++;
+        this.purifiedVipium++;
 
         return true;
     }
@@ -374,7 +371,7 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
         {
             level.getRecipeManager().byKey(entry.getKey()).ifPresent((recipe) -> {
                 list.add(recipe);
-                createExperience(level, position, entry.getIntValue(), ((VCrushingRecipe)recipe).getExperience());
+                createExperience(level, position, entry.getIntValue(), ((VPurifyingRecipe)recipe).getExperience());
             });
         }
 
@@ -392,56 +389,40 @@ public class VCrusherEntity extends BaseContainerBlockEntity implements WorldlyC
         ExperienceOrb.award(level, position, i);
     }
 
-    private static int getTotalCrushTime(@NotNull Level level, VCrusherEntity container)
+    static void serverTick(Level level, BlockPos pos, BlockState state, @NotNull VPurifierEntity entity)
     {
-        return level.getRecipeManager().getRecipeFor(container.recipeType, container, level).map(VCrushingRecipe::getCrushingTime).orElse(0);
-    }
-
-    static void serverTick(Level level, BlockPos pos, BlockState state, @NotNull VCrusherEntity entity)
-    {
-        final var wasLit = entity.isLit();
-        final var wasStarted = entity.isStarted();
         var changed = false;
 
-        if(entity.isStarted())
-        {
-            if(entity.items.get(SLOT_LOCKED).isEmpty())
-            {
-                changed = true;
-                entity.crushingProgress = 0;
-                entity.setStarted(false);
-                entity.crushingTotalTime = 0;
-                state = state.setValue(VCrusherBlock.LIT, Boolean.FALSE);
-            }
-            else
-            {
-                final var recipe = level.getRecipeManager().getRecipeFor(entity.recipeType, entity, level).orElse(null);
-
-                if (entity.canCrush(recipe, entity.items))
-                {
-                    ++entity.crushingProgress;
-                    if (entity.crushingProgress == entity.crushingTotalTime)
-                    {
-                        entity.crushingProgress = 0;
-                        entity.crushingTotalTime = getTotalCrushTime(level, entity);
-
-                        if (entity.crush(recipe, entity.items)) entity.setRecipeUsed(recipe);
-
-                        changed = true;
-                    }
-                }
-                else
-                {
-                    entity.crushingProgress = 0;
-                    entity.setStarted(false);
-                }
-            }
-        }
-
-        if (wasLit != entity.isLit() || wasStarted != entity.isStarted() || (state.getValue(VCrusherBlock.LIT) != entity.isStarted()))
+        if(entity.items.get(SLOT_INPUT).isEmpty())
         {
             changed = true;
-            state = state.setValue(VCrusherBlock.LIT, entity.isLit() && entity.isStarted());
+            entity.purificationProgress = 0;
+            entity.totalTimes = 0;
+            state = state.setValue(VPurifierBlock.LIT, Boolean.FALSE);
+        }
+        else
+        {
+            final var recipe = level.getRecipeManager().getRecipeFor(entity.recipeType, entity, level).orElse(null);
+
+            if (entity.canPurify(recipe, entity.items))
+            {
+                if (entity.purificationProgress == entity.totalTimes)
+                {
+                    entity.purificationProgress = 0;
+                    entity.totalTimes = getTotalTimes(level, entity);
+
+                    if (entity.purify(recipe, entity.items)) entity.setRecipeUsed(recipe);
+
+                    changed = true;
+                }
+            }
+            else entity.purificationProgress = 0;
+        }
+
+        if (state.getValue(VPurifierBlock.LIT) != entity.isLit())
+        {
+            changed = true;
+            state = state.setValue(VPurifierBlock.LIT, entity.isLit());
             level.setBlock(pos, state, 3);
         }
 

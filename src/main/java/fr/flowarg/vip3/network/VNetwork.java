@@ -22,12 +22,14 @@ public class VNetwork
     public static void registerPackets()
     {
         var index = -1;
-        SYNC_CHANNEL.registerMessage(++index, VStartStopCrusherPacket.class, VStartStopCrusherPacket::encode, VStartStopCrusherPacket::decode, VStartStopCrusherPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-        SYNC_CHANNEL.registerMessage(++index, VSwapSlotCrusherPacket.class, VSwapSlotCrusherPacket::encode, VSwapSlotCrusherPacket::decode, VSwapSlotCrusherPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-        SYNC_CHANNEL.registerMessage(++index, VResetCrusherDataPacket.class, VResetCrusherDataPacket::encode, VResetCrusherDataPacket::decode, VResetCrusherDataPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        final var playToServer = Optional.of(NetworkDirection.PLAY_TO_SERVER);
+        SYNC_CHANNEL.registerMessage(++index, VStartStopCrusherPacket.class, VStartStopCrusherPacket::encode, VStartStopCrusherPacket::decode, VStartStopCrusherPacket::handle, playToServer);
+        SYNC_CHANNEL.registerMessage(++index, VSwapSlotCrusherPacket.class, VSwapSlotCrusherPacket::encode, VSwapSlotCrusherPacket::decode, VSwapSlotCrusherPacket::handle, playToServer);
+        SYNC_CHANNEL.registerMessage(++index, VResetMachineStatsPacket.class, VResetMachineStatsPacket::encode, VResetMachineStatsPacket::decode, VResetMachineStatsPacket::handle, playToServer);
         SYNC_CHANNEL.registerMessage(++index, VArmorConfigurationPacket.class, VArmorConfigurationPacket::encode, VArmorConfigurationPacket::decode, VArmorConfigurationPacket::handle);
-        SYNC_CHANNEL.registerMessage(++index, VArmorConfigurationPacket.VRequestArmorConfiguration.class, (unused, _0) -> {}, unused -> VArmorConfigurationPacket.REQUEST_PACKET_INSTANCE, VArmorConfigurationPacket.VRequestArmorConfiguration::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        SYNC_CHANNEL.registerMessage(++index, VArmorConfigurationPacket.VRequestArmorConfiguration.class, (unused, _0) -> {}, unused -> VArmorConfigurationPacket.REQUEST_PACKET_INSTANCE, VArmorConfigurationPacket.VRequestArmorConfiguration::handle, playToServer);
         SYNC_CHANNEL.registerMessage(++index, AtlasPacket.class, AtlasPacket::encode, AtlasPacket::decode, AtlasPacket::handle);
-        SYNC_CHANNEL.registerMessage(++index, AtlasPacket.RequestAtlas.class, AtlasPacket.RequestAtlas::encode, AtlasPacket.RequestAtlas::decode, AtlasPacket.RequestAtlas::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        SYNC_CHANNEL.registerMessage(++index, AtlasPacket.RequestAtlas.class, AtlasPacket.RequestAtlas::encode, AtlasPacket.RequestAtlas::decode, AtlasPacket.RequestAtlas::handle, playToServer);
+        SYNC_CHANNEL.registerMessage(++index, VProgressPurifierPacket.class, VProgressPurifierPacket::encode, VProgressPurifierPacket::decode, VProgressPurifierPacket::handle, playToServer);
     }
 }

@@ -53,18 +53,21 @@ public class ENLanguageGenerator extends CommonLanguageProvider
         this.addBlock(VObjects.PURE_VIPIUM_BLOCK, "Pure Vipium Block");
         this.addBlock(VObjects.VIPIUM_ORE, "Vipium Ore");
         this.addBlock(VObjects.DEEPSLATE_VIPIUM_ORE, "Deepslate Vipium Ore");
-        //this.addBlock(VObjects.VIPIUM_PURIFIER, "Vipium Purifier");
+        this.addBlock(VObjects.VIPIUM_PURIFIER, "Vipium Purifier");
         this.addBlock(VObjects.VIPIUM_CRUSHER, "Vipium Crusher");
 
         this.add("container.vipium_purifier", "Vipium Purifier");
+        this.add("container.vipium_purifier.stats.total_ingots", "Total of purified ingots: %d");
+
         this.add("container.vipium_crusher", "Vipium Crusher");
         this.add("container.vipium_crusher.start", "Start crusher");
         this.add("container.vipium_crusher.stop", "Stop crusher");
-        this.add("container.vipium_crusher.stats", "Obtainable fragments: ");
         this.add("container.vipium_crusher.stats.total_ingots", "Total of crushed ingots: %d");
-        this.add("container.vipium_crusher.stats.total_fragments", "Total of fragments obtained: %d");
-        this.add("container.vipium_crusher.stats.luck", "Your luck: %s%%");
-        this.add("container.vipium_crusher.stats.average_single", "Average fragments for 1 ingot: %s");
+
+        this.add("container.common.stats", "Obtainable fragments: ");
+        this.add("container.common.stats.total_fragments", "Total of fragments obtained: %d");
+        this.add("container.common.stats.luck", "Your luck: %s%%");
+        this.add("container.common.stats.average_single", "Average fragments for 1 ingot: %s");
 
         this.addBlock(VObjects.TELEPORTATION_ALTAR, "Teleportation Altar");
         this.addItem(VObjects.TELEPORTATION_ATLAS, "Teleportation Atlas");

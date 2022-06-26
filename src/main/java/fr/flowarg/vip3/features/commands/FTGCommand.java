@@ -1,4 +1,4 @@
-package fr.flowarg.vip3.features;
+package fr.flowarg.vip3.features.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -16,12 +16,7 @@ import java.util.UUID;
 
 public class FTGCommand
 {
-    public static void registerCommands(@NotNull RegisterCommandsEvent event)
-    {
-        registerFTGCommand(event.getDispatcher());
-    }
-
-    public static void registerFTGCommand(@NotNull CommandDispatcher<CommandSourceStack> dispatcher)
+    static void registerFTGCommand(@NotNull CommandDispatcher<CommandSourceStack> dispatcher)
     {
         LiteralArgumentBuilder<CommandSourceStack> ftgCommand = Commands.literal("ftg")
                 .then(Commands.argument("player", EntityArgument.player())
@@ -36,10 +31,13 @@ public class FTGCommand
         final var message = MessageArgument.getMessage(ctx, "reason");
 
         player.connection.disconnect(message);
-        final var text = new TextComponent(player.getDisplayName() + " a fermé la gueule de " + player.getDisplayName() + " pour la raison : ");
+
+        final var source = ctx.getSource();
+        final var text = new TextComponent(source.getEntityOrException().getDisplayName().getString() + " a fermé la gueule de " + player.getDisplayName() + " pour la raison : ");
+
         text.append(message);
-        ctx.getSource().sendSuccess(new TextComponent("Allez hop, ça dégage !"), true);
-        ctx.getSource().getServer().sendMessage(text, UUID.randomUUID());
+        source.sendSuccess(new TextComponent("Allez hop, ça dégage !"), true);
+        source.getServer().sendMessage(text, UUID.randomUUID());
         return 0;
     }
 }

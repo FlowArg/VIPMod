@@ -9,6 +9,7 @@ import fr.flowarg.vip3.network.VNetwork;
 import fr.flowarg.vip3.utils.VIPConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.SoundOptionsScreen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -108,6 +109,9 @@ public class ClientEventHandler
             if(event.getScanCode() == -1)
                 return;
 
+            if(minecraft.screen instanceof PauseScreen && minecraft.hasSingleplayerServer() && !minecraft.getSingleplayerServer().isPublished())
+                return;
+
             if(event.getScanCode() == VIPConfig.CLIENT.getPauseMediaKey().get())
             {
                 if (!musicState) minecraft.getSoundManager().pause();
@@ -158,6 +162,7 @@ public class ClientEventHandler
         });
         ItemProperties.register(VObjects.VIPIUM_BOW.get(), new ResourceLocation(VIP3.MOD_ID, "pulling"), (stack, level, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
         MenuScreens.register(VObjects.VIPIUM_CRUSHER_MENU.get(), VCrusherScreen::new);
+        MenuScreens.register(VObjects.VIPIUM_PURIFIER_MENU.get(), VPurifierScreen::new);
         ClientRegistry.registerKeyBinding(VIP3.getClientManager().getConfigureEffectsKey());
     }
 

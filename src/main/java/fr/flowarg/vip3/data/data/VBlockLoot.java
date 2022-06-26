@@ -21,6 +21,7 @@ public class VBlockLoot extends BlockLoot
         this.add(VObjects.VIPIUM_ORE.get(), this::createVipiumOreDrops);
         this.add(VObjects.DEEPSLATE_VIPIUM_ORE.get(), this::createVipiumOreDrops);
         this.add(VObjects.VIPIUM_CRUSHER.get(), BlockLoot::createNameableBlockEntityTable);
+        this.add(VObjects.VIPIUM_PURIFIER.get(), BlockLoot::createNameableBlockEntityTable);
         this.dropSelf(VObjects.TELEPORTATION_ALTAR.get());
     }
 

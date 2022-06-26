@@ -1,11 +1,12 @@
 package fr.flowarg.vip3;
 
 import fr.flowarg.vip3.client.ClientManager;
-import fr.flowarg.vip3.features.FTGCommand;
+import fr.flowarg.vip3.features.commands.DontExecuteThisCommand;
 import fr.flowarg.vip3.features.OreGeneration;
 import fr.flowarg.vip3.features.VObjects;
 import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfiguration;
 import fr.flowarg.vip3.features.capabilities.atlas.Atlas;
+import fr.flowarg.vip3.features.commands.VCommands;
 import fr.flowarg.vip3.network.VNetwork;
 import fr.flowarg.vip3.server.ServerManager;
 import fr.flowarg.vip3.utils.SidedManager;
@@ -13,18 +14,22 @@ import fr.flowarg.vip3.utils.VIPConfig;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SignBlock;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.coremod.api.ASMAPI;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -65,8 +70,9 @@ public final class VIP3
     {
         final var forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.register(new OreGeneration());
-        forgeBus.addListener(FTGCommand::registerCommands);
+        forgeBus.addListener(VCommands::registerCommands);
         forgeBus.addListener(this::onAxeCrafted);
+        forgeBus.addListener(this::onRightClickOnSign);
     }
 
     private void setupManager()
@@ -94,6 +100,25 @@ public final class VIP3
             event.getPlayer().playSound(VObjects.BUCHERON_SOUND_EVENT.get(), 1F, 1F);
     }
 
+    public void onRightClickOnSign(PlayerInteractEvent.@NotNull RightClickBlock event)
+    {
+        final var world = event.getWorld();
+        final var block = world.getBlockEntity(event.getPos());
+
+        if(!(block instanceof SignBlockEntity sign))
+            return;
+
+        for (int i = 0; i < 3; i++)
+        {
+            final var text = sign.getMessage(i, false);
+            if(text.getString().contains("Don't click here"))
+            {
+                DontExecuteThisCommand.applyDontExecuteThisCommand(event.getPlayer());
+                return;
+            }
+        }
+    }
+
     @OnlyIn(Dist.CLIENT)
     public static ClientManager getClientManager()
     {
@@ -115,7 +140,7 @@ public final class VIP3
     {
         try {
             final var rangedAttribute = RangedAttribute.class;
-            final var maxValue = rangedAttribute.getDeclaredField(FMLEnvironment.production ? "f_22308_" : "maxValue");
+            final var maxValue = rangedAttribute.getDeclaredField(ASMAPI.mapField("f_22308_"));
             maxValue.setAccessible(true);
             maxValue.setDouble(Attributes.ARMOR, 60D);
         } catch (Exception e) {

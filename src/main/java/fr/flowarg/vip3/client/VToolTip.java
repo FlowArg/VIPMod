@@ -9,8 +9,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 @OnlyIn(Dist.CLIENT)
 public final class VToolTip implements Button.OnTooltip
 {

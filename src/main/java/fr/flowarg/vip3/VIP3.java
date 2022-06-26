@@ -1,11 +1,11 @@
 package fr.flowarg.vip3;
 
 import fr.flowarg.vip3.client.ClientManager;
-import fr.flowarg.vip3.features.commands.DontExecuteThisCommand;
 import fr.flowarg.vip3.features.OreGeneration;
 import fr.flowarg.vip3.features.VObjects;
 import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfiguration;
 import fr.flowarg.vip3.features.capabilities.atlas.Atlas;
+import fr.flowarg.vip3.features.commands.DontExecuteThisCommand;
 import fr.flowarg.vip3.features.commands.VCommands;
 import fr.flowarg.vip3.network.VNetwork;
 import fr.flowarg.vip3.server.ServerManager;
@@ -14,8 +14,6 @@ import fr.flowarg.vip3.utils.VIPConfig;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

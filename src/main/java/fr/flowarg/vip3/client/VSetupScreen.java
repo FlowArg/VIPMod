@@ -4,6 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import fr.flowarg.vip3.utils.VIPConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.screens.LanguageSelectScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Style;
@@ -41,6 +43,7 @@ public class VSetupScreen extends Screen
         super(new TranslatableComponent("vip3.setup"));
         VIPConfig.CLIENT.getStopMediaKey().set(-1);
         VIPConfig.CLIENT.getPauseMediaKey().set(-1);
+        VIPConfig.CLIENT.getSkipMediaKey().set(-1);
     }
 
     @Override
@@ -80,6 +83,7 @@ public class VSetupScreen extends Screen
             this.currentButton = this.skipButton;
             this.skipButton.setMessage(new TranslatableComponent("vip3.undefined").withStyle(Style.EMPTY.withColor(ChatFormatting.YELLOW)));
         }));
+        this.addRenderableWidget(new ImageButton(this.mainMenuButton.x - 20 - this.spacing / 2, y, 20, 20, 0, 106, 20, Button.WIDGETS_LOCATION, 256, 256, (pButton) -> this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager())), new TranslatableComponent("narrator.button.language")));
         this.updateStep();
     }
 

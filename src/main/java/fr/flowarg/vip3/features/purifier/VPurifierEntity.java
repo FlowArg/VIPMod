@@ -131,10 +131,10 @@ public class VPurifierEntity extends VSharedMachine<VPurifyingRecipe>
     @Override
     public void setItem(int index, @NotNull ItemStack stack)
     {
-        super.setItem(index, stack);
-
         final var currentStack = this.items.get(index);
         final var flag = !stack.isEmpty() && stack.sameItem(currentStack) && ItemStack.tagMatches(stack, currentStack);
+
+        super.setItem(index, stack);
 
         if (index == SLOT_INPUT && !flag)
         {

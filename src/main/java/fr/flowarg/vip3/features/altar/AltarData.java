@@ -20,6 +20,7 @@ public class AltarData extends SavedData
     public void altars(List<Altar> altars)
     {
         this.altars = altars;
+        this.setDirty();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package fr.flowarg.vip3.features.purifier;
 
+import fr.flowarg.vip3.features.ExperienceProvider;
 import fr.flowarg.vip3.features.VObjects;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +13,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class VPurifyingRecipe implements Recipe<Container>
+public class VPurifyingRecipe implements Recipe<Container>, ExperienceProvider
 {
     private final RecipeType<VPurifyingRecipe> recipeType;
     private final RecipeSerializer<VPurifyingRecipe> recipeSerializer;

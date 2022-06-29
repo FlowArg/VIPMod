@@ -1,6 +1,7 @@
 package fr.flowarg.vip3.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -41,5 +42,24 @@ public class VAltarCheckboxButton extends Checkbox implements VWidget
     public VWidgets widget()
     {
         return this.selected() ? VWidgets.YES_19_18 : VWidgets.NO_19_18;
+    }
+
+    @Override
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton)
+    {
+        if (!this.active || !this.visible)
+            return false;
+
+        if (this.isValidClickButton(pButton))
+        {
+            boolean flag = this.clicked(pMouseX, pMouseY) && this.status() != VWidgetStatus.DISABLED;
+            if (flag)
+            {
+                this.playDownSound(Minecraft.getInstance().getSoundManager());
+                this.onClick(pMouseX, pMouseY);
+                return true;
+            }
+        }
+        return false;
     }
 }

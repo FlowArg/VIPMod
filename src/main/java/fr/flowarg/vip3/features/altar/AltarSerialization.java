@@ -3,8 +3,10 @@ package fr.flowarg.vip3.features.altar;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,42 +24,45 @@ public class AltarSerialization
         final var altars = new ListTag();
 
         for (final var altar : altarsHolder)
-        {
-            final var altarTag = new CompoundTag();
-            altarTag.putString("id", altar.getId());
-            altarTag.putString("owner", altar.getOwner());
-            altarTag.putString("name", altar.getName());
-
-            final var posTag = new CompoundTag();
-            posTag.putDouble("x", altar.getPos().x());
-            posTag.putDouble("y", altar.getPos().y());
-            posTag.putDouble("z", altar.getPos().z());
-
-            altarTag.put("pos", posTag);
-
-            final var connectedAtlases = altar.getConnectedAtlases();
-            final var connectedAtlasesTag = new ListTag();
-            connectedAtlases.values().forEach(connectedAtlas -> {
-                final var connectedAtlasTag = new CompoundTag();
-                connectedAtlasTag.putString("id", connectedAtlas.id());
-
-                final var permissionsTag = new CompoundTag();
-                permissionsTag.putBoolean("canTeleport", connectedAtlas.permissions().canTeleport());
-                permissionsTag.putBoolean("canManagePermissions", connectedAtlas.permissions().canManagePermissions());
-                permissionsTag.putBoolean("canAddAtlases", connectedAtlas.permissions().canAddAtlases());
-
-                connectedAtlasTag.put("permissions", permissionsTag);
-                connectedAtlasesTag.add(connectedAtlasTag);
-            });
-
-            altarTag.put("connectedAtlases", connectedAtlasesTag);
-            altarTag.putBoolean("canLink", altar.canLink());
-
-            altars.add(altarTag);
-        }
+            altars.add(serializeAltar(altar));
 
         tag.put("altars", altars);
         return tag;
+    }
+
+    public static @NotNull CompoundTag serializeAltar(@NotNull Altar altar)
+    {
+        final var altarTag = new CompoundTag();
+        altarTag.putString("id", altar.getId());
+        altarTag.putString("owner", altar.getOwner());
+        altarTag.putString("name", altar.getName());
+
+        final var posTag = new CompoundTag();
+        posTag.putDouble("x", altar.getPos().x());
+        posTag.putDouble("y", altar.getPos().y());
+        posTag.putDouble("z", altar.getPos().z());
+
+        altarTag.put("pos", posTag);
+
+        final var connectedAtlases = altar.getConnectedAtlases();
+        final var connectedAtlasesTag = new ListTag();
+        connectedAtlases.values().forEach(connectedAtlas -> {
+            final var connectedAtlasTag = new CompoundTag();
+            connectedAtlasTag.putString("id", connectedAtlas.id());
+
+            final var permissionsTag = new CompoundTag();
+            permissionsTag.putBoolean("canTeleport", connectedAtlas.permissions().canTeleport());
+            permissionsTag.putBoolean("canManagePermissions", connectedAtlas.permissions().canManagePermissions());
+            permissionsTag.putBoolean("canAddAtlases", connectedAtlas.permissions().canAddAtlases());
+
+            connectedAtlasTag.put("permissions", permissionsTag);
+            connectedAtlasesTag.add(connectedAtlasTag);
+        });
+
+        altarTag.put("connectedAtlases", connectedAtlasesTag);
+        altarTag.putBoolean("canLink", altar.canLink());
+
+        return altarTag;
     }
 
     public static void deserializeNBT(Tag nbt, @NotNull AltarData holder)
@@ -67,29 +72,36 @@ public class AltarSerialization
 
     public static List<Altar> deserializeNBT(Tag nbt)
     {
-        return ((CompoundTag)nbt).getList("altars", 10).stream().map(tag -> {
-            final var altarTag = (CompoundTag)tag;
-            final var id = altarTag.getString("id");
-            final var owner = altarTag.getString("owner");
-            final var name = altarTag.getString("name");
-            final var posTag = altarTag.getCompound("pos");
-            final var pos = new AltarPos(posTag.getDouble("x"), posTag.getDouble("y"), posTag.getDouble("z"));
-            final var connectedAtlasesTag = altarTag.getList("connectedAtlases", 10);
-            final Map<String, ConnectedAtlas> connectedAtlases = new HashMap<>();
+        return new ArrayList<>(((CompoundTag)nbt)
+                .getList("altars", 10)
+                .stream()
+                .map(tag -> deserializeAltar((CompoundTag)tag))
+                .toList());
+    }
 
-            connectedAtlasesTag.forEach(connectedAtlas -> {
-                final var connectedAtlasTag = (CompoundTag)connectedAtlas;
-                final var id2 = connectedAtlasTag.getString("id");
+    @Contract("_ -> new")
+    public static @NotNull Altar deserializeAltar(@NotNull CompoundTag altarTag)
+    {
+        final var id = altarTag.getString("id");
+        final var owner = altarTag.getString("owner");
+        final var name = altarTag.getString("name");
+        final var posTag = altarTag.getCompound("pos");
+        final var pos = new AltarPos(posTag.getDouble("x"), posTag.getDouble("y"), posTag.getDouble("z"));
+        final var connectedAtlasesTag = altarTag.getList("connectedAtlases", 10);
+        final Map<String, ConnectedAtlas> connectedAtlases = new HashMap<>();
 
-                final var permissionsTag = connectedAtlasTag.getCompound("permissions");
-                final var permissions = new AltarPermissions(permissionsTag.getBoolean("canTeleport"), permissionsTag.getBoolean("canManagePermissions"), permissionsTag.getBoolean("canAddAtlases"));
+        connectedAtlasesTag.forEach(connectedAtlas -> {
+            final var connectedAtlasTag = (CompoundTag)connectedAtlas;
+            final var id2 = connectedAtlasTag.getString("id");
 
-                connectedAtlases.put(id2, new ConnectedAtlas(id2, permissions));
-            });
+            final var permissionsTag = connectedAtlasTag.getCompound("permissions");
+            final var permissions = new AltarPermissions(permissionsTag.getBoolean("canTeleport"), permissionsTag.getBoolean("canManagePermissions"), permissionsTag.getBoolean("canAddAtlases"));
 
-            final var canLink = altarTag.getBoolean("canLink");
+            connectedAtlases.put(id2, new ConnectedAtlas(id2, permissions));
+        });
 
-            return new Altar(id, owner, pos, name, connectedAtlases, canLink);
-        }).toList();
+        final var canLink = altarTag.getBoolean("canLink");
+
+        return new Altar(id, owner, pos, name, connectedAtlases, canLink);
     }
 }

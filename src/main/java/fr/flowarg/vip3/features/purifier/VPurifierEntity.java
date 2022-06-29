@@ -8,22 +8,17 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
 
 public class VPurifierEntity extends VSharedMachine<VPurifyingRecipe>
 {
@@ -205,21 +200,6 @@ public class VPurifierEntity extends VSharedMachine<VPurifyingRecipe>
         return true;
     }
 
-    public List<Recipe<?>> getRecipesToAwardAndPopExperience(ServerLevel level, Vec3 position)
-    {
-        final List<Recipe<?>> list = new ArrayList<>();
-
-        for(var entry : this.recipesUsed.object2IntEntrySet())
-        {
-            level.getRecipeManager().byKey(entry.getKey()).ifPresent((recipe) -> {
-                list.add(recipe);
-                createExperience(level, position, entry.getIntValue(), ((VPurifyingRecipe)recipe).getExperience());
-            });
-        }
-
-        return list;
-    }
-
     static void serverTick(Level level, BlockPos pos, BlockState state, @NotNull VPurifierEntity entity)
     {
         var changed = false;
@@ -235,12 +215,13 @@ public class VPurifierEntity extends VSharedMachine<VPurifyingRecipe>
         {
             final var recipe = level.getRecipeManager().getRecipeFor(entity.recipeType, entity, level).orElse(null);
 
+            entity.totalTimes = getTotalTimes(level, entity);
+
             if (entity.canExecute(recipe, entity.items, SLOT_INPUT, SLOT_OUTPUT))
             {
                 if (entity.purificationProgress == entity.totalTimes)
                 {
                     entity.purificationProgress = 0;
-                    entity.totalTimes = getTotalTimes(level, entity);
 
                     if (entity.purify(recipe, entity.items)) entity.setRecipeUsed(recipe);
 

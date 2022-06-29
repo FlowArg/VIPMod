@@ -68,6 +68,9 @@ public class ASSEngine extends SoundEngine
         if(assSound.isMusic() && ClientEventHandler.musicState)
             return;
 
+        if(assSound.isMusic() && this.options.getSoundSourceVolume(SoundSource.MUSIC) == 0f)
+            return;
+
         this.calculateVolume(assSound);
 
         if(assSound.getVolume() == 0)

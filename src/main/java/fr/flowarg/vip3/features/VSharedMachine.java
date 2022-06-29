@@ -31,9 +31,10 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class VSharedMachine<R extends Recipe<Container>> extends BaseContainerBlockEntity implements WorldlyContainer, StackedContentsCompatible, RecipeHolder
+public abstract class VSharedMachine<R extends Recipe<Container> & ExperienceProvider> extends BaseContainerBlockEntity implements WorldlyContainer, StackedContentsCompatible, RecipeHolder
 {
     protected NonNullList<ItemStack> items;
     protected LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.UP, Direction.DOWN, Direction.NORTH);
@@ -74,7 +75,20 @@ public abstract class VSharedMachine<R extends Recipe<Container>> extends BaseCo
         this.recipesUsed.clear();
     }
 
-    public abstract List<Recipe<?>> getRecipesToAwardAndPopExperience(ServerLevel level, Vec3 position);
+    public List<Recipe<?>> getRecipesToAwardAndPopExperience(ServerLevel level, Vec3 position)
+    {
+        final List<Recipe<?>> list = new ArrayList<>();
+
+        for(var entry : this.recipesUsed.object2IntEntrySet())
+        {
+            level.getRecipeManager().byKey(entry.getKey()).ifPresent((recipe) -> {
+                list.add(recipe);
+                createExperience(level, position, entry.getIntValue(), ((ExperienceProvider)recipe).getExperience());
+            });
+        }
+
+        return list;
+    }
 
     protected static void createExperience(ServerLevel level, Vec3 position, int recipeUsed, float experience)
     {

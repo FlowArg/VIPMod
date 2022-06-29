@@ -31,5 +31,6 @@ public class VNetwork
         SYNC_CHANNEL.registerMessage(++index, AtlasPacket.class, AtlasPacket::encode, AtlasPacket::decode, AtlasPacket::handle);
         SYNC_CHANNEL.registerMessage(++index, AtlasPacket.RequestAtlas.class, AtlasPacket.RequestAtlas::encode, AtlasPacket.RequestAtlas::decode, AtlasPacket.RequestAtlas::handle, playToServer);
         SYNC_CHANNEL.registerMessage(++index, VProgressPurifierPacket.class, VProgressPurifierPacket::encode, VProgressPurifierPacket::decode, VProgressPurifierPacket::handle, playToServer);
+        SYNC_CHANNEL.registerMessage(++index, VSendAltarPacket.class, VSendAltarPacket::encode, VSendAltarPacket::decode, VSendAltarPacket::handle);
     }
 }

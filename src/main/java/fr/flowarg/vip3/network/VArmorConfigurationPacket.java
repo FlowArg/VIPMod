@@ -65,18 +65,13 @@ public final class VArmorConfigurationPacket
     {
         if(ctx.get().getDirection().getReceptionSide() == LogicalSide.CLIENT)
             ctx.get().enqueueWork(() -> handleClientUpdate(pck));
-        else ctx.get().enqueueWork(() -> handleServerUpdate(pck, Objects.requireNonNull(ctx.get().getSender())));
+        else ctx.get().enqueueWork(() -> update(pck, Objects.requireNonNull(ctx.get().getSender())));
         ctx.get().setPacketHandled(true);
     }
 
     private static void update(VArmorConfigurationPacket pck, @NotNull Player player)
     {
         player.getCapability(ArmorConfigurationCapability.ARMOR_CONFIGURATION_CAPABILITY).ifPresent(armorConfiguration -> armorConfiguration.defineConfig(new boolean[]{pck.helmetEffect, pck.chestPlateEffect, pck.leggingsEffect, pck.bootsEffect, pck.fullSet1Effect, pck.fullSet2Effect}));
-    }
-
-    private static void handleServerUpdate(VArmorConfigurationPacket pck, ServerPlayer serverPlayer)
-    {
-        update(pck, serverPlayer);
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -106,7 +106,7 @@ public class VObjects
                             && player.getInventory().getArmor(3).getItem() == PURE_VIPIUM_HELMET.get();
 
                     if(armorConfiguration.fullSet1Effect() && valid)
-                        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1, false, false));
+                        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 110, 3, false, false));
 
                     if(armorConfiguration.fullSet2Effect() && valid)
                         player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 30, 2, false, false));

@@ -27,10 +27,11 @@ public class VNetwork
         SYNC_CHANNEL.registerMessage(++index, VSwapSlotCrusherPacket.class, VSwapSlotCrusherPacket::encode, VSwapSlotCrusherPacket::decode, VSwapSlotCrusherPacket::handle, playToServer);
         SYNC_CHANNEL.registerMessage(++index, VResetMachineStatsPacket.class, VResetMachineStatsPacket::encode, VResetMachineStatsPacket::decode, VResetMachineStatsPacket::handle, playToServer);
         SYNC_CHANNEL.registerMessage(++index, VArmorConfigurationPacket.class, VArmorConfigurationPacket::encode, VArmorConfigurationPacket::decode, VArmorConfigurationPacket::handle);
-        SYNC_CHANNEL.registerMessage(++index, VArmorConfigurationPacket.VRequestArmorConfiguration.class, (unused, _0) -> {}, unused -> VArmorConfigurationPacket.REQUEST_PACKET_INSTANCE, VArmorConfigurationPacket.VRequestArmorConfiguration::handle, playToServer);
+        SYNC_CHANNEL.registerMessage(++index, VArmorConfigurationPacket.VRequestArmorConfiguration.class, (unused, unused1) -> {}, unused -> VArmorConfigurationPacket.REQUEST_PACKET_INSTANCE, VArmorConfigurationPacket.VRequestArmorConfiguration::handle, playToServer);
         SYNC_CHANNEL.registerMessage(++index, AtlasPacket.class, AtlasPacket::encode, AtlasPacket::decode, AtlasPacket::handle);
-        SYNC_CHANNEL.registerMessage(++index, AtlasPacket.RequestAtlas.class, AtlasPacket.RequestAtlas::encode, AtlasPacket.RequestAtlas::decode, AtlasPacket.RequestAtlas::handle, playToServer);
+        SYNC_CHANNEL.registerMessage(++index, AtlasPacket.RequestAtlas.class, (unused, unused1) -> {}, unused -> AtlasPacket.RequestAtlas.CLIENT_REQUEST_ATLAS, AtlasPacket.RequestAtlas::handle, playToServer);
         SYNC_CHANNEL.registerMessage(++index, VProgressPurifierPacket.class, VProgressPurifierPacket::encode, VProgressPurifierPacket::decode, VProgressPurifierPacket::handle, playToServer);
         SYNC_CHANNEL.registerMessage(++index, VSendAltarPacket.class, VSendAltarPacket::encode, VSendAltarPacket::decode, VSendAltarPacket::handle);
+        SYNC_CHANNEL.registerMessage(++index, VChatClearPacket.class, (unused, unused1) -> {}, unused -> VChatClearPacket.INSTANCE, VChatClearPacket::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 }

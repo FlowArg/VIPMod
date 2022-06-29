@@ -150,7 +150,7 @@ public class ClientEventHandler
         if(event.side == LogicalSide.CLIENT)
         {
             VNetwork.SYNC_CHANNEL.sendToServer(VArmorConfigurationPacket.REQUEST_PACKET_INSTANCE);
-            VNetwork.SYNC_CHANNEL.sendToServer(AtlasPacket.CLIENT_REQUEST_ATLAS);
+            VNetwork.SYNC_CHANNEL.sendToServer(AtlasPacket.RequestAtlas.CLIENT_REQUEST_ATLAS);
         }
     }
 

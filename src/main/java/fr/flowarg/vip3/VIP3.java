@@ -3,6 +3,9 @@ package fr.flowarg.vip3;
 import fr.flowarg.vip3.client.ClientManager;
 import fr.flowarg.vip3.features.OreGeneration;
 import fr.flowarg.vip3.features.VObjects;
+import fr.flowarg.vip3.features.altar.Altar;
+import fr.flowarg.vip3.features.altar.AltarBlock;
+import fr.flowarg.vip3.features.altar.AltarData;
 import fr.flowarg.vip3.features.capabilities.armorconfiguration.ArmorConfiguration;
 import fr.flowarg.vip3.features.capabilities.atlas.Atlas;
 import fr.flowarg.vip3.features.commands.DontExecuteThisCommand;
@@ -11,6 +14,7 @@ import fr.flowarg.vip3.network.VNetwork;
 import fr.flowarg.vip3.server.ServerManager;
 import fr.flowarg.vip3.utils.SidedManager;
 import fr.flowarg.vip3.utils.VIPConfig;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.AxeItem;
@@ -21,6 +25,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -71,6 +76,7 @@ public final class VIP3
         forgeBus.addListener(VCommands::registerCommands);
         forgeBus.addListener(this::onAxeCrafted);
         forgeBus.addListener(this::onRightClickOnSign);
+        forgeBus.addListener(this::altarUnbreakable);
     }
 
     private void setupManager()
@@ -113,6 +119,27 @@ public final class VIP3
             {
                 DontExecuteThisCommand.applyDontExecuteThisCommand(event.getPlayer());
                 return;
+            }
+        }
+    }
+
+    public void altarUnbreakable(BlockEvent.@NotNull BreakEvent event)
+    {
+        if(event.getWorld().isClientSide())
+            return;
+
+        if(event.getState().getBlock() instanceof AltarBlock)
+        {
+            final var data = AltarData.getOrCreate((ServerLevel)event.getWorld());
+            for (Altar altar : data.altars())
+            {
+                final var pos = event.getPos();
+                if(altar.getPos().x() == pos.getX() && altar.getPos().y() == pos.getY() && altar.getPos().z() == pos.getZ())
+                {
+                    if(!altar.getOwner().equals(event.getPlayer().getStringUUID()))
+                        event.setCanceled(true);
+                    return;
+                }
             }
         }
     }

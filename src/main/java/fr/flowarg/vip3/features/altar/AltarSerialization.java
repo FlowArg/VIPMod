@@ -49,6 +49,7 @@ public class AltarSerialization
         connectedAtlases.values().forEach(connectedAtlas -> {
             final var connectedAtlasTag = new CompoundTag();
             connectedAtlasTag.putString("id", connectedAtlas.id());
+            connectedAtlasTag.putString("playerName", connectedAtlas.playerName());
 
             final var permissionsTag = new CompoundTag();
             permissionsTag.putBoolean("canTeleport", connectedAtlas.permissions().canTeleport());
@@ -93,11 +94,12 @@ public class AltarSerialization
         connectedAtlasesTag.forEach(connectedAtlas -> {
             final var connectedAtlasTag = (CompoundTag)connectedAtlas;
             final var id2 = connectedAtlasTag.getString("id");
+            final var playerName = connectedAtlasTag.getString("playerName");
 
             final var permissionsTag = connectedAtlasTag.getCompound("permissions");
             final var permissions = new AltarPermissions(permissionsTag.getBoolean("canTeleport"), permissionsTag.getBoolean("canManagePermissions"), permissionsTag.getBoolean("canAddAtlases"));
 
-            connectedAtlases.put(id2, new ConnectedAtlas(id2, permissions));
+            connectedAtlases.put(id2, new ConnectedAtlas(id2, playerName, permissions));
         });
 
         final var canLink = altarTag.getBoolean("canLink");

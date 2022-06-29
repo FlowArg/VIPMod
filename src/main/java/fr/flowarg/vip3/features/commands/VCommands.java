@@ -11,5 +11,6 @@ public class VCommands
         DontExecuteThisCommand.registerDontExecuteThisCommand(dispatcher);
         FTGCommand.registerFTGCommand(dispatcher);
         SuicideCommand.registerSuicideCommand(dispatcher);
+        ChatClearCommand.registerChatClearCommand(dispatcher);
     }
 }

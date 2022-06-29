@@ -71,18 +71,11 @@ public class AtlasPacket
         update(pck, player);
     }
 
-    public static final RequestAtlas CLIENT_REQUEST_ATLAS = new RequestAtlas();
-
     public static class RequestAtlas
     {
+        public static final RequestAtlas CLIENT_REQUEST_ATLAS = new RequestAtlas();
+
         private RequestAtlas() {}
-
-        public static void encode(@NotNull RequestAtlas pck, @NotNull FriendlyByteBuf byteBuf) {}
-
-        public static @NotNull RequestAtlas decode(@NotNull FriendlyByteBuf byteBuf)
-        {
-            return CLIENT_REQUEST_ATLAS;
-        }
 
         public static void handle(RequestAtlas pck, @NotNull Supplier<NetworkEvent.Context> ctx)
         {

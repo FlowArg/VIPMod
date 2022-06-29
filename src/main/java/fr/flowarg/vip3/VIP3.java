@@ -19,7 +19,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.coremod.api.ASMAPI;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -28,6 +27,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -137,9 +137,7 @@ public final class VIP3
     private void editArmor()
     {
         try {
-            final var rangedAttribute = RangedAttribute.class;
-            final var maxValue = rangedAttribute.getDeclaredField(ASMAPI.mapField("f_22308_"));
-            maxValue.setAccessible(true);
+            final var maxValue = ObfuscationReflectionHelper.findField(RangedAttribute.class, "f_22308_");
             maxValue.setDouble(Attributes.ARMOR, 60D);
         } catch (Exception e) {
             e.printStackTrace();

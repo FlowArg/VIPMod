@@ -6,5 +6,6 @@
   "redstone": "coremods/redstone.js",
   "blocks_redstone": "coremods/blocks_redstone.js",
   "language_manager": "coremods/language_manager.js",
-  "block_entity_opti": "coremods/block_entity_opti.js"
+  "block_entity_opti": "coremods/block_entity_opti.js",
+  "disable_telemetry": "coremods/disable_telemetry.js"
 }

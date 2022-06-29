@@ -46,7 +46,8 @@ public class AltarBlock extends Block
             {
                 if(altar.getPos().x() == pos.getX() && altar.getPos().y() == pos.getY() && altar.getPos().z() == pos.getZ())
                 {
-                    VNetwork.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new VSendAltarPacket(altar, true));
+                    if(altar.getOwner().equals(player.getStringUUID()) || altar.getConnectedAtlases().containsKey(player.getStringUUID()))
+                        VNetwork.SYNC_CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new VSendAltarPacket(altar, true));
                     return InteractionResult.SUCCESS;
                 }
             }

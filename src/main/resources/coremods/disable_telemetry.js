@@ -23,14 +23,16 @@ function initializeCoreMod() {
                 var instructions = methodNode.instructions.toArray();
                 for(var i = 0; i < instructions.length; i++) {
                     var instruction = instructions[i];
-                    if(instruction.getOpcode() == Opcodes.INVOKEVIRTUAL) {
-                        if(instruction.name == ASMAPI.mapMethod("m_193544_")) {
-                            methodNode.instructions.remove(instructions[i - 2]);
-                            methodNode.instructions.remove(instructions[i - 1]);
-                            methodNode.instructions.remove(instruction);
-                            break;
-                        }
-                    }
+                    if(instruction.getOpcode() != Opcodes.INVOKEVIRTUAL)
+                        continue;
+
+                    if(instruction.name != ASMAPI.mapMethod("m_193544_"))
+                        continue;
+
+                    methodNode.instructions.remove(instructions[i - 2]);
+                    methodNode.instructions.remove(instructions[i - 1]);
+                    methodNode.instructions.remove(instruction);
+                    break;
                 }
                 return methodNode;
             }
@@ -46,15 +48,17 @@ function initializeCoreMod() {
                 var instructions = methodNode.instructions.toArray();
                 for(var i = 0; i < instructions.length; i++) {
                     var instruction = instructions[i];
-                    if(instruction.getOpcode() == Opcodes.INVOKEVIRTUAL) {
-                        if(instruction.name == ASMAPI.mapMethod("m_193545_")) {
-                            for (var j = 1; j < 7; j++) {
-                                methodNode.instructions.remove(instructions[i - j]);
-                            }
-                            methodNode.instructions.remove(instruction);
-                            break;
-                        }
+                    if(instruction.getOpcode() != Opcodes.INVOKEVIRTUAL)
+                        continue;
+
+                    if(instruction.name != ASMAPI.mapMethod("m_193545_"))
+                        continue;
+
+                    for (var j = 1; j < 7; j++) {
+                        methodNode.instructions.remove(instructions[i - j]);
                     }
+                    methodNode.instructions.remove(instruction);
+                    break;
                 }
                 return methodNode;
             }
@@ -70,15 +74,17 @@ function initializeCoreMod() {
                 var instructions = methodNode.instructions.toArray();
                 for(var i = 0; i < instructions.length; i++) {
                     var instruction = instructions[i];
-                    if(instruction.getOpcode() == Opcodes.INVOKEVIRTUAL) {
-                        if(instruction.name == ASMAPI.mapMethod("m_193561_")) {
-                            methodNode.instructions.remove(instructions[i - 1]);
-                            methodNode.instructions.remove(instructions[i - 2]);
-                            methodNode.instructions.remove(instructions[i - 3]);
-                            methodNode.instructions.remove(instruction);
-                        }
+                    if(instruction.getOpcode() != Opcodes.INVOKEVIRTUAL)
+                        continue;
 
-                    }
+                    if(instruction.name != ASMAPI.mapMethod("m_193561_"))
+                        continue;
+
+                    methodNode.instructions.remove(instructions[i - 1]);
+                    methodNode.instructions.remove(instructions[i - 2]);
+                    methodNode.instructions.remove(instructions[i - 3]);
+                    methodNode.instructions.remove(instruction);
+                    break;
                 }
                 return methodNode;
             }
@@ -93,33 +99,37 @@ function initializeCoreMod() {
                 for (var i = 0; i < fields.length; i++)
                 {
                     var field = fields[i];
-                    if(field.name == ASMAPI.mapField("f_194191_"))
-                    {
-                        classNode.fields.remove(field);
-                        break;
-                    }
+                    if(field.name != ASMAPI.mapField("f_194191_"))
+                        continue;
+
+                    classNode.fields.remove(field);
+                    break;
                 }
 
                 var methods = classNode.methods.toArray();
-                for(var i = 0; i < methods.length; i++) {
+                for(var i = 0; i < methods.length; i++)
+                {
                     var method = methods[i];
-                    if(method.name == "<init>") {
-                        method.desc = "(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/screens/Screen;Lnet/minecraft/network/Connection;Lcom/mojang/authlib/GameProfile;)V";
+                    if(method.name != "<init>")
+                        continue;
 
-                        var instructions = method.instructions.toArray();
-                        for(var j = 0; j < instructions.length; j++) {
-                            var instruction = instructions[j];
-                            if(instruction.getOpcode() == Opcodes.PUTFIELD) {
-                                if(instruction.name == ASMAPI.mapField("f_194191_")) {
-                                    method.instructions.remove(instructions[j - 2]);
-                                    method.instructions.remove(instructions[j - 1]);
-                                    method.instructions.remove(instruction);
-                                    break;
-                                }
-                            }
-                        }
+                    method.desc = "(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/screens/Screen;Lnet/minecraft/network/Connection;Lcom/mojang/authlib/GameProfile;)V";
+
+                    var instructions = method.instructions.toArray();
+                    for(var j = 0; j < instructions.length; j++) {
+                        var instruction = instructions[j];
+                        if(instruction.getOpcode() != Opcodes.PUTFIELD)
+                            continue;
+
+                        if(instruction.name != ASMAPI.mapField("f_194191_"))
+                            continue;
+
+                        method.instructions.remove(instructions[j - 2]);
+                        method.instructions.remove(instructions[j - 1]);
+                        method.instructions.remove(instruction);
                         break;
                     }
+                    break;
                 }
 
                 return classNode;
@@ -136,16 +146,17 @@ function initializeCoreMod() {
                 var instructions = methodNode.instructions.toArray();
                 for(var i = 0; i < instructions.length; i++) {
                     var instruction = instructions[i];
-                    if(instruction.getOpcode() == Opcodes.INVOKEVIRTUAL) {
-                        if(instruction.name == ASMAPI.mapMethod("m_193590_")) {
-                            methodNode.instructions.remove(instructions[i - 2]);
-                            methodNode.instructions.remove(instructions[i - 1]);
-                            methodNode.instructions.remove(instruction);
+                    if(instruction.getOpcode() != Opcodes.INVOKEVIRTUAL)
+                        continue;
 
-                            instructions[i + 1].desc = "(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/screens/Screen;Lnet/minecraft/network/Connection;Lcom/mojang/authlib/GameProfile;)V";
-                            break;
-                        }
-                    }
+                    if(instruction.name != ASMAPI.mapMethod("m_193590_"))
+                        continue;
+                    methodNode.instructions.remove(instructions[i - 2]);
+                    methodNode.instructions.remove(instructions[i - 1]);
+                    methodNode.instructions.remove(instruction);
+
+                    instructions[i + 1].desc = "(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/screens/Screen;Lnet/minecraft/network/Connection;Lcom/mojang/authlib/GameProfile;)V";
+                    break;
                 }
                 return methodNode;
             }
@@ -159,10 +170,11 @@ function initializeCoreMod() {
                 var methods = classNode.methods.toArray();
                 for(var i = 0; i < methods.length; i++) {
                     var method = methods[i];
-                    if(method.name == ASMAPI.mapMethod("m_193590_")) {
-                        classNode.methods.remove(method);
-                        break;
-                    }
+                    if(method.name != ASMAPI.mapMethod("m_193590_"))
+                        continue;
+
+                    classNode.methods.remove(method);
+                    break;
                 }
                 return classNode;
             }

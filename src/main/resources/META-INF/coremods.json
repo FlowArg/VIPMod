@@ -8,5 +8,6 @@
   "language_manager": "coremods/language_manager.js",
   "block_entity_opti": "coremods/block_entity_opti.js",
   "disable_telemetry": "coremods/disable_telemetry.js",
-  "disable_dfu_118": "coremods/disable_dfu_118.js"
+  "disable_dfu_118": "coremods/disable_dfu_118.js",
+  "model_bakery": "coremods/model_bakery.js"
 }
